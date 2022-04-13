@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
+    "front-server": "cd ./frontend NODE_ENV=development npm start "
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -12,5 +14,19 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "docs/*"
+    ],
+    "delay": "2500",
+    "events": {
+      "crash": "sh -c 'lsof -i :${PORT:-3500} -t | xargs kill'"
+    }
   }
 }
