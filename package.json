@@ -3,13 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "cd backend && node ./bin/www",
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
-    "front-server": "cd ./frontend NODE_ENV=development npm start "
+    "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
+    "build": "rm -rf ./public/html/* && cd ./frontend && npm run build",
+    "postbuild": "cp -r ./frontend/build/* ./public/html && rm -rf ./frontend/build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
