@@ -1,0 +1,51 @@
+// {
+//     "env": {
+//         "browser": true,
+//         "commonjs": true,
+//         "es2021": true
+//     },
+//     "extends": [
+//         "eslint:recommended",
+//         "plugin:react/recommended"
+//     ],
+//     "parserOptions": {
+//         "ecmaFeatures": {
+//             "jsx": true
+//         },
+//         "ecmaVersion": "latest"
+//     },
+//     "plugins": [
+//         "react"
+//     ],
+//     "rules": {
+//     }
+// }
+{
+    "extends": ["airbnb", "prettier"],
+    "plugins": ["prettier","react"],
+    "globals": {
+      "fetch": false,
+      "FormData": false,
+      "Headers": false,
+      "FileReader": false
+    },
+    "rules": {
+       
+      "prettier/prettier": "error",
+      "func-names": "off",
+      "no-unused-vars": "warn",
+      "import/no-duplicates": "warn",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-props-no-spreading": "off",
+      "object-shorthand": "off",
+      "no-underscore-dangle": "off"
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "es2021": true
+    },
+   
+    "root": true
+  }
+  

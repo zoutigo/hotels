@@ -1,17 +1,17 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import logo from './logo.svg'
+import './App.css'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 function Home() {
-  return <h2>Home</h2>;
+  return <h2>Home</h2>
 }
 
 function About() {
-  return <h2>About</h2>;
+  return <h2>About</h2>
 }
 
 function Users() {
-  return <h2>Users</h2>;
+  return <h2>Users</h2>
 }
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
         </Switch>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
