@@ -12,23 +12,52 @@ module.exports = {
             type: Sequelize.INTEGER,
           },
           uuid: {
-            type: Sequelize.DataTypes.UUID,
+            type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV4,
-          },
-          firstname: {
-            type: Sequelize.STRING(30),
           },
           lastname: {
             type: Sequelize.STRING(30),
+            allowNull: false,
+            validate: {
+              notNull: {
+                msg: 'le prénom est obligatoire',
+              },
+              len: {
+                args: [2, 30],
+                msg: 'le prénom doit avoir entre 2 et 30 caractères',
+              },
+            },
           },
+          firstname: {
+            type: Sequelize.STRING(30),
+            allowNull: false,
+            validate: {
+              notNull: {
+                msg: 'le nom est obligatoire',
+              },
+              len: {
+                args: [2, 30],
+                msg: 'le nom doit avoir entre 5 et 30 caractères',
+              },
+            },
+          },
+
           email: {
             type: Sequelize.STRING(50),
+            unique: true,
+            validate: {
+              isEmail: {
+                msg: "ce format mail n'est pas valide",
+              },
+            },
           },
           password: {
             type: Sequelize.STRING(64),
           },
           roles: {
-            type: Sequelize.ARRAY(Sequelize.ENUM('admin', 'manager', 'client')),
+            type: Sequelize.ARRAY(
+              Sequelize.STRING(Sequelize.ENUM('admin', 'manager', 'client'))
+            ),
           },
           createdAt: {
             allowNull: false,

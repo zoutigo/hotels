@@ -61,7 +61,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(64),
       },
       roles: {
-        type: DataTypes.ARRAY(DataTypes.ENUM('admin', 'manager', 'client')),
+        type: DataTypes.ARRAY(
+          DataTypes.STRING(DataTypes.ENUM('admin', 'manager', 'client'))
+        ),
       },
     },
     {

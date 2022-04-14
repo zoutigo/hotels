@@ -41,6 +41,19 @@ module.exports = {
               },
             },
           },
+          address: {
+            type: Sequelize.DataTypes.STRING(100),
+            allowNull: false,
+            validate: {
+              notNull: {
+                msg: 'adresse est obligatoire',
+              },
+              len: {
+                args: [2, 30],
+                msg: 'adresse doit avoir entre 10 et 100 caractères',
+              },
+            },
+          },
           description: {
             type: Sequelize.DataTypes.STRING(1000),
             allowNull: false,
