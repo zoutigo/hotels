@@ -93,6 +93,16 @@ for (let m = 0; m < 20; m++) {
   devImages.push(image)
 }
 
+const devBookings = []
+for (let n = 0; n < 10; n++) {
+  const booking = {
+    startdate: faker.date.recent(),
+    enddate: faker.date.future(),
+    price: faker.commerce.price(10, 10000, 2),
+  }
+  devBookings.push(booking)
+}
+
 module.exports = {
   devManager,
   devAdmin,
@@ -101,4 +111,5 @@ module.exports = {
   devSuites,
   devMails,
   devImages,
+  devBookings,
 }
