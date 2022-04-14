@@ -7,9 +7,15 @@
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
     "build": "rm -rf ./public/html/* && cd ./frontend && npm run build",
-    "postbuild": "cp -r ./frontend/build/* ./public/html && rm -rf ./frontend/build"
+    "postbuild": "cp -r ./frontend/build/* ./public/html && rm -rf ./frontend/build",
+    "seedall": "npx sequelize-cli db:seed:all --debug",
+    "seedundoall": "npx sequelize-cli db:seed:undo:all",
+    "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
+    "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
+    "migrate": "npx sequelize-cli db:migrate --debug"
   },
   "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.10",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -17,9 +23,13 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.19.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.1.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -29,12 +39,14 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "nodemon": "^2.0.15",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "sequelize-cli": "^6.4.1"
   },
   "nodemonConfig": {
     "ignore": [
       "test/*",
-      "docs/*"
+      "docs/*",
+      "dist/*"
     ],
     "delay": "2500",
     "events": {
