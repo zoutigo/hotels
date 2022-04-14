@@ -80,6 +80,19 @@ for (let l = 0; l < 20; l++) {
   devMails.push(mail)
 }
 
+const devImages = []
+
+for (let m = 0; m < 20; m++) {
+  const image = {
+    filename: faker.company.catchPhrase(),
+    filepath: faker.image.nature(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+
+  devImages.push(image)
+}
+
 module.exports = {
   devManager,
   devAdmin,
@@ -87,4 +100,5 @@ module.exports = {
   devHouses,
   devSuites,
   devMails,
+  devImages,
 }

@@ -5,9 +5,6 @@ const {
   devManager,
   devAdmin,
   devClients,
-  devSuites,
-  devHouses,
-  devMails,
 } = require('../../constants/fixturesDev')
 
 module.exports = {
@@ -19,15 +16,6 @@ module.exports = {
         transaction,
       })
       await queryInterface.bulkInsert('users', devClients, {
-        transaction,
-      })
-      await queryInterface.bulkInsert('houses', devHouses, {
-        transaction,
-      })
-      await queryInterface.bulkInsert('suites', devSuites, {
-        transaction,
-      })
-      await queryInterface.bulkInsert('mails', devMails, {
         transaction,
       })
 
@@ -43,9 +31,7 @@ module.exports = {
 
     try {
       await queryInterface.bulkDelete('users', null, { transaction })
-      await queryInterface.bulkDelete('houses', null, { transaction })
-      await queryInterface.bulkDelete('suites', null, { transaction })
-      await queryInterface.bulkDelete('mails', null, { transaction })
+
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

@@ -5,6 +5,7 @@ LAMP
 Ubuntu 20.14
 NPM 8.1.0
 Postgresql 12.9
+VsCode
 
 # Lancer l'environnement de developpement
 

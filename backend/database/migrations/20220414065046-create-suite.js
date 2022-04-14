@@ -12,15 +12,15 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       title: {
-        type: Sequelize.DataTypes.STRING(30),
+        type: Sequelize.DataTypes.STRING(100),
         allowNull: false,
         validate: {
           notNull: {
             msg: 'le titre est obligatoire',
           },
           len: {
-            args: [2, 30],
-            msg: 'le titre doit avoir entre 2 et 30 caractères',
+            args: [2, 100],
+            msg: 'le titre doit avoir entre 2 et 100 caractères',
           },
         },
       },

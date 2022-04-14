@@ -16,41 +16,41 @@ module.exports = {
             defaultValue: Sequelize.UUIDV4,
           },
           name: {
-            type: Sequelize.DataTypes.STRING(30),
+            type: Sequelize.DataTypes.STRING(100),
             allowNull: false,
             validate: {
               notNull: {
                 msg: 'le nom est obligatoire',
               },
               len: {
-                args: [2, 30],
-                msg: 'le nom doit avoir entre 2 et 30 caractères',
+                args: [2, 100],
+                msg: 'le nom doit avoir entre 2 et 100 caractères',
               },
             },
           },
           city: {
-            type: Sequelize.DataTypes.STRING(30),
+            type: Sequelize.DataTypes.STRING(100),
             allowNull: false,
             validate: {
               notNull: {
                 msg: 'la ville est obligatoire',
               },
               len: {
-                args: [2, 30],
-                msg: 'la ville doit avoir entre 2 et 30 caractères',
+                args: [2, 100],
+                msg: 'la ville doit avoir entre 2 et 100 caractères',
               },
             },
           },
           address: {
-            type: Sequelize.DataTypes.STRING(100),
+            type: Sequelize.DataTypes.STRING(200),
             allowNull: false,
             validate: {
               notNull: {
                 msg: 'adresse est obligatoire',
               },
               len: {
-                args: [2, 30],
-                msg: 'adresse doit avoir entre 10 et 100 caractères',
+                args: [2, 200],
+                msg: 'adresse doit avoir entre 10 et 200 caractères',
               },
             },
           },
