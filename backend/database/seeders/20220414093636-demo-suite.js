@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 // eslint-disable-next-line import/no-extraneous-dependencies
+const { QueryTypes } = require('@sequelize/core')
 
 const { devSuites } = require('../../constants/fixturesDev')
 
@@ -8,7 +9,18 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      await queryInterface.bulkInsert('suites', devSuites, {
+      const houses = await queryInterface.sequelize.query(
+        ` SELECT * FROM houses`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      )
+
+      const suites = devSuites.map((suite) => ({
+        ...suite,
+        houseId: houses[3].id,
+      }))
+      await queryInterface.bulkInsert('suites', suites, {
         transaction,
       })
 

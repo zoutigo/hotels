@@ -50,7 +50,7 @@ module.exports = {
               },
               len: {
                 args: [2, 200],
-                msg: 'adresse doit avoir entre 10 et 200 caractères',
+                msg: 'adresse doit avoir entre 10 et 00 caractères',
               },
             },
           },

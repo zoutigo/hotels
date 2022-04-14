@@ -99,6 +99,8 @@ for (let n = 0; n < 10; n++) {
     startdate: faker.date.recent(),
     enddate: faker.date.future(),
     price: faker.commerce.price(10, 10000, 2),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
   devBookings.push(booking)
 }

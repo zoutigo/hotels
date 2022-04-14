@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.DataTypes.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      starddate: {
+      startdate: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -21,7 +21,7 @@ module.exports = {
           },
         },
       },
-      endate: {
+      enddate: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
         validate: {

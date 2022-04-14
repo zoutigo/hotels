@@ -1,14 +1,32 @@
 /* eslint-disable no-plusplus */
 // eslint-disable-next-line import/no-extraneous-dependencies
-
-const { devMails } = require('../../constants/fixturesDev')
+const { QueryTypes } = require('@sequelize/core')
+const { devBookings } = require('../../constants/fixturesDev')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      await queryInterface.bulkInsert('bookings', devMails, {
+      const users = await queryInterface.sequelize.query(
+        ` SELECT * FROM users`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      )
+      const suites = await queryInterface.sequelize.query(
+        ` SELECT * FROM suites`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      )
+
+      const bookings = devBookings.map((booking) => ({
+        ...booking,
+        userId: users[2].id,
+        suiteId: suites[3].id,
+      }))
+      await queryInterface.bulkInsert('bookings', bookings, {
         transaction,
       })
 
