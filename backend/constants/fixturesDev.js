@@ -10,6 +10,7 @@ const devManager = {
   createdAt: new Date(),
   updatedAt: new Date(),
 }
+
 const devAdmin = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
@@ -35,7 +36,6 @@ for (let i = 0; i < 10; i++) {
 }
 
 const devHouses = []
-
 for (let j = 0; j < 10; j++) {
   const name = faker.company.companyName()
   const house = {
@@ -51,9 +51,24 @@ for (let j = 0; j < 10; j++) {
   devHouses.push(house)
 }
 
+const devSuites = []
+for (let k = 0; k < 20; k++) {
+  const suite = {
+    title: faker.company.companyName(),
+    description: faker.lorem.paragraphs(2, '<br/>\n'),
+    price: faker.commerce.price(10, 10000, 2),
+    bannerUrl: faker.internet.url(),
+    bookinglink: faker.internet.url(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  devSuites.push(suite)
+}
+
 module.exports = {
   devManager,
   devAdmin,
   devClients,
   devHouses,
+  devSuites,
 }
