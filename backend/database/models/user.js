@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
           },
           len: {
             args: [2, 30],
-            msg: 'le prénom doit avoir entre 5 et 30 caractères',
+            msg: 'le prénom doit avoir entre 2 et 30 caractères',
           },
         },
       },
