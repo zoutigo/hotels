@@ -1,5 +1,6 @@
 const { faker } = require('@faker-js/faker')
 const slugify = require('../utils/slugify')
+const mailTopics = require('./mailTopics')
 
 const devManager = {
   lastname: faker.name.lastName(),
@@ -65,10 +66,25 @@ for (let k = 0; k < 20; k++) {
   devSuites.push(suite)
 }
 
+const devMails = []
+for (let l = 0; l < 20; l++) {
+  const mail = {
+    lastname: faker.name.lastName(),
+    firstname: faker.name.firstName(),
+    email: faker.internet.email(),
+    content: faker.lorem.paragraphs(2, '<br/>\n'),
+    topic: mailTopics[l % 2 === 0 ? 0 : 1],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  devMails.push(mail)
+}
+
 module.exports = {
   devManager,
   devAdmin,
   devClients,
   devHouses,
   devSuites,
+  devMails,
 }
