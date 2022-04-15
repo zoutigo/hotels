@@ -12,6 +12,7 @@ const usersRouter = require('./backend/routes/users')
 const suitesRouter = require('./backend/routes/suites')
 const housesRouter = require('./backend/routes/houses')
 const bookingsRouter = require('./backend/routes/bookings')
+const mailsRouter = require('./backend/routes/mails')
 const loginRouter = require('./backend/routes/login')
 
 dotenv.config()
@@ -66,6 +67,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
+app.use('/api/mails', mailsRouter)
 app.use('/api/login', loginRouter)
 
 // catch 404 and forward to error handler
