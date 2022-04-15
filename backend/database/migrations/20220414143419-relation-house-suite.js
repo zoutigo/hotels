@@ -28,6 +28,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.removeColumn('suites', 'houseId', { transaction })
+      await transaction.commit()
     } catch (error) {
       await transaction.rollback()
       throw error
