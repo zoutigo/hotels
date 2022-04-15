@@ -1,52 +1,47 @@
-import logo from './logo.svg'
-import './App.css'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { SnackbarProvider } from 'notistack'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import MomentUtils from '@date-io/moment'
+import moment from 'moment'
+import { ThemeProvider } from '@mui/material/styles'
 
-function Home() {
-  return <h2>Home</h2>
-}
+import './index.css'
+import Home from './components/Home'
+import theme from './components/utils/theme'
+import { AppStateProvider } from './components/utils/Store'
 
-function About() {
-  return <h2>About</h2>
-}
+moment.locale('fr')
 
-function Users() {
-  return <h2>Users</h2>
-}
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: true,
+      retry: 1,
+      retryDelay: 500,
+    },
+  },
+})
 
 function App() {
   return (
-    <div className="App">
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </div>
+    <LocalizationProvider dateAdapter={MomentUtils}>
+      <QueryClientProvider client={queryClient}>
+        <AppStateProvider>
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              <Router>
+                <Home />
+              </Router>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </AppStateProvider>
+      </QueryClientProvider>
+    </LocalizationProvider>
   )
 }
 
