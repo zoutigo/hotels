@@ -2,6 +2,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
+      await queryInterface.sequelize.query(
+        'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
+      )
       await queryInterface.createTable(
         'users',
         {
@@ -13,7 +16,7 @@ module.exports = {
           },
           uuid: {
             type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV4,
+            defaultValue: Sequelize.literal('uuid_generate_v4()'),
           },
           lastname: {
             type: Sequelize.STRING(30),

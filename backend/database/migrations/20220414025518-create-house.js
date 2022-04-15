@@ -13,7 +13,7 @@ module.exports = {
           },
           uuid: {
             type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.UUIDV4,
+            defaultValue: Sequelize.literal('uuid_generate_v4()'),
           },
           name: {
             type: Sequelize.DataTypes.STRING(100),
