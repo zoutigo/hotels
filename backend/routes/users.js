@@ -12,7 +12,7 @@ const {
 router.get('/', getUsers)
 
 /* POST users creating. */
-router.get('/', postUsers)
+router.post('/', postUsers)
 
 /* GET user. */
 router.get('/{uuid}', getUser)
