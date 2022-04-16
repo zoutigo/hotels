@@ -17,15 +17,16 @@ const StyledTextGrid = styled(Grid)(({ theme }) => ({
   },
 }))
 const StyledImageContainer = styled(Grid)(({ theme }) => ({
+  overflow: 'hidden',
   [theme.breakpoints.down('md')]: {
     display: 'none !important',
   },
   boxSizing: 'border-box',
   borderRadius: '9px',
 
-  '& >img': {
+  '& img': {
     width: '34vw',
-    height: '53vh',
+    height: '53vh !important',
     objectFit: 'cover',
     objectPosition: 'bottom left',
     borderRadius: '9px',

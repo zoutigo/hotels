@@ -1,5 +1,4 @@
 import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
@@ -34,9 +33,7 @@ function App() {
             <SnackbarProvider
               anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-              <Router>
-                <Home />
-              </Router>
+              <Home />
             </SnackbarProvider>
           </ThemeProvider>
         </AppStateProvider>

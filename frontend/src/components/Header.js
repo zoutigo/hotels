@@ -12,7 +12,7 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import { useTheme } from '@mui/styles'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import ButtonNavbar from './customs/ButtonNavBar'
 import StyledNavLink from './customs/StyledNavLink'
@@ -66,7 +66,7 @@ function Header() {
     setAnchorElUser(null)
   }
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const { palette } = useTheme()
   const classes = useStyles()
 
@@ -208,7 +208,7 @@ function Header() {
                       key={setting}
                       onClick={() => {
                         handleCloseUserMenu()
-                        history.push(setting.path)
+                        navigate(setting.path)
                       }}
                     >
                       {setting.path === '/mon-compte/loggout' ? (

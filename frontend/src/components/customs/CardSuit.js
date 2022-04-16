@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button, Grid, Tooltip, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
@@ -30,7 +30,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function CardSuit({ suit }) {
   const { pathname } = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const managerLocation = '/mon-compte/gestion-suite/list'
   const update = managerLocation === pathname
 
@@ -55,24 +55,18 @@ function CardSuit({ suit }) {
   )
 
   const handleUpdateSuit = useCallback(() => {
-    history.push({
-      pathname: '/mon-compte/gestion-suite/modification',
-      state: {
-        from: pathname,
-        suit,
-      },
+    navigate('/mon-compte/gestion-suite/modification', {
+      from: pathname,
+      suit,
     })
-  }, [pathname, history])
+  }, [pathname, navigate])
 
   const handleDeleteSuit = useCallback(() => {
-    history.push({
-      pathname: '/mon-compte/gestion-suite/suppression',
-      state: {
-        from: pathname,
-        suit,
-      },
+    navigate('/mon-compte/gestion-suite/suppression', {
+      from: pathname,
+      suit,
     })
-  }, [pathname, history])
+  }, [pathname, navigate])
 
   const handleDeleteImage = useCallback(() => {
     console.log('delete image')

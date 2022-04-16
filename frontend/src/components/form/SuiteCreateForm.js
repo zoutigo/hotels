@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { PropTypes } from 'prop-types'
 import { useTheme } from '@mui/styles'
 import { useLocation } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { useSnackbar } from 'notistack'
 import { ListItem, List, InputAdornment } from '@mui/material'
@@ -24,7 +24,7 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
 
   const classes = useStyles()
   const { palette } = useTheme()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { dispatch, state } = useAppContext()
   const { userInfo } = state
@@ -54,7 +54,7 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
     //       dispatch({ type: 'USER_LOGIN', payload: response.data })
     //       Cookies.set('userInfo', JSON.stringify(response.data))
     //       const { from } = location.state || { from: { pathname: '/' } }
-    //       history.replace(from)
+    //       navigate.replace(from)
     //     }
     //   })
     // } catch (err) {

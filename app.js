@@ -71,8 +71,12 @@ app.use('/api/login', loginRouter)
 
 app.use(handleErrors)
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'html', 'index.html'))
-})
+// app.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, '..', 'public', 'html', 'index.html'))
+// })
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'public', 'html', 'index.html'))
+// })
 
 module.exports = app

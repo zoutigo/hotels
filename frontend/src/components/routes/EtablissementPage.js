@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/styles'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Bread from '../customs/Bread'
 import CardSuit from '../customs/CardSuit'
 
@@ -11,7 +11,7 @@ import StyledSection from '../customs/StyledSection'
 function EtablissementPage() {
   const { palette } = useTheme()
 
-  const { location } = useHistory()
+  const { location } = useNavigate()
   const {
     state: { house },
   } = location

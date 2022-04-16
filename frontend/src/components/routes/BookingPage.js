@@ -14,7 +14,7 @@ import { useTheme } from '@mui/styles'
 import React, { useCallback, useEffect, useState } from 'react'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import Cookies from 'js-cookie'
 import StyledForm from '../customs/StyledForm'
@@ -56,7 +56,7 @@ function BookingPage() {
   const location = useLocation()
   const classes = useStyles()
   const { palette } = useTheme()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { dispatch, state } = useAppContext()
   const { userInfo } = state
@@ -91,7 +91,7 @@ function BookingPage() {
     // try {
     //   await mutateAsync(datas).then((response) => {
     //     if (response && response.status === 201) {
-    //       history.push('/login')
+    //       navigate.push('/login')
     //     }
     //   })
     // } catch (err) {
@@ -122,7 +122,7 @@ function BookingPage() {
 
   // useEffect(() => {
   //   if (!userInfo) {
-  //     history.push('/login')
+  //     navigate.push('/login')
   //   }
   // }, [])
 

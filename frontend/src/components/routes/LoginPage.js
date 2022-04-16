@@ -2,7 +2,7 @@ import { List, ListItem, Typography } from '@mui/material'
 import { useTheme } from '@mui/styles'
 import React, { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Cookies from 'js-cookie'
 import StyledForm from '../customs/StyledForm'
@@ -26,7 +26,7 @@ function LoginPage() {
   const location = useLocation()
   const classes = useStyles()
   const { palette } = useTheme()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { dispatch, state } = useAppContext()
   const { cart } = state
@@ -47,7 +47,7 @@ function LoginPage() {
           dispatch({ type: 'USER_LOGIN', payload: userInfo })
           Cookies.set('userInfo', JSON.stringify(userInfo))
           const { from } = location.state || { from: { pathname: '/' } }
-          history.replace(cart.cartItems.length > 0 ? '/reserver' : from)
+          navigate.replace(cart.cartItems.length > 0 ? '/reserver' : from)
         }
       })
     } catch (err) {
@@ -57,7 +57,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (isLogged) {
-      history.push('/')
+      navigate('/')
     }
   }, [])
 
