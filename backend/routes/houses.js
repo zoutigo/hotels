@@ -9,18 +9,18 @@ const {
 const { postHouse } = require('../controllers/suiteController')
 
 /* GET houses listing. */
-router.get('/', getHouseList)
+// router.get('/', getHouseList)
 
 /* POST houses creating. */
-router.post('/', postHouse)
+// router.post('/', postHouse)
 
 /* GET house */
-router.get('/{uuid}', getHouse)
+// router.get('/{uuid}', getHouse)
 
 /* PUT houses updating. */
-router.put('/{uuid}', putHouse)
+// router.put('/{uuid}', putHouse)
 
 /* PUT houses updating. */
-router.delete('/houses/{id}', deleteHouse)
+// router.delete('/houses/{id}', deleteHouse)
 
 module.exports = router

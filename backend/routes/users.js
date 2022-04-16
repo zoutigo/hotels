@@ -7,6 +7,7 @@ const {
   deleteUsers,
   getUser,
 } = require('../controllers/userController')
+const verifyTokenService = require('../services/usersServices/verifyTokenService')
 
 /* GET users listing. */
 router.get('/', getUsers)
@@ -15,12 +16,12 @@ router.get('/', getUsers)
 router.post('/', postUsers)
 
 /* GET user. */
-router.get('/{uuid}', getUser)
+router.get('/:uuid', verifyTokenService, getUser)
 
 /* PUT users updating. */
-router.put('/{uuid}', putUsers)
+router.put('/:uuid', verifyTokenService, putUsers)
 
 /* PUT users updating. */
-router.delete('/{uuid}', deleteUsers)
+router.delete('/uuid', verifyTokenService, deleteUsers)
 
 module.exports = router
