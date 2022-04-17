@@ -10,7 +10,6 @@ const listHouseService = async () => {
       }
     return { houses }
   } catch (error) {
-    console.log('error:', error)
     return { errors: getValidationErrorsArray(error) }
   }
 }

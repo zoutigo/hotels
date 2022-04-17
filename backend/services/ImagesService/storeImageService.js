@@ -5,9 +5,6 @@ const deleteFileStorage = require('./deleteImageStorage')
 
 const storeImageService = async (file) => {
   try {
-    // path.join(__dirname, '..', '/files'
-    // const directory = path.join('.', albumFolder, album.alias, '/')
-    // const directory = path.join('.', '/images', '/')
     const directory = path.join('.', 'public/images', '/')
     const timestamp = new Date().toISOString()
 

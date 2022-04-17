@@ -1,4 +1,5 @@
 const createHouseService = require('../services/houseServices/createHouseService')
+const deleteHouseService = require('../services/houseServices/deleteHouseService')
 const getHouseService = require('../services/houseServices/getHouseservice')
 const listHouseService = require('../services/houseServices/listHousesService')
 const updateHouseService = require('../services/houseServices/updateHouseService')
@@ -122,7 +123,7 @@ module.exports.deleteHouse = async (req, res, next) => {
   if (!isAllowed)
     return next(new Forbidden('vous ne pouvez pas modifier cette information'))
 
-  const { destroyed, error } = await deleteUserService(houseUuid, req.body)
+  const { destroyed, error } = await deleteHouseService(houseUuid, req.body)
 
   if (error) return next(new BadRequest(error))
 

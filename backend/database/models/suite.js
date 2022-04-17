@@ -60,15 +60,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT(2),
         allowNull: false,
         validate: {
+          notNull: {
+            msg: 'Le prix de la suite est obligatoire',
+          },
           isFloat: {
             msg: 'le prix est un nombre décimal',
           },
           max: {
-            value: 10000,
+            args: 10000,
             msg: 'le prix ne doit pas etre supérieur à 10000€',
           },
           min: {
-            value: 10,
+            args: 10,
             msg: 'le prix ne doit pas etre inférieur à 10€',
           },
         },
@@ -78,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'la bannière doit est obligatoire url',
+            msg: 'la bannière est obligatoire',
           },
         },
       },
@@ -86,6 +89,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
+          notNull: {
+            msg: 'le lien booking est obligatoire',
+          },
           isUrl: {
             msg: 'le lien booking.com doit etre de format url',
           },

@@ -27,6 +27,7 @@ const verifyTokenService = async (req, res, next) => {
       return next(new BadRequest("Cet utilisateur n'existe plus"))
 
     req.user = verifiedUser
+
     next()
   } catch (err) {
     console.log(err)

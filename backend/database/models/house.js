@@ -97,14 +97,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'lla bannières est obligatoire',
+            msg: 'la bannière est obligatoire',
           },
         },
       },
     },
     {
       sequelize,
-      modelName: 'House',
+      modelName: 'house',
       tableName: 'houses',
     }
   )

@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const multer = require('multer')
 
 const {
   getSuiteList,
@@ -7,20 +8,27 @@ const {
   putSuite,
   deleteSuite,
 } = require('../controllers/suiteController')
+const verifyTokenService = require('../services/usersServices/verifyTokenService')
+
+const storage = multer.memoryStorage()
+
+const uploadImages = multer({
+  storage: storage,
+})
 
 /* GET suites listing. */
 router.get('/', getSuiteList)
 
 /* POST suites creating. */
-router.get('/', postSuite)
+router.post('/', verifyTokenService, uploadImages.array('files', 20), postSuite)
 
 /* GET suite. */
-router.get('/{uuid}', getSuite)
+router.get('/:suiteUuid', getSuite)
 
 /* PUT suites updating. */
-router.put('/{uuid}', putSuite)
+router.put('/:suiteUuid', verifyTokenService, putSuite)
 
 /* PUT suites updating. */
-router.delete('/{uuid}', deleteSuite)
+router.delete('/:suiteUuid', verifyTokenService, deleteSuite)
 
 module.exports = router

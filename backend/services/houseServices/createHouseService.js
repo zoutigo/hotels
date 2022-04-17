@@ -6,9 +6,9 @@ const createHouseService = async (house) => {
     const newHouse = await House.create(house)
     if (!newHouse)
       return {
-        serverError: 'un problème est survenu lors de la création utilisateur',
+        serverError: 'un problème est survenu lors de la création de la suite',
       }
-    console.log('new house:', newHouse)
+
     return { newHouse }
   } catch (error) {
     return { errors: getValidationErrorsArray(error) }
