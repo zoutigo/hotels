@@ -1,5 +1,6 @@
 'use strict'
 const { Model, Sequelize } = require('sequelize')
+const { urlPattern } = require('../../constants/regex')
 module.exports = (sequelize, DataTypes) => {
   class House extends Model {
     /**
@@ -95,8 +96,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
-          isUrl: {
-            msg: 'la bannière est de format url',
+          notNull: {
+            msg: 'lla bannières est obligatoire',
           },
         },
       },

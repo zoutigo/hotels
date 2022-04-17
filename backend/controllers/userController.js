@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const { uuidRegexExp } = require('../constants/regex')
-const { User } = require('../database/models')
+const { user } = require('../database/models')
 const authenticate = require('../services/usersServices/authenticate')
 const createUserService = require('../services/usersServices/createUserService')
 const deleteUserService = require('../services/usersServices/deleteUserService')
@@ -11,7 +11,7 @@ const { BadRequest, Forbidden, Unauthorized } = require('../utils/errors')
 module.exports.login = authenticate
 
 module.exports.getUsers = async (req, res, next) => {
-  const users = await User.findAll()
+  const users = await user.findAll()
 
   if (!users) {
     return BadRequest('no users')
@@ -50,7 +50,7 @@ module.exports.postUsers = async (req, res, next) => {
 
   // email token
 
-  const user = {
+  const toCreateUser = {
     email,
     password: hashedPassword,
     lastname,
@@ -58,7 +58,7 @@ module.exports.postUsers = async (req, res, next) => {
     roles,
   }
 
-  const { errors, serverError, newUser } = await createUserService(user)
+  const { errors, serverError, newUser } = await createUserService(toCreateUser)
   if (errors && errors.length > 0) return next(new BadRequest(errors.join()))
   if (serverError) return next(serverError)
 

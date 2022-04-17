@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken')
 
 const { Unauthorized, BadRequest, TokenInvalid } = require('../../utils/errors')
-const { User } = require('../../database/models')
+const { user } = require('../../database/models')
 const { userInclude } = require('../../constants/includes')
 
 const verifyTokenService = async (req, res, next) => {
@@ -22,10 +22,11 @@ const verifyTokenService = async (req, res, next) => {
     if (!verified) return next(new BadRequest('Invalid Token'))
     const { uuid } = verified
 
-    const user = await User.findOne({ where: { uuid } })
-    if (!user) return next(new BadRequest("Cet utilisateur n'existe plus"))
+    const verifiedUser = await user.findOne({ where: { uuid } })
+    if (!verifiedUser)
+      return next(new BadRequest("Cet utilisateur n'existe plus"))
 
-    req.user = user
+    req.user = verifiedUser
     next()
   } catch (err) {
     console.log(err)

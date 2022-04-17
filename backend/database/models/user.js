@@ -7,12 +7,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User, House, Booking }) {
+    static associate({ House, Booking }) {
       House.belongsTo(this, {
         onUpdate: 'SET NULL',
         onUpdate: 'CASCADE',
       })
-      this.hasOne(House)
+      this.hasOne(House, {
+        foreignKey: 'userId',
+      })
 
       this.hasMany(Booking, {
         foreignKey: 'userId',
@@ -25,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     toJSON() {
       return { ...this.get(), id: undefined }
     }
+
+    // async hashPass(value) {
+    //   return await hashPassword(value)
+    // }
   }
   User.init(
     {
@@ -70,6 +76,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING(64),
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: 'le mot de pass est obligatoire',
+          },
+        },
       },
       roles: {
         type: DataTypes.ARRAY(
@@ -79,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'user',
       tableName: 'users',
     }
   )

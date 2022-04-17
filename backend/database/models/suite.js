@@ -77,8 +77,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
-          isUrl: {
-            msg: 'la bannière doit etre de format url',
+          notNull: {
+            msg: 'la bannière doit est obligatoire url',
           },
         },
       },

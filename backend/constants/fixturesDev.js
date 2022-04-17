@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker')
+const { default: hashPassword } = require('../utils/hashPassword')
 const slugify = require('../utils/slugify')
 const mailTopics = require('./mailTopics')
 

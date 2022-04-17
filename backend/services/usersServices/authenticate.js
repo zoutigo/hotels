@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const { BadRequest } = require('../../utils/errors')
-const { User } = require('../../database/models')
+const { user } = require('../../database/models')
 const generateToken = require('../../utils/generateToken')
 const { userInclude } = require('../../constants/includes')
 
@@ -10,7 +10,7 @@ const authenticate = async (req, res, next) => {
     return next(new BadRequest('password or email missing'))
   }
 
-  const userVerified = await User.findOne({
+  const userVerified = await user.findOne({
     where: { email },
     // include: userInclude,
   })
