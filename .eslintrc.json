@@ -21,7 +21,7 @@
 //     }
 // }
 {
-    "extends": ["airbnb", "prettier"],
+    "extends": ["airbnb", "prettier","react/recommended"],
     "plugins": ["prettier","react"],
     "globals": {
       "fetch": false,
@@ -38,7 +38,8 @@
       "react/jsx-filename-extension": "off",
       "react/jsx-props-no-spreading": "off",
       "object-shorthand": "off",
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "no-undef":"error"
     },
     "env": {
       "browser": true,
