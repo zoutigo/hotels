@@ -7,6 +7,7 @@ const {
   getSuite,
   putSuite,
   deleteSuite,
+  deleteImage,
 } = require('../controllers/suiteController')
 const verifyTokenService = require('../services/usersServices/verifyTokenService')
 
@@ -30,5 +31,8 @@ router.put('/:suiteUuid', verifyTokenService, putSuite)
 
 /* PUT suites updating. */
 router.delete('/:suiteUuid', verifyTokenService, deleteSuite)
+
+/* PUT suites updating. */
+router.delete('/:suiteUuid/:imageUuid', verifyTokenService, deleteImage)
 
 module.exports = router

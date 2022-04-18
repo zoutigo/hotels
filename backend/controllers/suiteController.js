@@ -1,5 +1,6 @@
 const storeImageService = require('../services/ImagesService/storeImageService')
 const CreateSuiteService = require('../services/suiteService/createSuiteService')
+const deleteSuiteImageService = require('../services/suiteService/deleteSuiteImageService')
 const deleteSuiteService = require('../services/suiteService/deleteSuiteService')
 const getSuiteService = require('../services/suiteService/getSuiteService')
 const listSuiteService = require('../services/suiteService/listSuiteService')
@@ -138,8 +139,8 @@ module.exports.deleteSuite = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
+  if (!req.params || !req.params.suiteUuid)
+    return next(new BadRequest("veillez indiquer l'image à supprimer'"))
 
   const { suiteUuid } = req.params
 
@@ -163,5 +164,36 @@ module.exports.deleteSuite = async (req, res, next) => {
 
   return res.status(200).send({
     message: "L'établissement a été supprimé",
+  })
+}
+module.exports.deleteImage = async (req, res, next) => {
+  if (!req.params || !req.params.imageUuid || !req.params.imageUuid)
+    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
+
+  const { imageUuid, suiteUuid } = req.params
+
+  const { roles, uuid: userUuid } = req.user
+
+  const { userIsHouseManager } = await isSuiteManagerService(
+    suiteUuid,
+    userUuid
+  )
+
+  const isAllowedRole = roles.includes('admin')
+
+  const isAllowed = isAllowedRole || userIsHouseManager
+
+  if (!isAllowed)
+    return next(new Forbidden('vous ne pouvez pas modifier cette information'))
+
+  const { destroyed, error } = await deleteSuiteImageService(
+    suiteUuid,
+    imageUuid
+  )
+
+  if (error) return next(new BadRequest(error))
+
+  return res.status(200).send({
+    message: "l'image a bien été supprimée",
   })
 }
