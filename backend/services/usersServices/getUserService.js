@@ -1,13 +1,13 @@
-const { User } = require('../../database/models')
+const { user } = require('../../database/models')
 
 const getUserService = async (uuid) => {
   try {
-    const user = await User.findOne({ where: { uuid } })
-    if (!user)
+    const requestedUser = await user.findOne({ where: { uuid } })
+    if (!requestedUser)
       return {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
-    return { user }
+    return { user: requestedUser }
   } catch (error) {
     return { error }
   }

@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Image',
+      modelName: 'image',
       tableName: 'images',
     }
   )

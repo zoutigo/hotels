@@ -1,15 +1,19 @@
-const { Suite, house } = require('../../database/models')
+const { suite, house } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
-const CreateSuiteService = async (suite) => {
-  const { images, houseUuid, ...rest } = suite
+const CreateSuiteService = async (data) => {
+  const { images, houseUuid, ...rest } = data
   console.log('rest:', rest)
   const createdAt = new Date()
   try {
     const requestedHouse = await house.findOne({ where: { uuid: houseUuid } })
+    if (!requestedHouse) {
+      return { error: "l'établissement n'existe pas" }
+    }
+
     await requestedHouse.createSuite({ ...rest, createdAt })
 
-    const createdSuite = await Suite.findOne({ where: { createdAt } })
+    const createdSuite = await suite.findOne({ where: { createdAt } })
 
     const filenames = await Promise.all(
       images.map(async (image) => {

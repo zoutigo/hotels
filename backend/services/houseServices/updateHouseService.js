@@ -1,11 +1,11 @@
-const { House, user } = require('../../database/models')
+const { house, user } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
 const updateHouseService = async (uuid, datas) => {
   try {
     const { managerUuid, ...rest } = datas
 
-    const toUpdateHouse = await House.update(
+    const toUpdateHouse = await house.update(
       { ...rest },
       { where: { uuid }, returning: true }
     )
@@ -14,7 +14,7 @@ const updateHouseService = async (uuid, datas) => {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
 
-    const updatedHouse = await House.findOne({ where: { uuid } })
+    const updatedHouse = await house.findOne({ where: { uuid } })
     const manager = await user.findOne({ where: { uuid: managerUuid } })
     await manager.setHouse(updatedHouse)
 

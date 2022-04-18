@@ -1,17 +1,17 @@
-const { house } = require('../../database/models')
+const { booking } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
-const listHouseService = async () => {
+const listBookingService = async () => {
   try {
-    const houses = await house.findAll()
-    if (!houses)
+    const bookings = await booking.findAll()
+    if (!bookings)
       return {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
-    return { houses }
+    return { bookings }
   } catch (error) {
     return { errors: getValidationErrorsArray(error) }
   }
 }
 
-module.exports = listHouseService
+module.exports = listBookingService

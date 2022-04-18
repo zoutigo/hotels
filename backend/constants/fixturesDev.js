@@ -97,8 +97,8 @@ for (let m = 0; m < 20; m++) {
 const devBookings = []
 for (let n = 0; n < 10; n++) {
   const booking = {
-    startdate: faker.date.recent(),
-    enddate: faker.date.future(),
+    startdate: faker.date.recent().getTime(),
+    enddate: faker.date.future().getTime(),
     price: faker.commerce.price(10, 10000, 2),
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,9 +1,9 @@
-const { Suite, user } = require('../../database/models')
+const { suite, user } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
 const updateSuiteService = async (uuid, datas) => {
   try {
-    const toUpdateSuite = await Suite.update(datas, {
+    const toUpdateSuite = await suite.update(datas, {
       where: { uuid },
       returning: true,
     })
@@ -13,7 +13,7 @@ const updateSuiteService = async (uuid, datas) => {
           'un problème est survenu lors de la modification de la suite',
       }
 
-    const updatedSuite = await Suite.findOne({ where: { uuid } })
+    const updatedSuite = await suite.findOne({ where: { uuid } })
 
     return { updatedSuite }
   } catch (error) {

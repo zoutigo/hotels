@@ -1,8 +1,8 @@
-const { House } = require('../../database/models')
+const { house } = require('../../database/models')
 
 const deleteHouseService = async (uuid) => {
   try {
-    await House.destroy({ where: { uuid } })
+    await house.destroy({ where: { uuid } })
 
     return { destroyed: true }
   } catch (error) {

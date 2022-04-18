@@ -1,8 +1,8 @@
-const { Suite } = require('../../database/models')
+const { suite } = require('../../database/models')
 
 const deleteSuiteService = async (uuid) => {
   try {
-    await Suite.destroy({ where: { uuid } })
+    await suite.destroy({ where: { uuid } })
 
     return { destroyed: true }
   } catch (error) {

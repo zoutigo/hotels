@@ -1,9 +1,9 @@
-const { User } = require('../../database/models')
+const { user } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
 const updateUserService = async (uuid, datas) => {
   try {
-    const newUser = await User.update(
+    const newUser = await user.update(
       { ...datas },
       { where: { uuid }, returning: true }
     )

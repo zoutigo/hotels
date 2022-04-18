@@ -1,9 +1,9 @@
-const { house, Suite } = require('../../database/models')
+const { house, suite } = require('../../database/models')
 
 const isSuiteManagerService = async (suiteUuid, userUuid) => {
   try {
     let isHouseManager = false
-    const checkedSuite = await Suite.findOne({ where: { uuid: suiteUuid } })
+    const checkedSuite = await suite.findOne({ where: { uuid: suiteUuid } })
     const checkedHouse = await checkedSuite.getHouse()
     const manager = await checkedHouse.getUser()
 

@@ -7,21 +7,21 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Booking, Image }) {
+    static associate({ booking, image }) {
       // define association here
-      this.hasMany(Booking, {
+      this.hasMany(booking, {
         foreignKey: 'suiteId',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       })
-      Booking.belongsTo(this)
+      booking.belongsTo(this)
 
-      this.hasMany(Image, {
+      this.hasMany(image, {
         foreignKey: 'suiteId',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       })
-      Booking.belongsTo(this)
+      booking.belongsTo(this)
     }
   }
   Suite.init(
@@ -100,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Suite',
+      modelName: 'suite',
       tableName: 'suites',
     }
   )

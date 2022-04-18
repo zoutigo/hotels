@@ -12,22 +12,34 @@ module.exports = {
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
       },
       startdate: {
-        type: Sequelize.DataTypes.DATE,
+        type: Sequelize.DataTypes.BIGINT(13),
         allowNull: false,
         validate: {
-          isAfter: {
-            args: [[new Date()]],
-            msg: 'uen réservation ne se fait pas dans le passé',
+          notNul: {
+            msg: 'la date de début ne doit pas etre nulle',
+          },
+          isGreaterThanToday(value) {
+            if (value >= new Date().getTime()) {
+              throw new Error(
+                'La date de fin doit etre supérieure ou égale à today.'
+              )
+            }
           },
         },
       },
       enddate: {
-        type: Sequelize.DataTypes.DATE,
+        type: Sequelize.DataTypes.BIGINT(13),
         allowNull: false,
         validate: {
-          isAfter: {
-            args: [[new Date()]],
-            msg: 'uen réservation ne se fait pas dans le passé',
+          notNul: {
+            msg: 'la date de fin ne doit pas etre nulle',
+          },
+          isGreaterThanToday(value) {
+            if (value >= new Date().getTime()) {
+              throw new Error(
+                'La date de fin doit etre supérieure ou égale à today.'
+              )
+            }
           },
           isGreaterThanStartdate(value) {
             if (value <= this.starddate) {

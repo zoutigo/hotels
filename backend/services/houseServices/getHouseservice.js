@@ -1,8 +1,8 @@
-const { House } = require('../../database/models')
+const { house } = require('../../database/models')
 
 const getHouseService = async (uuid) => {
   try {
-    const requestedHouse = await House.findOne({ where: { uuid } })
+    const requestedHouse = await house.findOne({ where: { uuid } })
     if (!requestedHouse)
       return {
         serverError: 'un problème est survenu lors de la création utilisateur',

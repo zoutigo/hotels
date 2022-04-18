@@ -26,6 +26,9 @@ class GeneralError extends Error {
     if (this instanceof PreConditionFailed) {
       return 412
     }
+    if (this instanceof Conflit) {
+      return 409
+    }
 
     return 500
   }
@@ -37,6 +40,7 @@ class Unauthorized extends GeneralError {}
 class Forbidden extends GeneralError {}
 class TokenInvalid extends GeneralError {}
 class PreConditionFailed extends GeneralError {}
+class Conflit extends GeneralError {}
 
 module.exports = {
   GeneralError,
@@ -46,4 +50,5 @@ module.exports = {
   Forbidden,
   TokenInvalid,
   PreConditionFailed,
+  Conflit,
 }

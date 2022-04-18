@@ -62,7 +62,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/api/users', usersRouter)
 app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
-// app.use('/api/bookings', bookingsRouter)
+app.use('/api/bookings', bookingsRouter)
 // app.use('/api/mails', mailsRouter)
 app.use('/api/login', loginRouter)
 
