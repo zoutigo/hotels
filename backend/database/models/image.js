@@ -34,15 +34,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
-          isUrl: {
-            msg: 'le file path est de format url',
+          notNull: {
+            msg: "le chemin de l'image est obligatoire",
           },
         },
       },
     },
     {
       sequelize,
-      modelName: 'Image',
+      modelName: 'image',
       tableName: 'images',
     }
   )

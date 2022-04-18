@@ -7,20 +7,21 @@ const {
   deleteBooking,
   getBooking,
 } = require('../controllers/bookingController')
+const verifyTokenService = require('../services/usersServices/verifyTokenService')
 
 /* GET bookings listing. */
 router.get('/', getBookingList)
 
 /* POST bookings creating. */
-router.post('/', postBooking)
+router.post('/', verifyTokenService, postBooking)
 
 /* GET bookings creating. */
-router.get('/{uuid}', getBooking)
+router.get('/:bookingUuid', verifyTokenService, getBooking)
 
 /* PUT bookings updating. */
-router.put('/{uuid}', putBooking)
+router.put('/:bookingUuid', verifyTokenService, putBooking)
 
 /* PUT bookings updating. */
-router.delete('/{uuid}', deleteBooking)
+router.delete('/:bookingUuid', verifyTokenService, deleteBooking)
 
 module.exports = router

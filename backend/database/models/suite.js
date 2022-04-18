@@ -7,21 +7,21 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Booking, Image }) {
+    static associate({ booking, image }) {
       // define association here
-      this.hasMany(Booking, {
+      this.hasMany(booking, {
         foreignKey: 'suiteId',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       })
-      Booking.belongsTo(this)
+      booking.belongsTo(this)
 
-      this.hasMany(Image, {
+      this.hasMany(image, {
         foreignKey: 'suiteId',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       })
-      Booking.belongsTo(this)
+      booking.belongsTo(this)
     }
   }
   Suite.init(
@@ -60,15 +60,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT(2),
         allowNull: false,
         validate: {
+          notNull: {
+            msg: 'Le prix de la suite est obligatoire',
+          },
           isFloat: {
             msg: 'le prix est un nombre décimal',
           },
           max: {
-            value: 10000,
+            args: 10000,
             msg: 'le prix ne doit pas etre supérieur à 10000€',
           },
           min: {
-            value: 10,
+            args: 10,
             msg: 'le prix ne doit pas etre inférieur à 10€',
           },
         },
@@ -77,8 +80,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
-          isUrl: {
-            msg: 'la bannière doit etre de format url',
+          notNull: {
+            msg: 'la bannière est obligatoire',
           },
         },
       },
@@ -86,6 +89,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
+          notNull: {
+            msg: 'le lien booking est obligatoire',
+          },
           isUrl: {
             msg: 'le lien booking.com doit etre de format url',
           },
@@ -94,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Suite',
+      modelName: 'suite',
       tableName: 'suites',
     }
   )

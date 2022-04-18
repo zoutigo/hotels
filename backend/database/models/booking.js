@@ -17,23 +17,28 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      starddate: {
-        type: DataTypes.DATE,
+      startdate: {
+        type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          isAfter: {
-            args: [[new Date()]],
-            msg: 'uen réservation ne se fait pas dans le passé',
+          notNull: {
+            msg: 'la date de début ne doit pas etre nulle',
+          },
+          isGreaterThanToday(value) {
+            if (value <= new Date().getTime()) {
+              throw new Error(
+                'La date de fin doit etre supérieure ou égale à today.'
+              )
+            }
           },
         },
       },
-      endate: {
-        type: DataTypes.DATE,
+      enddate: {
+        type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          isAfter: {
-            args: [[new Date()]],
-            msg: 'uen réservation ne se fait pas dans le passé',
+          notNull: {
+            msg: 'la date de fin ne doit pas etre nulle',
           },
           isGreaterThanStartdate(value) {
             if (value <= this.starddate) {
@@ -48,15 +53,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT(2),
         allowNull: false,
         validate: {
-          isFloat: {
+          isDecimal: {
             msg: 'le prix est un nombre décimal',
           },
           max: {
-            value: 10000000,
+            args: 10000000,
             msg: 'le prix ne doit pas etre supérieur à 1000000€',
           },
           min: {
-            value: 10,
+            args: 10,
             msg: 'le prix ne doit pas etre inférieur à 10€',
           },
         },
@@ -64,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Booking',
+      modelName: 'booking',
       tableName: 'bookings',
     }
   )

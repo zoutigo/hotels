@@ -1,5 +1,6 @@
 'use strict'
 const { Model, Sequelize } = require('sequelize')
+const { urlPattern } = require('../../constants/regex')
 module.exports = (sequelize, DataTypes) => {
   class House extends Model {
     /**
@@ -7,18 +8,18 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Suite }) {
+    static associate({ suite }) {
       // define association here
-      this.hasMany(Suite, {
+      this.hasMany(suite, {
         foreignKey: 'houseId',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       })
-      Suite.belongsTo(this)
+      suite.belongsTo(this)
     }
-    toJSON() {
-      return { ...this.get(), id: undefined }
-    }
+    // toJSON() {
+    //   return { ...this.get(), id: undefined }
+    // }
   }
   House.init(
     {
@@ -95,15 +96,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: false,
         validate: {
-          isUrl: {
-            msg: 'la bannière est de format url',
+          notNull: {
+            msg: 'la bannière est obligatoire',
           },
         },
       },
     },
     {
       sequelize,
-      modelName: 'House',
+      modelName: 'house',
       tableName: 'houses',
     }
   )
