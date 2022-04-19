@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { List, ListItem, Typography } from '@mui/material'
+import { List, ListItem } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React, { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
@@ -27,7 +27,7 @@ function RegisterPage() {
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { dispatch, state } = useAppContext()
-  const { userInfo, cart } = state
+  const { cart } = state
   const isLogged = useIslogged()
 
   const queryKey = ['register']
@@ -39,15 +39,20 @@ function RegisterPage() {
     control,
     handleSubmit,
     getValues,
-    setValue,
     formState: { isSubmitting },
   } = useForm({
     mode: 'onChange',
   })
 
   const onSubmit = async (datas) => {
-    const { email, password, lastname, firstname } = datas
-    const registerDatas = { email, password, lastname, firstname }
+    const { email, password, lastname, firstname, passwordConfirm } = datas
+    const registerDatas = {
+      email,
+      password,
+      lastname,
+      firstname,
+      passwordConfirm,
+    }
     const loginDatas = { username: email, password }
     closeSnackbar()
     try {
@@ -62,9 +67,9 @@ function RegisterPage() {
               history.push(
                 cart.cartItems.length > 0
                   ? '/reservation'
-                  : from === '/login'
-                  ? '/reservation'
-                  : from
+                  : from !== '/login'
+                  ? from
+                  : '/liste-des-etablissements'
               )
             }
           })

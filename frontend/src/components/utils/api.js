@@ -20,10 +20,11 @@ export const apiLogin = async (datas) => {
   return response
 }
 export const apiRegister = async (datas) => {
-  const URL = `/api/users`
+  const registerURL = `${PREFIX}/api/users`
+  console.log('url', registerURL)
   const response = await axios({
     method: 'post',
-    url: URL,
+    url: registerURL,
     data: datas,
     headers: { ...commonHeaders },
   })
