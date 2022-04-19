@@ -52,6 +52,10 @@ c'est la base de donnée indiquée dans les variables d'environnement qui est cr
 
   La console vous indique le port sur lequel vous pouvez vous connecter sur le site : localhost:3500
 
-## environnement backend
+## environnement Frontend
 
--
+- naviguer sur dans le dossier frontend
+  `cd ./fronted `
+
+-installer les dépendences
+`npm install`

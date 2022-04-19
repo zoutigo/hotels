@@ -127,8 +127,8 @@ function BookingPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="reservation" />
-        <PageTitle>Reservez votre suite</PageTitle>
+        <Bread />
+        <PageTitle />
 
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <List className="formList">

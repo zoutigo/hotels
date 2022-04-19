@@ -17,6 +17,7 @@ import AccountAdminHouseCreate from '../routes/AccountAdminHouseCreate'
 import AccountAdminHouseUpdate from '../routes/AccountAdminHouseUpdate'
 import AccountAdminHouseDelete from '../routes/AccountAdminHouseDelete'
 import AccountGestionSuiteDelete from '../routes/AccountGestionSuiteDelete'
+import AccountUserinfosList from '../routes/AccountUserInfosList'
 
 const pages = [
   {
@@ -57,9 +58,15 @@ const pages = [
   },
   {
     name: 'Mes informations',
-    path: '/mon-compte/mes-informations',
+    path: '/mon-compte/mes-informations-liste',
     access: 'user',
-    component: AccountPage,
+    component: AccountUserinfosList,
+  },
+  {
+    name: 'Modifier mes informations',
+    path: '/mon-compte/mes-informations-mofifier',
+    access: 'user',
+    component: AccountUserinfosList,
   },
   {
     name: 'Mes reservations',

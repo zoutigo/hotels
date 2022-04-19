@@ -20,8 +20,8 @@ function AccountGestionSuiteUpdate() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="modifier une suite" />
-        <PageTitle>Modifier une suite</PageTitle>
+        <Bread />
+        <PageTitle />
         <SuiteCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

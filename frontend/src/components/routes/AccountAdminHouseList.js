@@ -13,8 +13,8 @@ function AccountAdminHouseList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="admin - liste des établissements" />
-        <PageTitle>AccountAdminHouseCreate vous</PageTitle>
+        <Bread />
+        <PageTitle />
         <Grid item container spacing={2}>
           {houses.map((house) => (
             <CardSmallHouse key={house.id} house={house} />

@@ -13,19 +13,12 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import ButtonNavbar from './customs/ButtonNavBar'
 import StyledNavLink from './customs/StyledNavLink'
 import pages from './constants/pages'
 import useIslogged from './hook/useIsLogged'
-
-const styles = (theme) => ({
-  noclicksetting: {
-    pointerEvents: 'none !important',
-    background: `${theme.palette.secondary.main} !important`,
-  },
-})
 
 const routesExclusions = [
   '/liste-des-etablissements/slug',
@@ -73,6 +66,7 @@ function Header() {
     setAnchorElUser(null)
   }
 
+  const { pathname } = useLocation()
   const history = useHistory()
   const { palette } = useTheme()
 
@@ -126,7 +120,15 @@ function Header() {
               >
                 {routes.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <StyledNavLink to={page.path}>
+                    <StyledNavLink
+                      to={{
+                        pathname: page.path,
+                        state: {
+                          pagename: page.name,
+                          from: pathname,
+                        },
+                      }}
+                    >
                       <Typography textAlign="center">{page.name}</Typography>
                     </StyledNavLink>
                   </MenuItem>
@@ -154,7 +156,16 @@ function Header() {
               }}
             >
               {routes.map((page) => (
-                <StyledNavLink key={page.path} to={page.path}>
+                <StyledNavLink
+                  key={page.path}
+                  to={{
+                    pathname: page.path,
+                    state: {
+                      pagename: page.name,
+                      from: pathname,
+                    },
+                  }}
+                >
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{
@@ -214,13 +225,23 @@ function Header() {
                       key={setting}
                       onClick={() => {
                         handleCloseUserMenu()
-                        history.push(setting.path)
+                        history.push({
+                          pathname: setting.path,
+                          state: {
+                            pagename: setting.name,
+                            from: pathname,
+                          },
+                        })
                       }}
                     >
                       {setting.path === '/mon-compte/loggout' ? (
                         <StyledNavLink
                           to={{
                             pathname: setting.path,
+                            state: {
+                              pagename: setting.name,
+                              from: pathname,
+                            },
                           }}
                         >
                           <ButtonNavbar>{setting.name}</ButtonNavbar>

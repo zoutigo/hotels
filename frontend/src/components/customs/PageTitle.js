@@ -1,17 +1,15 @@
 import { Container, Typography } from '@mui/material'
 import React from 'react'
-import PropTypes from 'prop-types'
+import { useLocation } from 'react-router-dom'
 
-function PageTitle({ children }) {
+function PageTitle() {
+  const { state } = useLocation()
+  const { pagename } = state
   return (
     <Container className="hideUpMd">
-      <Typography variant="h1">{children}</Typography>
+      <Typography variant="h1">{pagename || ''}</Typography>
     </Container>
   )
-}
-
-PageTitle.propTypes = {
-  children: PropTypes.string.isRequired,
 }
 
 export default PageTitle

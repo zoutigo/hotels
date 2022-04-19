@@ -4,6 +4,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import Bread from '../customs/Bread'
 import CardSuit from '../customs/CardSuit'
+import PageTitle from '../customs/PageTitle'
 
 import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
@@ -21,7 +22,8 @@ function EtablissementPage() {
     <StyledPage>
       <StyledSection background={palette.white.main}>
         <Grid item container>
-          <Bread title="Etabissement hotel" />
+          <Bread />
+          <PageTitle />
         </Grid>
         <Grid item container>
           <Typography variant="h1">{name}</Typography>

@@ -4,6 +4,7 @@ import React from 'react'
 import houses from '../constants/houses'
 import Bread from '../customs/Bread'
 import CardSmallHouse from '../customs/CardSmallHouse'
+import PageTitle from '../customs/PageTitle'
 import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
 import EtablissementsListForm from '../elements/EtablissementsListForm'
@@ -13,7 +14,8 @@ function EtablissementListPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="etablissements" />
+        <Bread />
+        <PageTitle />
         <Grid item container>
           <EtablissementsListForm />
         </Grid>
