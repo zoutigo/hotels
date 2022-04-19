@@ -20,8 +20,8 @@ function ContactPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="Nous contacter" />
-        <PageTitle>Nous contacter</PageTitle>
+        <Bread />
+        <PageTitle />
         <ContactForm {...formOptions} />
       </StyledSection>
     </StyledPage>

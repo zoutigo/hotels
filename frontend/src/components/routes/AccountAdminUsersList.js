@@ -10,8 +10,8 @@ function AccountAdminUsersList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="login" />
-        <PageTitle>AccountAdminHouseCreate vous</PageTitle>
+        <Bread />
+        <PageTitle />
       </StyledSection>
       List
     </StyledPage>

@@ -20,8 +20,8 @@ function AccountAdminHouseUpdate() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="Modifier un établissement" />
-        <PageTitle>Modifier un établissement</PageTitle>
+        <Bread />
+        <PageTitle />
         <HouseCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

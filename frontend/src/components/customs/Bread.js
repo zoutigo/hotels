@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useLocation } from 'react-router-dom'
 
 const StyledTypo = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondarytext.main,
@@ -18,17 +18,16 @@ const StyledGrid = styled(Grid)(() => ({
   },
 }))
 
-function Bread({ title }) {
+function Bread() {
+  const { state } = useLocation()
+
+  const { pagename } = state
   return (
     <StyledGrid container className="hideDownMd">
       <span>&nbsp;</span>
-      <StyledTypo variant="body1">{title}</StyledTypo>
+      <StyledTypo variant="body1">{pagename}</StyledTypo>
     </StyledGrid>
   )
-}
-
-Bread.propTypes = {
-  title: PropTypes.string.isRequired,
 }
 
 export default Bread

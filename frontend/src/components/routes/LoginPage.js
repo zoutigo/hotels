@@ -62,8 +62,8 @@ function LoginPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="login" />
-        <PageTitle>Connectez vous</PageTitle>
+        <Bread />
+        <PageTitle />
 
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <List className="formList">

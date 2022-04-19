@@ -16,8 +16,8 @@ function AccountGestionSuiteList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread title="gestion-liste des suites" />
-        <PageTitle>liste des suites</PageTitle>
+        <Bread />
+        <PageTitle />
         <Grid item container>
           {suits.map((suit) => (
             <CardSuit key={suit.id} suit={suit} />
