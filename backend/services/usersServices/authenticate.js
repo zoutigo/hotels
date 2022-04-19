@@ -24,18 +24,18 @@ const authenticate = async (req, res, next) => {
   if (!passwordVerified)
     return next(new BadRequest('email ou mot de pass invalide'))
 
-  const userInfos = {
-    token: generateToken(userVerified),
-    lastname: userVerified.lastname,
-    firstname: userVerified.firstname,
-    email: userVerified.email,
-    roles: userVerified.roles,
-    uuid: userVerified.uuid,
-  }
+  // const userInfos = {
+  //   token: generateToken(userVerified),
+  //   lastname: userVerified.lastname,
+  //   firstname: userVerified.firstname,
+  //   email: userVerified.email,
+  //   roles: userVerified.roles,
+  //   uuid: userVerified.uuid,
+  // }
 
   return res.status(200).send({
     message: 'connection effectuée avec succès',
-    datas: userInfos,
+    token: generateToken(userVerified),
   })
 }
 
