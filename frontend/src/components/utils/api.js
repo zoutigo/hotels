@@ -1,17 +1,16 @@
 import axios from 'axios'
 
-const LOCALHOST = 'http://localhost:8000'
+const LOCALHOST = 'http://localhost:3500'
 
 const PREFIX = process.env.NODE_ENV === 'production' ? '' : LOCALHOST
 
 const commonHeaders = {
   'Content-Type': 'application/json',
-  // eslint-disable-next-line prettier/prettier
   Accept: 'application/json',
 }
 
 export const apiLogin = async (datas) => {
-  const URL = `/api/login_check`
+  const URL = `${PREFIX}/api/login`
   const response = await axios({
     method: 'post',
     url: URL,
