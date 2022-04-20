@@ -71,14 +71,39 @@ export const apiHousesList = async () => {
   })
   return data
 }
-export const apiHouseCreate = async (datas) => {
-  const URL = `${PREFIX}/api/house/create`
 
-  const response = await axios.post(URL, datas)
+export const apiHouseCreate = async ({ token, datas }) => {
+  const URL = `${PREFIX}/api/houses`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+  const formdata = new FormData()
+
+  if (datas && datas.file) {
+    formdata.append('file', datas.file)
+  }
+  if (datas && datas.name) {
+    formdata.append('name', datas.name)
+  }
+  if (datas && datas.address) {
+    formdata.append('address', datas.address)
+  }
+  if (datas && datas.city) {
+    formdata.append('city', datas.city)
+  }
+  if (datas && datas.description) {
+    formdata.append('description', datas.description)
+  }
+
+  const response = await axios({
+    method: 'post',
+    url: URL,
+    data: formdata,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
+
   return response
 }
 export const apiHouseUpdate = async ({ token, uuid, datas }) => {
-  const URL = `${PREFIX}/api/users/${uuid}`
+  const URL = `${PREFIX}/api/houses/${uuid}`
 
   const tokenHeader = { Authorization: 'Bearer ' + token }
   const response = await axios({

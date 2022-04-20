@@ -15,21 +15,32 @@ import TextInput from './TextInput'
 import FileInput from './FileInput'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
+import { housesQueryKey } from '../constants/queryKeys'
+import { apiHouseCreate } from '../utils/api'
+import getResponse from '../utils/getResponse'
 
 function HouseCreateForm({ queryKey, queryParams, action, poster }) {
   const location = useLocation()
+  const {
+    state: {
+      userInfo: { token },
+    },
+  } = useAppContext()
+
   const isUpdating =
     action === 'update' && location.state && location.state.house
 
   const { palette } = useTheme()
   const history = useHistory()
+  const { pathname } = location
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { dispatch, state } = useAppContext()
-  const { userInfo } = state
-  const { mutateAsync, isMutating } = useMutate(queryKey, poster)
+
+  const { mutateAsync, isMutating } = useMutate(housesQueryKey, apiHouseCreate)
   const {
     control,
     handleSubmit,
+    setValue,
+    reset,
     formState: { isSubmitting },
   } = useForm({
     mode: 'onChange',
@@ -40,21 +51,49 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
     },
   })
 
+  const initialValues = {
+    name: '',
+    city: '',
+    description: '',
+    address: '',
+    file: '',
+  }
+
   const onSubmit = async (datas) => {
-    console.log(datas)
-    // closeSnackbar()
-    // try {
-    //   await mutateAsync(datas).then((response) => {
-    //     if (response && response.status === 200) {
-    //       dispatch({ type: 'USER_LOGIN', payload: response.data })
-    //       Cookies.set('userInfo', JSON.stringify(response.data))
-    //       const { from } = location.state || { from: { pathname: '/' } }
-    //       history.replace(from)
-    //     }
-    //   })
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: 'error' })
-    // }
+    const { name, address, city, description, file } = datas
+    const finalDatas = {
+      file: file ? file[0] : null,
+      name,
+      address,
+      description,
+      city,
+    }
+    closeSnackbar()
+    try {
+      await mutateAsync({
+        datas: finalDatas,
+        token,
+      }).then((response) => {
+        if (response && response.status === 201) {
+          reset({ ...initialValues })
+          enqueueSnackbar(getResponse(response), { variant: 'success' })
+
+          setTimeout(
+            () =>
+              history.replace({
+                pathname: '/liste-des-etablissements',
+                state: {
+                  from: pathname,
+                  pagename: 'liste des établissement',
+                },
+              }),
+            3000
+          )
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
   }
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -76,6 +115,27 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
               maxLength: {
                 value: 30,
                 message: 'le nom  doit avoir 30 caractères au plus',
+              },
+            }}
+          />
+        </ListItem>
+        <ListItem>
+          <TextInput
+            control={control}
+            name="address"
+            label="Adresse de l'établissement "
+            defaultValue=""
+            variant="filled"
+            example=""
+            rules={{
+              required: "l'adresse de l'établissement est obligatoire",
+              minLength: {
+                value: 2,
+                message: "l'adresse doit avoir 2 caractères au moins",
+              },
+              maxLength: {
+                value: 100,
+                message: "l'adresse   doit avoir 100 caractères au plus",
               },
             }}
           />
