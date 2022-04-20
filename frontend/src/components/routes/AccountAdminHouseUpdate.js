@@ -6,11 +6,12 @@ import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import HouseCreateForm from '../form/HouseCreateForm'
 import { apiHouseUpdate } from '../utils/api'
+import { housesQueryKey } from '../constants/queryKeys'
 
 function AccountAdminHouseUpdate() {
   const { palette } = useTheme()
 
-  const queryKey = ['houses']
+  const queryKey = housesQueryKey
   const querypParams = ''
   const action = 'update'
   const poster = apiHouseUpdate

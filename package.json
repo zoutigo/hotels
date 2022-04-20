@@ -1,13 +1,14 @@
 {
   "name": "hotels",
+  "homepage": "",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "cd backend && node ./bin/www",
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
-    "build": "rm -rf ./public/html/* && cd ./frontend && npm run build",
-    "postbuild": "cp -r ./frontend/build/* ./public/html && rm -rf ./frontend/build",
+    "build": "rm -rf ./public/html/* && cd ./client && npm run build",
+    "postbuild": "cp -r ./client/build/* ./public/html && rm -rf ./client/build",
     "seedall": "npx sequelize-cli db:seed:all --debug",
     "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",

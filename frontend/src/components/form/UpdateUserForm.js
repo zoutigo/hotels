@@ -65,7 +65,7 @@ function UpdateUserForm({
               token,
             }).then((resp) => {
               enqueueSnackbar(getResponse(resp), { variant: 'success' })
-              setshowUpdateContainer(false)
+              setTimeout(() => setshowUpdateContainer(false), 2000)
             })
           }
         })

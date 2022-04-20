@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { Avatar, Button, Grid } from '@mui/material'
+import { Avatar, Grid } from '@mui/material'
 
-import { styled, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
 
 import Image from './Image'

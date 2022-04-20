@@ -16,7 +16,7 @@ function EtablissementPage() {
   const {
     state: { house },
   } = location
-  const { suits, name, description } = house
+  const { suites, name, description } = house
 
   return (
     <StyledPage>
@@ -32,9 +32,9 @@ function EtablissementPage() {
           <Typography variant="body1">{description}</Typography>
         </Grid>
       </StyledSection>
-      {suits.map((suit) => (
-        <StyledSection key={suit.id} background={palette.tertiary.main}>
-          <CardSuit suit={suit} key={suit.id} />
+      {suites.map((suite) => (
+        <StyledSection key={suite.uuid} background={palette.tertiary.main}>
+          <CardSuit suite={suite} />
         </StyledSection>
       ))}
     </StyledPage>

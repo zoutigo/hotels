@@ -25,7 +25,7 @@ const storeImageService = async (file) => {
         ? `${process.env.SERVER_ADRESS}/images/${ref}`
         : `http://localhost:3500/images/${ref}`
 
-    return { filename: ref, filepath: location }
+    return { filename: ref, filepath: ref }
   } catch (error) {
     deleteFileStorage(file.path)
 

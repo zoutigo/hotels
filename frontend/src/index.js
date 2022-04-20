@@ -13,7 +13,6 @@ import moment from 'moment'
 import { ThemeProvider } from '@mui/material/styles'
 
 import './App.css'
-import Home from './components/Home'
 import theme from './components/utils/theme'
 import { AppStateProvider } from './components/utils/Store'
 
@@ -49,34 +48,9 @@ root.render(
       </AppStateProvider>
     </QueryClientProvider>
   </LocalizationProvider>
-
-  // <BrowserRouter>
-  //   <React.StrictMode>
-  //     <App />
-  //   </React.StrictMode>
-  // </BrowserRouter>
 )
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
-
-// render(
-//   <LocalizationProvider dateAdapter={MomentUtils}>
-//     <QueryClientProvider client={queryClient}>
-//       <AppStateProvider>
-//         <ThemeProvider theme={theme}>
-//           <SnackbarProvider
-//             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-//           >
-//             <Router>
-//               <Home />
-//             </Router>
-//           </SnackbarProvider>
-//         </ThemeProvider>
-//       </AppStateProvider>
-//     </QueryClientProvider>
-//   </LocalizationProvider>,
-//   document.getElementById('root')
-// )

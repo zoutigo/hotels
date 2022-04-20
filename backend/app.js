@@ -57,9 +57,10 @@ app.use(
 app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/images', express.static(path.join(__dirname, '..', 'public/images')))
 
 // app.use('/', indexRouter)
-app.use('/api/users', usersRouter)
+app.use('./api/users', usersRouter)
 app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
@@ -84,8 +85,16 @@ app.use('/api/login', loginRouter)
 app.disable('x-powered-by')
 app.use(handleErrors)
 
+// app.get('*', (req, res) => {
+//   const location = path.join(__dirname, '..', 'public', 'html', 'index.html')
+//   console.log('location:', location)
+//   res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'))
+// })
+
+const root = require('path').join(__dirname, '..', 'frontend', 'build')
+app.use(express.static(root))
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'html', 'index.html'))
+  res.sendFile('index.html', { root })
 })
 
 module.exports = app

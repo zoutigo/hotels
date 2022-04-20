@@ -90,7 +90,15 @@ function LandingCenter() {
       </Grid>
 
       <Grid container mt={10}>
-        <StyledNavLink to="/liste-des-etablissements">
+        <StyledNavLink
+          to={{
+            pathname: '/liste-des-etablissements',
+            state: {
+              from: '/',
+              pagename: 'Liste des établissements',
+            },
+          }}
+        >
           <ButtonPrimary path="/liste-des-etablissements" type="button">
             Trouvez un établissement
           </ButtonPrimary>

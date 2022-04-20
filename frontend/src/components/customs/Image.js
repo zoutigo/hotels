@@ -2,15 +2,15 @@ import React from 'react'
 import Proptypes from 'prop-types'
 import useImage from '../hook/useImage'
 
-function Image({ alt, url }) {
-  const { image } = useImage(url)
+function Image({ alt, filepath }) {
+  // const { image } = useImage(url)
 
-  return <img src={image} alt={alt} />
+  return <img src={filepath} alt={alt} />
 }
 
 Image.propTypes = {
   alt: Proptypes.string.isRequired,
-  url: Proptypes.string.isRequired,
+  filepath: Proptypes.string.isRequired,
 }
 
 export default Image
