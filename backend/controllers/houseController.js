@@ -106,11 +106,8 @@ module.exports.putHouse = async (req, res, next) => {
   })
 }
 module.exports.deleteHouse = async (req, res, next) => {
-  if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
-
   if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
+    return next(new BadRequest("veillez indiquer l'établissement à supprimer"))
 
   const { uuid: houseUuid } = req.params
 
@@ -121,7 +118,7 @@ module.exports.deleteHouse = async (req, res, next) => {
   const isAllowed = isAllowedRole
 
   if (!isAllowed)
-    return next(new Forbidden('vous ne pouvez pas modifier cette information'))
+    return next(new Forbidden('vous ne pouvez pas supprimer cette ressource '))
 
   const { destroyed, error } = await deleteHouseService(houseUuid, req.body)
 

@@ -114,10 +114,14 @@ export const apiHouseUpdate = async ({ token, uuid, datas }) => {
   return response
 }
 
-export const apiHouseDelete = async (datas) => {
-  const URL = `${PREFIX}/api/house/delete`
-
-  const response = await axios.post(URL, datas)
+export const apiHouseDelete = async ({ token, uuid }) => {
+  const URL = `${PREFIX}/api/houses/${uuid}`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+  const response = await axios({
+    method: 'delete',
+    url: URL,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
   return response
 }
 export const apiSuitCreate = async (datas) => {

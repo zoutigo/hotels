@@ -1,17 +1,23 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
-import { Box, Grid, Typography, Container, Button } from '@mui/material'
+import { Grid, Typography, Container, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
 
-import useImage from '../hook/useImage'
 import ButtonSecondary from './ButtonSecondary'
 import StyledNavLink from './StyledNavLink'
 import ButtonUpdate from './ButtonUpdate'
 import ButtonDelete from './ButtonDelete'
 import { IMG_PREFIX } from '../constants/prefix'
+import useAppContext from '../hook/useAppContext'
+import useMutate from '../hook/useMutate'
+import { housesQueryKey } from '../constants/queryKeys'
+import { apiHouseDelete } from '../utils/api'
+import getResponse from '../utils/getResponse'
+import getError from '../utils/getError'
 
 const StyledNameTypo = styled(Typography)(({ theme }) => ({
   color: theme.palette.primarytext.main,
@@ -71,10 +77,41 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }))
 
 function CardSmallHouse({ house }) {
-  const { name, description, bannerUrl, city, slug } = house
-  // const { image: pic } = useImage(image)
+  const { name, description, bannerUrl, city, slug, uuid } = house
+  const [showDeleteConfirm, setshowDeleteConfirm] = useState(false)
   const adminLocation = '/mon-compte/administration/liste-etablissements'
   const { pathname } = useLocation()
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar()
+
+  const handleClickDelete = useCallback(() => {
+    setshowDeleteConfirm(!showDeleteConfirm)
+  }, [showDeleteConfirm])
+
+  const {
+    state: {
+      userInfo: { token },
+    },
+  } = useAppContext()
+
+  const { mutateAsync, isMutating } = useMutate(housesQueryKey, apiHouseDelete)
+
+  const handleDelete = useCallback(async () => {
+    closeSnackbar()
+    try {
+      await mutateAsync({
+        uuid,
+        token,
+      }).then((response) => {
+        if (response.status === 200) {
+          setshowDeleteConfirm(false)
+          enqueueSnackbar(getResponse(response), { variant: 'success' })
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
+  }, [token, mutateAsync, enqueueSnackbar, closeSnackbar, uuid])
+
   return (
     <StyledGrid item container xs={12} md={3}>
       <Container
@@ -116,17 +153,23 @@ function CardSmallHouse({ house }) {
           >
             <ButtonUpdate fullWidth>Modifier</ButtonUpdate>
           </StyledNavLink>
-          <StyledNavLink
-            to={{
-              pathname: '/mon-compte/administration/etablissements/suppression',
-              state: {
-                from: pathname,
-                house,
-              },
-            }}
+          <ButtonDelete
+            fullWidth
+            disabled={isMutating}
+            onClick={handleClickDelete}
           >
-            <ButtonDelete fullWidth>Supprimer</ButtonDelete>
-          </StyledNavLink>
+            {showDeleteConfirm ? 'Annuler' : 'Supprimer'}
+          </ButtonDelete>
+
+          {showDeleteConfirm && (
+            <ButtonDelete
+              fullWidth
+              disabled={isMutating}
+              onClick={handleDelete}
+            >
+              Confirmer la suppression
+            </ButtonDelete>
+          )}
         </Container>
       ) : (
         <Container className="button">
