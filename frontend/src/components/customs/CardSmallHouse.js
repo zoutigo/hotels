@@ -11,6 +11,7 @@ import ButtonSecondary from './ButtonSecondary'
 import StyledNavLink from './StyledNavLink'
 import ButtonUpdate from './ButtonUpdate'
 import ButtonDelete from './ButtonDelete'
+import { IMG_PREFIX } from '../constants/prefix'
 
 const StyledNameTypo = styled(Typography)(({ theme }) => ({
   color: theme.palette.primarytext.main,
@@ -70,8 +71,8 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }))
 
 function CardSmallHouse({ house }) {
-  const { name, description, image, city, slug } = house
-  const { image: pic } = useImage(image)
+  const { name, description, bannerUrl, city, slug } = house
+  // const { image: pic } = useImage(image)
   const adminLocation = '/mon-compte/administration/liste-etablissements'
   const { pathname } = useLocation()
   return (
@@ -80,7 +81,7 @@ function CardSmallHouse({ house }) {
         className="media"
         sx={{ background: 'pink', textAlign: 'center' }}
       >
-        <img src={pic} alt={name} />
+        <img src={`${IMG_PREFIX}${bannerUrl}`} alt="bannière" />
       </Container>
       <Container className="name">
         <StyledNameTypo
@@ -92,11 +93,9 @@ function CardSmallHouse({ house }) {
           {name}
         </StyledNameTypo>
       </Container>
-
       <Container className="city">
         <StyledCityTypo variant="h4">{city}</StyledCityTypo>
       </Container>
-
       <Container className="description">
         <StyledDescriptionTypo variant="caption">
           {description.substring(0, 100)}
@@ -148,25 +147,27 @@ function CardSmallHouse({ house }) {
 
 CardSmallHouse.propTypes = {
   house: PropTypes.exact({
-    id: PropTypes.number.isRequired,
+    uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    bannerUrl: PropTypes.string.isRequired,
     city: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
-    suits: PropTypes.arrayOf(
+    createdAt: PropTypes.string.isRequired,
+    suites: PropTypes.arrayOf(
       PropTypes.exact({
-        id: PropTypes.number.isRequired,
+        uuid: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        banner: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
+        bannerUrl: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
-        booking: PropTypes.string.isRequired,
+        bookinglink: PropTypes.string.isRequired,
         images: PropTypes.arrayOf(
           PropTypes.exact({
-            alt: PropTypes.string.isRequired,
-            url: PropTypes.string.isRequired,
+            filename: PropTypes.string.isRequired,
+            filepath: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
           })
         ).isRequired,
       })

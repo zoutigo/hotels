@@ -46,7 +46,7 @@ for (let j = 0; j < 10; j++) {
     address: faker.address.streetAddress(),
     description: faker.lorem.paragraphs(2, '<br/>\n'),
     slug: slugify(name),
-    bannerUrl: faker.internet.url(),
+    bannerUrl: `img${j}.jpg`,
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -59,7 +59,7 @@ for (let k = 0; k < 20; k++) {
     title: faker.company.companyName(),
     description: faker.lorem.paragraphs(2, '<br/>\n'),
     price: faker.commerce.price(10, 10000, 2),
-    bannerUrl: faker.internet.url(),
+    bannerUrl: `img${Math.floor(Math.random() * 10)}.jpg`,
     bookinglink: faker.internet.url(),
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -83,10 +83,10 @@ for (let l = 0; l < 20; l++) {
 
 const devImages = []
 
-for (let m = 0; m < 20; m++) {
+for (let m = 0; m < 10; m++) {
   const image = {
     filename: faker.company.catchPhrase(),
-    filepath: faker.image.nature(),
+    filepath: `img${m}.jpg`,
     createdAt: new Date(),
     updatedAt: new Date(),
   }

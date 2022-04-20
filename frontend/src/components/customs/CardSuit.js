@@ -28,15 +28,15 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }))
 
-function CardSuit({ suit }) {
+function CardSuit({ suite }) {
   const { pathname } = useLocation()
   const history = useHistory()
   const managerLocation = '/mon-compte/gestion-suite/list'
   const update = managerLocation === pathname
 
-  const { name, description, price, images, banner, booking } = suit
+  const { title, description, price, images, bannerUrl, bookinglink } = suite
   const { palette } = useTheme()
-  const { image: pic } = useImage(banner)
+  const { image: pic } = useImage(bannerUrl)
   const [showAlbum, setShowAlbum] = useState(false)
   const [modal, setModal] = useState(false)
   const [tempImgSrc, setTempImgSrc] = useState(null)
@@ -58,20 +58,20 @@ function CardSuit({ suit }) {
       pathname: '/mon-compte/gestion-suite/modification',
       state: {
         from: pathname,
-        suit,
+        suite,
       },
     })
-  }, [pathname, history])
+  }, [pathname, history, suite])
 
   const handleDeleteSuit = useCallback(() => {
     history.push({
       pathname: '/mon-compte/gestion-suite/suppression',
       state: {
         from: pathname,
-        suit,
+        suite,
       },
     })
-  }, [pathname, history])
+  }, [pathname, history, suite])
 
   const handleDeleteImage = useCallback(() => {
     console.log('delete image')
@@ -80,11 +80,11 @@ function CardSuit({ suit }) {
   return (
     <StyledGrid container>
       <Grid container>
-        <Typography variant="h2">{name}</Typography>
+        <Typography variant="h2">{title}</Typography>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4} className="card-suit-media">
-          <img src={pic} alt={name} />
+          <img src={pic} alt={title} />
         </Grid>
         <Grid
           item
@@ -99,7 +99,7 @@ function CardSuit({ suit }) {
           </Grid>
           <Grid item container>
             <Typography variant="body1">
-              Lien booking.com : {booking}
+              Lien booking.com : {bookinglink}
             </Typography>
           </Grid>
           <Grid item container alignItems="center">
@@ -132,8 +132,8 @@ function CardSuit({ suit }) {
               ) : (
                 <StyledNavLink
                   to={{
-                    pathname: '/reserver',
-                    state: { suit },
+                    pathname: '/reservation',
+                    state: { suite, from: pathname },
                   }}
                 >
                   <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>
@@ -162,9 +162,11 @@ function CardSuit({ suit }) {
                 lg={3}
                 className="card-suit-media"
                 sx={{ cursor: 'pointer' }}
-                onClick={() => handleClickImage(imge)}
+                onClick={() =>
+                  handleClickImage({ filepath: imge.filepath, alt: title })
+                }
               >
-                <Image {...imge} />
+                <Image filepath={imge.filepath} alt={title} />
                 {update && (
                   <ButtonDelete
                     onClick={handleDeleteImage}
@@ -185,20 +187,23 @@ function CardSuit({ suit }) {
 CardSuit.defaultProps = {}
 
 CardSuit.propTypes = {
-  suit: PropTypes.exact({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    banner: PropTypes.string.isRequired,
-    booking: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    images: PropTypes.arrayOf(
-      PropTypes.exact({
-        alt: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-      })
-    ),
-  }).isRequired,
+  suite: PropTypes.arrayOf(
+    PropTypes.exact({
+      uuid: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      bannerUrl: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      bookinglink: PropTypes.string.isRequired,
+      images: PropTypes.arrayOf(
+        PropTypes.exact({
+          filename: PropTypes.string.isRequired,
+          filepath: PropTypes.string.isRequired,
+          uuid: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
 }
 
 export default React.memo(CardSuit)

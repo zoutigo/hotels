@@ -97,27 +97,20 @@ function BookingPage() {
     // }
   }
 
-  const houseOptions = useCallback(
-    houses.map(({ name, id }) => ({
-      value: id,
-      label: name,
-    })),
-    [houses]
-  )
+  const houseOptions = houses.map(({ name, id }) => ({
+    value: id,
+    label: name,
+  }))
 
-  const initialHouse = useCallback(
+  const initialHouse =
     location.state && location.state.suit
       ? { name: location.state.suit.name, value: location.state.suit.id }
-      : [],
-    [location]
-  )
-  const initialSuit = useCallback(
+      : []
+
+  const initialSuit =
     location.state && location.state.house
       ? { name: location.state.house.name, value: location.state.house.id }
-      : [],
-    [location]
-  )
-
+      : []
   // useEffect(() => {
   //   if (!userInfo) {
   //     history.push('/login')
