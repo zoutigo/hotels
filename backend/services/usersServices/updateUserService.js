@@ -11,10 +11,9 @@ const updateUserService = async (uuid, datas) => {
       return {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
-    console.log('new', newUser)
+
     return { newUser }
   } catch (error) {
-    console.log('err', error)
     return { errors: getValidationErrorsArray(error) }
   }
 }

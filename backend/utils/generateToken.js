@@ -11,6 +11,8 @@ const generateToken = (user) =>
       firstname: user.firstname,
       house: user.house,
       bookings: user.bookings,
+      email: user.email,
+      createdAt: user.createdAt,
     },
     process.env.TOKEN_SECRET,
     { expiresIn: process.env.TOKEN_LOGIN_DURATION }

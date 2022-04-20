@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const { uuidRegexExp } = require('../constants/regex')
-const { user } = require('../database/models')
+const { user, house } = require('../database/models')
 const authenticate = require('../services/usersServices/authenticate')
 const createUserService = require('../services/usersServices/createUserService')
 const deleteUserService = require('../services/usersServices/deleteUserService')
@@ -11,7 +11,11 @@ const { BadRequest, Forbidden, Unauthorized } = require('../utils/errors')
 module.exports.login = authenticate
 
 module.exports.getUsers = async (req, res, next) => {
-  const users = await user.findAll()
+  const users = await user.findAll({
+    order: [['lastname', 'ASC']],
+    include: { model: house, attributes: ['name', 'uuid'] },
+    group: ['user.id', 'house.id'],
+  })
 
   if (!users) {
     return BadRequest('no users')
@@ -142,9 +146,6 @@ module.exports.putUsers = async (req, res, next) => {
 module.exports.deleteUsers = async (req, res, next) => {
   if (!req.params || !req.params.uuid)
     return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
-  if (!uuidRegexExp.test(req.params.uuid))
-    return next(new BadRequest("ceci n'est pas l'identifiant d'un utilisateur"))
 
   const { roles, uuid: userUuid } = req.user
 

@@ -21,7 +21,7 @@ router.get('/:uuid', verifyTokenService, getUser)
 /* PUT users updating. */
 router.put('/:uuid', verifyTokenService, putUsers)
 
-/* PUT users updating. */
-router.delete('/uuid', verifyTokenService, deleteUsers)
+/* PUT users deleting. */
+router.delete('/:uuid', verifyTokenService, deleteUsers)
 
 module.exports = router

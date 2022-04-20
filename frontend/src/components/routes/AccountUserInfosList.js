@@ -1,10 +1,6 @@
 import React from 'react'
 import { useTheme, styled } from '@mui/material/styles'
 import {
-  Grid,
-  List,
-  ListItem,
-  Box,
   Typography,
   TableContainer,
   Paper,
@@ -17,9 +13,6 @@ import StyledSection from '../customs/StyledSection'
 import StyledPage from '../customs/StyledPage'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
-import CardSmallHouse from '../customs/CardSmallHouse'
-import houses from '../constants/houses'
-import { useHistory, useLocation } from 'react-router-dom'
 import useAppContext from '../hook/useAppContext'
 import userInfoRenames from '../constants/renames'
 
@@ -37,8 +30,6 @@ const StyledKeyTypo = styled(Typography)(({ theme }) => ({
 
 function AccountUserinfosList() {
   const { palette } = useTheme()
-  const location = useLocation()
-  const history = useHistory()
   const {
     state: { userInfo },
   } = useAppContext()

@@ -185,6 +185,10 @@ function Header() {
               <StyledNavLink
                 to={{
                   pathname: loginRoute.path,
+                  state: {
+                    from: pathname,
+                    pagename: 'Se connecter',
+                  },
                 }}
               >
                 <ButtonNavbar>{loginRoute.name}</ButtonNavbar>

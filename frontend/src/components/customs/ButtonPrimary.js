@@ -8,6 +8,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   background: theme.palette.primary.main,
   textTransform: 'capitalize',
   padding: '0.5rem',
+  minWidth: '200px',
   '&:hover': {
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primarytext.main,
