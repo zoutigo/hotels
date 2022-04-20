@@ -110,6 +110,7 @@ function CardSmallHouse({ house }) {
               state: {
                 from: pathname,
                 house,
+                pagename: "Modifier l'établissement",
               },
             }}
           >

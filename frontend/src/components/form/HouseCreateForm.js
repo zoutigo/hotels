@@ -4,10 +4,8 @@ import { PropTypes } from 'prop-types'
 import { useTheme } from '@mui/material/styles'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { useSnackbar } from 'notistack'
 import { ListItem, List } from '@mui/material'
-
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
 import getError from '../utils/getError'
@@ -15,8 +13,6 @@ import TextInput from './TextInput'
 import FileInput from './FileInput'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
-import { housesQueryKey } from '../constants/queryKeys'
-import { apiHouseCreate } from '../utils/api'
 import getResponse from '../utils/getResponse'
 
 function HouseCreateForm({ queryKey, queryParams, action, poster }) {
@@ -30,16 +26,14 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
   const isUpdating =
     action === 'update' && location.state && location.state.house
 
-  const { palette } = useTheme()
   const history = useHistory()
   const { pathname } = location
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  const { mutateAsync, isMutating } = useMutate(housesQueryKey, apiHouseCreate)
+  const { mutateAsync, isMutating } = useMutate(queryKey, poster)
   const {
     control,
     handleSubmit,
-    setValue,
     reset,
     formState: { isSubmitting },
   } = useForm({
@@ -48,6 +42,7 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
       name: isUpdating ? location.state.house.name : '',
       city: isUpdating ? location.state.house.city : '',
       description: isUpdating ? location.state.house.description : '',
+      address: isUpdating ? location.state.house.address : '',
     },
   })
 
@@ -61,30 +56,37 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
 
   const onSubmit = async (datas) => {
     const { name, address, city, description, file } = datas
-    const finalDatas = {
+    const createDatas = {
       file: file ? file[0] : null,
       name,
       address,
       description,
       city,
     }
+
+    const updateDatas = { name, address, description, city }
     closeSnackbar()
     try {
       await mutateAsync({
-        datas: finalDatas,
+        datas: isUpdating ? updateDatas : createDatas,
         token,
+        uuid: isUpdating ? location.state.house.uuid : null,
       }).then((response) => {
-        if (response && response.status === 201) {
+        if (response && (response.status === 201 || response.status === 200)) {
           reset({ ...initialValues })
           enqueueSnackbar(getResponse(response), { variant: 'success' })
 
           setTimeout(
             () =>
-              history.replace({
-                pathname: '/liste-des-etablissements',
+              history.push({
+                pathname: isUpdating
+                  ? `/liste-des-etablissements`
+                  : '/liste-des-etablissements',
                 state: {
                   from: pathname,
-                  pagename: 'liste des établissement',
+                  pagename: isUpdating
+                    ? `'liste des établissement',`
+                    : 'liste des établissement',
                 },
               }),
             3000
@@ -113,8 +115,8 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
                 message: 'le nom doit avoir 2 caractères au moins',
               },
               maxLength: {
-                value: 30,
-                message: 'le nom  doit avoir 30 caractères au plus',
+                value: 100,
+                message: 'le nom  doit avoir 100 caractères au plus',
               },
             }}
           />
@@ -185,18 +187,22 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
             }}
           />
         </ListItem>
-        <ListItem>
-          <FileInput
-            control={control}
-            label="telecharger une image"
-            variant="filled"
-            example=""
-            defaultValue=""
-          />
-        </ListItem>
+        {!isUpdating && (
+          <ListItem>
+            <FileInput
+              control={control}
+              label="telecharger une image"
+              variant="filled"
+              example=""
+              defaultValue=""
+            />
+          </ListItem>
+        )}
         <ListItem>
           <ButtonPrimary type="submit" disabled={isMutating || isSubmitting}>
-            Je crée cet établissement
+            {isUpdating
+              ? 'je modifie cet établissement'
+              : 'je crée cet etablissement'}
           </ButtonPrimary>
         </ListItem>
       </List>

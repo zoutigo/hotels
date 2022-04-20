@@ -104,7 +104,6 @@ export const apiHouseCreate = async ({ token, datas }) => {
 }
 export const apiHouseUpdate = async ({ token, uuid, datas }) => {
   const URL = `${PREFIX}/api/houses/${uuid}`
-
   const tokenHeader = { Authorization: 'Bearer ' + token }
   const response = await axios({
     method: 'put',

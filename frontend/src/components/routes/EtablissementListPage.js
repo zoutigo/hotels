@@ -21,8 +21,6 @@ function EtablissementListPage() {
     apiHousesList
   )
 
-  console.log(data)
-
   const { palette } = useTheme()
   return (
     <StyledPage>
