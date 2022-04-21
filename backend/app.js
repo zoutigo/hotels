@@ -60,12 +60,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, '..', 'public/images')))
 
 // app.use('/', indexRouter)
-app.use('./api/users', usersRouter)
+app.use('/api/login', loginRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
 // app.use('/api/mails', mailsRouter)
-app.use('/api/login', loginRouter)
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

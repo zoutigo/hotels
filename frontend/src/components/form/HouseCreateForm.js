@@ -89,7 +89,7 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
                     : 'liste des établissement',
                 },
               }),
-            3000
+            2000
           )
         }
       })

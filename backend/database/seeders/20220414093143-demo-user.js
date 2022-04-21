@@ -2,9 +2,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 
 const {
-  devManager,
   devAdmin,
   devClients,
+  devManagers,
 } = require('../../constants/fixturesDev')
 const hashPassword = require('../../utils/hashPassword')
 
@@ -16,13 +16,19 @@ module.exports = {
 
     try {
       const password = await hashPassword('password')
-      devManager.password = password
+
       devAdmin.password = password
       const clients = devClients.map((client) => ({
         ...client,
         password: password,
       }))
-      await queryInterface.bulkInsert('users', [devManager, devAdmin], {
+
+      const managers = devManagers.map((manager) => ({
+        ...manager,
+        password: password,
+      }))
+
+      await queryInterface.bulkInsert('users', [devAdmin, ...managers], {
         transaction,
       })
       await queryInterface.bulkInsert('users', clients, {

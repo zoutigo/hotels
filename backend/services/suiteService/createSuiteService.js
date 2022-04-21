@@ -3,7 +3,6 @@ const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray'
 
 const CreateSuiteService = async (data) => {
   const { images, houseUuid, ...rest } = data
-  console.log('rest:', rest)
   const createdAt = new Date()
   try {
     const requestedHouse = await house.findOne({ where: { uuid: houseUuid } })
@@ -27,7 +26,6 @@ const CreateSuiteService = async (data) => {
     }
     return { error: "une erreur s'est produite" }
   } catch (error) {
-    console.log('err', error)
     return { errors: getValidationErrorsArray(error) }
   }
 }

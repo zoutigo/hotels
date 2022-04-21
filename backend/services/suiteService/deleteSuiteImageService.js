@@ -3,13 +3,12 @@ const deleteFileStorage = require('../ImagesService/deleteImageStorage')
 
 const deleteSuiteImageService = async (suiteUuid, imageUuid) => {
   try {
-    const toDeleteImage = await image.find({ where: { uuid: imageUuid } })
+    const toDeleteImage = await image.findOne({ where: { uuid: imageUuid } })
     if (!toDeleteImage) return { error: "l'image n'existe plus" }
 
     const { filepath } = toDeleteImage
 
-    const { error } = await deleteFileStorage(filepath)
-    if (error) return { error }
+    await deleteFileStorage(filepath)
 
     const toDestroyImage = await toDeleteImage.destroy()
 
@@ -21,6 +20,7 @@ const deleteSuiteImageService = async (suiteUuid, imageUuid) => {
 
     return { destroyed: true }
   } catch (error) {
+    console.log(error)
     return { error, destroyed: false }
   }
 }

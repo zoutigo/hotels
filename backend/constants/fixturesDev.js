@@ -3,14 +3,18 @@ const { default: hashPassword } = require('../utils/hashPassword')
 const slugify = require('../utils/slugify')
 const mailTopics = require('./mailTopics')
 
-const devManager = {
-  lastname: faker.name.lastName(),
-  firstname: faker.name.firstName(),
-  email: 'manager@test.com',
-  password: 'password',
-  roles: ['manager'],
-  createdAt: new Date(),
-  updatedAt: new Date(),
+const devManagers = []
+for (let a = 0; a < 10; a++) {
+  const devManager = {
+    lastname: faker.name.lastName(),
+    firstname: faker.name.firstName(),
+    email: `manager${a}@test.com`,
+    password: 'password',
+    roles: ['manager'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+  devManagers.push(devManager)
 }
 
 const devAdmin = {
@@ -38,7 +42,7 @@ for (let i = 0; i < 10; i++) {
 }
 
 const devHouses = []
-for (let j = 0; j < 10; j++) {
+for (let j = 0; j < 15; j++) {
   const name = faker.company.companyName()
   const house = {
     name,
@@ -107,7 +111,6 @@ for (let n = 0; n < 10; n++) {
 }
 
 module.exports = {
-  devManager,
   devAdmin,
   devClients,
   devHouses,
@@ -115,4 +118,5 @@ module.exports = {
   devMails,
   devImages,
   devBookings,
+  devManagers,
 }

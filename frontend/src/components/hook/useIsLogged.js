@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import useAppContext from './useAppContext'
 
 function useIslogged() {
-  const pathname = useLocation()
   const [isLogged, setIsLogged] = useState(false)
   const { state } = useAppContext()
   const { userInfo } = state
@@ -18,7 +17,7 @@ function useIslogged() {
     return () => {
       setIsLogged(false)
     }
-  }, [userInfo, pathname])
+  }, [userInfo])
 
   return isLogged
 }

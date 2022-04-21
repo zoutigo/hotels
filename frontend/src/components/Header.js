@@ -19,16 +19,20 @@ import ButtonNavbar from './customs/ButtonNavBar'
 import StyledNavLink from './customs/StyledNavLink'
 import pages from './constants/pages'
 import useIslogged from './hook/useIsLogged'
+import getRandomKey from './utils/getRandomkey'
+import useAppContext from './hook/useAppContext'
 
 const routesExclusions = [
   '/liste-des-etablissements/slug',
   '/register',
   '/login',
+  '/mon-compte/loggout',
 ]
 const settingsEclusions = [
   '/mon-compte/gestion',
   '/mon-compte/gestion-suite/modification',
   '/mon-compte/administration/etablissements/modification',
+  '/mon-compte/loggout',
 ]
 const loginRoute = pages.find((page) => page.path === '/login')
 const routes = pages.filter(
@@ -46,8 +50,34 @@ const noclickSettings = [
   '/mon-compte',
 ]
 
+// 'noclicksetting' class
+const userSettings = settings.filter(
+  (setting) => setting.access === 'user' && !settingsEclusions.includes(setting)
+)
+const managerSettings = settings.filter(
+  (setting) =>
+    setting.access === 'gerant' && !settingsEclusions.includes(setting)
+)
+const adminSettings = settings.filter(
+  (setting) =>
+    setting.access === 'admin' && !settingsEclusions.includes(setting)
+)
+
 function Header() {
-  const isLogged = useIslogged()
+  // const isLogged = useIslogged()
+  const {
+    state: { userInfo },
+  } = useAppContext()
+
+  const isUser = userInfo && userInfo.exp > new Date().getTime() / 1000
+
+  console.log('userInfo', userInfo)
+  console.log('isuser', isUser)
+  const isManager =
+    userInfo && userInfo?.house && userInfo?.house?.uuid ? true : false
+  const isLogged = isUser
+  const isAdmin = userInfo && userInfo.roles && userInfo.roles.includes('admin')
+
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -119,7 +149,10 @@ function Header() {
                 }}
               >
                 {routes.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem
+                    key={getRandomKey(99999999)}
+                    onClick={handleCloseNavMenu}
+                  >
                     <StyledNavLink
                       to={{
                         pathname: page.path,
@@ -157,7 +190,7 @@ function Header() {
             >
               {routes.map((page) => (
                 <StyledNavLink
-                  key={page.path}
+                  key={getRandomKey(99999999)}
                   to={{
                     pathname: page.path,
                     state: {
@@ -219,44 +252,74 @@ function Header() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map((setting) => (
-                    <MenuItem
-                      className={
-                        noclickSettings.includes(setting.path)
-                          ? 'noclicksetting'
-                          : ''
-                      }
-                      key={setting}
-                      onClick={() => {
-                        handleCloseUserMenu()
-                        history.push({
-                          pathname: setting.path,
-                          state: {
-                            pagename: setting.name,
-                            from: pathname,
-                          },
-                        })
-                      }}
-                    >
-                      {setting.path === '/mon-compte/loggout' ? (
-                        <StyledNavLink
-                          to={{
-                            pathname: setting.path,
+                  {isUser &&
+                    userSettings.map((set) => (
+                      <MenuItem
+                        key={getRandomKey(999999999)}
+                        onClick={() => {
+                          handleCloseUserMenu()
+                          history.push({
+                            pathname: set.path,
                             state: {
-                              pagename: setting.name,
+                              pagename: set.name,
                               from: pathname,
                             },
-                          }}
-                        >
-                          <ButtonNavbar>{setting.name}</ButtonNavbar>
-                        </StyledNavLink>
-                      ) : (
-                        <Typography textAlign="center">
-                          {setting.name}
-                        </Typography>
-                      )}
-                    </MenuItem>
-                  ))}
+                          })
+                        }}
+                      >
+                        <Typography textAlign="center">{set.name}</Typography>
+                      </MenuItem>
+                    ))}
+                  {isManager &&
+                    managerSettings.map((set) => (
+                      <MenuItem
+                        key={getRandomKey(999999999)}
+                        onClick={() => {
+                          handleCloseUserMenu()
+                          history.push({
+                            pathname: set.path,
+                            state: {
+                              pagename: set.name,
+                              from: pathname,
+                            },
+                          })
+                        }}
+                      >
+                        <Typography textAlign="center">{set.name}</Typography>
+                      </MenuItem>
+                    ))}
+                  {isAdmin &&
+                    adminSettings.map((set) => (
+                      <MenuItem
+                        key={getRandomKey(999999999)}
+                        onClick={() => {
+                          handleCloseUserMenu()
+                          history.push({
+                            pathname: set.path,
+                            state: {
+                              pagename: set.name,
+                              from: pathname,
+                            },
+                          })
+                        }}
+                      >
+                        <Typography textAlign="center">{set.name}</Typography>
+                      </MenuItem>
+                    ))}
+
+                  <MenuItem>
+                    <StyledNavLink
+                      to={{
+                        pathname: '/mon-compte/loggout',
+                        state: {
+                          pagename: 'loggout',
+                          from: pathname,
+                        },
+                      }}
+                    >
+                      <ButtonNavbar>Se deconnceter</ButtonNavbar>
+                    </StyledNavLink>
+                  </MenuItem>
                 </Menu>
               </Box>
             )}

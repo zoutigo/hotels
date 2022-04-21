@@ -4,19 +4,30 @@ import { Button, Grid, Tooltip, Typography } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
+import Cookies from 'js-cookie'
 
 import useImage from '../hook/useImage'
 import StyledNavLink from './StyledNavLink'
 import ButtonPrimary from './ButtonPrimary'
-import getRandomKey from '../utils/getRandomkey'
 import ModalImage from './ModalImage'
 import Image from './Image'
-import StyledSection from './StyledSection'
 import ButtonUpdate from './ButtonUpdate'
 import ButtonDelete from './ButtonDelete'
+import getResponse from '../utils/getResponse'
+import getError from '../utils/getError'
+import useAppContext from '../hook/useAppContext'
+import useMutate from '../hook/useMutate'
+import { housesQueryKey } from '../constants/queryKeys'
+import { apiSuitDelete, apiSuitImageDelete } from '../utils/api'
+import { IMG_PREFIX } from '../constants/prefix'
+import setUserDatas from '../utils/setUserDatas'
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   '& .card-suit-media': {
+    cursor: 'pointer',
+    maxHeight: '30vh',
+    overflow: 'hidden',
     '& img': {
       width: '100%',
       objectFit: 'contain',
@@ -29,17 +40,34 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }))
 
 function CardSuit({ suite }) {
+  const {
+    dispatch,
+    state: {
+      userInfo: { token },
+    },
+  } = useAppContext()
   const { pathname } = useLocation()
   const history = useHistory()
   const managerLocation = '/mon-compte/gestion-suite/list'
   const update = managerLocation === pathname
 
-  const { title, description, price, images, bannerUrl, bookinglink } = suite
+  const { title, description, price, images, bannerUrl, bookinglink, uuid } =
+    suite
   const { palette } = useTheme()
   const { image: pic } = useImage(bannerUrl)
   const [showAlbum, setShowAlbum] = useState(false)
   const [modal, setModal] = useState(false)
   const [tempImgSrc, setTempImgSrc] = useState(null)
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar()
+
+  const { mutateAsync, isMutating } = useMutate(
+    housesQueryKey,
+    apiSuitImageDelete
+  )
+  const { mutateAsync: mutateAsyncDelete, isDeleteMutating } = useMutate(
+    housesQueryKey,
+    apiSuitDelete
+  )
 
   const handleclick = useCallback(() => {
     setShowAlbum(!showAlbum)
@@ -63,19 +91,51 @@ function CardSuit({ suite }) {
     })
   }, [pathname, history, suite])
 
-  const handleDeleteSuit = useCallback(() => {
-    history.push({
-      pathname: '/mon-compte/gestion-suite/suppression',
-      state: {
-        from: pathname,
-        suite,
-      },
-    })
-  }, [pathname, history, suite])
+  const handleDeleteSuite = useCallback(async () => {
+    closeSnackbar()
+    try {
+      await mutateAsyncDelete({
+        uuid,
+        token,
+      }).then((response) => {
+        if (response.status === 200) {
+          console.log('resp', response)
+          const refreshedUserInfo = setUserDatas(response)
+          dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
+          Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
+          enqueueSnackbar(getResponse(response), { variant: 'success' })
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
+  }, [token, mutateAsyncDelete, enqueueSnackbar, closeSnackbar, uuid, dispatch])
 
-  const handleDeleteImage = useCallback(() => {
-    console.log('delete image')
-  }, [])
+  const handleDeleteImage = useCallback(
+    async (imageUuid) => {
+      // supprimer l'image et rafraichir le token et l'enlever du dom
+
+      closeSnackbar()
+      try {
+        await mutateAsync({
+          suiteUuid: uuid,
+          imageUuid,
+          token,
+        }).then((response) => {
+          if (response.status === 200) {
+            Cookies.remove('userInfo')
+            const refreshedUserInfo = setUserDatas(response)
+            dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
+            Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
+            enqueueSnackbar(getResponse(response), { variant: 'success' })
+          }
+        })
+      } catch (err) {
+        enqueueSnackbar(getError(err), { variant: 'error' })
+      }
+    },
+    [token, mutateAsync, enqueueSnackbar, closeSnackbar, uuid, dispatch]
+  )
 
   return (
     <StyledGrid container>
@@ -84,7 +144,7 @@ function CardSuit({ suite }) {
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4} className="card-suit-media">
-          <img src={pic} alt={title} />
+          <img src={IMG_PREFIX + bannerUrl} alt={title} />
         </Grid>
         <Grid
           item
@@ -123,9 +183,8 @@ function CardSuit({ suite }) {
 
                   <ButtonDelete
                     sx={{ width: '45%' }}
-                    onClick={handleDeleteSuit}
+                    onClick={handleDeleteSuite}
                   >
-                    {' '}
                     Supprimer
                   </ButtonDelete>
                 </Grid>
@@ -155,21 +214,23 @@ function CardSuit({ suite }) {
           {images &&
             images.map((imge) => (
               <Grid
-                key={getRandomKey(99999)}
+                key={imge.uuid}
                 item
                 sm={12}
                 md={6}
                 lg={3}
                 className="card-suit-media"
-                sx={{ cursor: 'pointer' }}
                 onClick={() =>
-                  handleClickImage({ filepath: imge.filepath, alt: title })
+                  handleClickImage({
+                    filepath: `${IMG_PREFIX + imge.filepath}`,
+                    alt: title,
+                  })
                 }
               >
-                <Image filepath={imge.filepath} alt={title} />
+                <Image filepath={`${IMG_PREFIX + imge.filepath}`} alt={title} />
                 {update && (
                   <ButtonDelete
-                    onClick={handleDeleteImage}
+                    onClick={() => handleDeleteImage(imge.uuid)}
                     sx={{ mt: 1 }}
                     fullWidth
                   >
@@ -188,7 +249,7 @@ CardSuit.defaultProps = {}
 
 CardSuit.propTypes = {
   suite: PropTypes.arrayOf(
-    PropTypes.exact({
+    PropTypes.shape({
       uuid: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
       bannerUrl: PropTypes.string.isRequired,

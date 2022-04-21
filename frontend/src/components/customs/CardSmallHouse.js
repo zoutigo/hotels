@@ -190,7 +190,7 @@ function CardSmallHouse({ house }) {
 }
 
 CardSmallHouse.propTypes = {
-  house: PropTypes.exact({
+  house: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
@@ -200,7 +200,7 @@ CardSmallHouse.propTypes = {
     slug: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     suites: PropTypes.arrayOf(
-      PropTypes.exact({
+      PropTypes.shape({
         uuid: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         bannerUrl: PropTypes.string.isRequired,
@@ -208,7 +208,7 @@ CardSmallHouse.propTypes = {
         description: PropTypes.string.isRequired,
         bookinglink: PropTypes.string.isRequired,
         images: PropTypes.arrayOf(
-          PropTypes.exact({
+          PropTypes.shape({
             filename: PropTypes.string.isRequired,
             filepath: PropTypes.string.isRequired,
             uuid: PropTypes.string.isRequired,

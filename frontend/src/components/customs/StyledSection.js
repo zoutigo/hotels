@@ -11,7 +11,7 @@ function StyledSection({ children, background }) {
 }
 
 StyledSection.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.arrayOf(PropTypes.any).isRequired,
   background: PropTypes.string.isRequired,
 }
 

@@ -27,12 +27,17 @@ router.post('/', verifyTokenService, uploadImages.array('files', 20), postSuite)
 router.get('/:suiteUuid', getSuite)
 
 /* PUT suites updating. */
-router.put('/:suiteUuid', verifyTokenService, putSuite)
+router.put(
+  '/:suiteUuid',
+  uploadImages.array('files', 20),
+  verifyTokenService,
+  putSuite
+)
 
 /* PUT suites updating. */
 router.delete('/:suiteUuid', verifyTokenService, deleteSuite)
 
-/* PUT suites updating. */
+/* DELETE suite image. */
 router.delete('/:suiteUuid/:imageUuid', verifyTokenService, deleteImage)
 
 module.exports = router

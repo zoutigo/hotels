@@ -1,9 +1,11 @@
-const { suite } = require('../../database/models')
+const { suite, house } = require('../../database/models')
 const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray')
 
 const listSuiteService = async () => {
   try {
-    const suites = await suite.findAll()
+    const suites = await suite.findAll({
+      include: { model: house, include: { model: suite } },
+    })
     if (!suites)
       return {
         serverError:

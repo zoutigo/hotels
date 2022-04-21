@@ -64,6 +64,7 @@ module.exports.getHouse = async (req, res, next) => {
     return next(new Forbidden('vous ne pouvez pas consulter cette information'))
 
   const { error, requestedHouse, serverError } = await getHouseService(uuid)
+
   if (serverError) return next(serverError)
   if (error) return next(new BadRequest(error))
 
