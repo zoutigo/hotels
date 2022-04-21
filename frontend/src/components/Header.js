@@ -64,15 +64,12 @@ const adminSettings = settings.filter(
 )
 
 function Header() {
-  // const isLogged = useIslogged()
   const {
     state: { userInfo },
   } = useAppContext()
 
   const isUser = userInfo && userInfo.exp > new Date().getTime() / 1000
 
-  console.log('userInfo', userInfo)
-  console.log('isuser', isUser)
   const isManager =
     userInfo && userInfo?.house && userInfo?.house?.uuid ? true : false
   const isLogged = isUser

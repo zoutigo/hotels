@@ -38,8 +38,8 @@ function AccountAdminUsersList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Liste des utilisateurs</Bread>
+        <PageTitle>Liste des utilisateurs</PageTitle>
         {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />

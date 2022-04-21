@@ -7,6 +7,7 @@ const listBookingService = require('../services/bookingsService/listBookingServi
 const threeDaysBeforeEndservice = require('../services/bookingsService/threeDaysBeforeEndService')
 const isBookingHouseManagerService = require('../services/usersServices/isBookingHouseManagerService')
 const isBookingOwnerService = require('../services/usersServices/isBookingOwnerService')
+const refreshTokenService = require('../services/usersServices/refreshTokenService')
 const {
   BadRequest,
   Forbidden,
@@ -53,10 +54,12 @@ module.exports.postBooking = async (req, res, next) => {
 
   if (serverError) return next(serverError)
   if (errors) return next(new BadRequest(errors.join(' ')))
+  const token = await refreshTokenService(userUuid)
 
   return res.status(200).send({
     message: 'la reservation a bien été effectuée',
     datas: createdBooking,
+    token,
   })
 }
 
