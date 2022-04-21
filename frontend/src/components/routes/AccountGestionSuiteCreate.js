@@ -19,8 +19,8 @@ function AccountGestionSuiteCreate() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Gestion des suites</Bread>
+        <PageTitle>Gestion des suites</PageTitle>
         <SuiteCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

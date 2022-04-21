@@ -26,10 +26,7 @@ function EtablissementPage({ house: managerHouse }) {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Grid item container>
-          <Bread />
-          <PageTitle />
-        </Grid>
+        <Grid item container></Grid>
         <Grid item container>
           <Typography variant="h1">{name}</Typography>
         </Grid>

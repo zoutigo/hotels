@@ -88,9 +88,7 @@ function CardSmallHouse({ house }) {
   }, [showDeleteConfirm])
 
   const {
-    state: {
-      userInfo: { token },
-    },
+    state: { userInfo },
   } = useAppContext()
 
   const { mutateAsync, isMutating } = useMutate(housesQueryKey, apiHouseDelete)
@@ -100,7 +98,7 @@ function CardSmallHouse({ house }) {
     try {
       await mutateAsync({
         uuid,
-        token,
+        token: userInfo?.token || null,
       }).then((response) => {
         if (response.status === 200) {
           setshowDeleteConfirm(false)
@@ -110,7 +108,7 @@ function CardSmallHouse({ house }) {
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
-  }, [token, mutateAsync, enqueueSnackbar, closeSnackbar, uuid])
+  }, [userInfo, mutateAsync, enqueueSnackbar, closeSnackbar, uuid])
 
   return (
     <StyledGrid item container xs={12} md={3}>

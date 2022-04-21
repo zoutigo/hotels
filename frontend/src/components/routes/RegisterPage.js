@@ -91,8 +91,8 @@ function RegisterPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Inscription</Bread>
+        <PageTitle>Inscription</PageTitle>
 
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <List className="formList">

@@ -51,8 +51,8 @@ function AccountUserinfosList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Mes informations</Bread>
+        <PageTitle>LMes informations</PageTitle>
 
         <StyledTableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">

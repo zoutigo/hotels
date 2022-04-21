@@ -241,10 +241,16 @@ export const apiSuitDelete = async ({ uuid, token }) => {
   })
   return response
 }
-export const apiBookingCreate = async (datas) => {
-  const URL = `${PREFIX}/api/booking/create`
+export const apiBookingCreate = async ({ datas, token }) => {
+  const URL = `${PREFIX}/api/bookings`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
 
-  const response = await axios.post(URL, datas)
+  const response = await axios({
+    method: 'post',
+    url: URL,
+    data: datas,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
   return response
 }
 export const apiBookingUpdate = async (datas) => {

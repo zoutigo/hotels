@@ -25,8 +25,8 @@ function AccountGestionSuiteList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Les suites</Bread>
+        <PageTitle>Les suites</PageTitle>/>
         {/* {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />

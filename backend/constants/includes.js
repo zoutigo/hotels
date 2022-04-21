@@ -17,10 +17,14 @@ module.exports.userTokenInclude = [
   {
     model: house,
     attributes: ['uuid', 'name', 'bannerUrl', 'description', 'address'],
-    include: { model: suite, include: { model: image } },
+    // include: {
+    //   model: suite,
+    //   include: { model: image },
+    //   attributes: ['uuid', 'title', 'description', 'price'],
+    // },
   },
   {
     model: booking,
-    include: { model: suite },
+    // include: { model: suite },
   },
 ]

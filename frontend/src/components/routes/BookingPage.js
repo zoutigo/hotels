@@ -7,9 +7,15 @@ import {
   Stack,
   Box,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
+// import DesktopDateRangePicker from '@mui/x-date-pickers-pro/DesktopDateRangePicker'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
+// import { MobileDatePicker, MobileDateRangePicker } from '@mui/x-date-pickers'
 import Select from 'react-select'
-import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker'
-import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker'
+// import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker'
+// import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker'
 import { useTheme } from '@mui/material/styles'
 import React, { useCallback, useEffect, useState } from 'react'
 import moment from 'moment'
@@ -22,7 +28,7 @@ import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
 import TextInput from '../form/TextInput'
 import useMutate from '../hook/useMutate'
-import { apiBookingCreate } from '../utils/api'
+import { apiBookingCreate, apiHousesList } from '../utils/api'
 import getError from '../utils/getError'
 import useAppContext from '../hook/useAppContext'
 import ButtonPrimary from '../customs/ButtonPrimary'
@@ -31,74 +37,162 @@ import PageTitle from '../customs/PageTitle'
 import StyledNavLink from '../customs/StyledNavLink'
 import selectStyles from '../constants/selectStyles'
 import houses from '../constants/houses'
+import useFetch from '../hook/useFetch'
+import { housesQueryKey } from '../constants/queryKeys'
+import setUserDatas from '../utils/setUserDatas'
+import getResponse from '../utils/getResponse'
 
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
+const StyledListItem = styled(ListItem)(() => ({
+  '& .datepicker': {
+    width: '100%',
   },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-]
-
+}))
 function BookingPage() {
+  const [suiteBatch, setSuiteBatch] = useState(null)
   const location = useLocation()
   const { palette } = useTheme()
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { dispatch, state } = useAppContext()
-  const { userInfo } = state
+  const {
+    dispatch,
+    state: {
+      userInfo: { token },
+    },
+  } = useAppContext()
 
   const [suites, setSuites] = useState([])
 
   const queryKey = ['booking']
 
+  const { isLoading, isError, data, errorMessage } = useFetch(
+    housesQueryKey,
+    '',
+    apiHousesList
+  )
+
+  const withSuitsHouzes =
+    data && data.datas && Array.isArray(data.datas)
+      ? data.datas.filter((house) => house.suites && house.suites.length > 0)
+      : []
+
+  const getHouse = () => {
+    if (location.state) {
+      const {
+        suite: { houseId },
+      } = location.state
+      const deHouse = withSuitsHouzes.find((houz) => houz.id == houseId)
+      return deHouse
+    }
+    return null
+  }
+
+  const getSuites = (houseUuid) => {
+    const houz = withSuitsHouzes.find((houz) => houz.uuid === houseUuid)
+    const { suites } = houz
+
+    const result = suites.map(({ title, uuid, price }) => ({
+      label: title,
+      value: uuid,
+      price,
+    }))
+
+    setSuiteBatch(result)
+    return result
+  }
+
   const { mutateAsync, isMutating } = useMutate(queryKey, apiBookingCreate)
+  const initialValues = {
+    house: getHouse() ? { label: getHouse().name, value: getHouse().uuid } : '',
+    suite: {
+      label: location.state.suite.title,
+      value: location.state.suite.uuid,
+    },
+    price: location.state ? location.state.suite.price : 0,
+    startdate: moment(new Date()),
+    enddate: moment(new Date()),
+  }
+
+  console.log('initialValues', initialValues)
   const {
     control,
     handleSubmit,
     getValues,
+    setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onChange',
+    defaultValues: initialValues,
   })
-  // const houseId = getValues('house')
 
   const onSubmit = async (datas) => {
-    console.log('datas', datas)
-    const { house: houseId, suit: suitId, bookingdates } = datas
+    const {
+      house: houseUuid,
+      suite: suiteUuid,
+      startdate,
+      enddate,
+      price,
+    } = datas
     const result = {
-      houseId,
-      suitId,
-      startdate: moment(bookingdates[0]).toDate(),
-      enddate: moment(bookingdates[1]).toDate(),
+      suiteUuid,
+      startdate: moment(startdate).valueOf(),
+      enddate: moment(enddate).valueOf(),
+      price,
     }
 
-    // closeSnackbar()
+    /// Traiter le cas de l'utilisateur non connecté
 
-    // try {
-    //   await mutateAsync(datas).then((response) => {
-    //     if (response && response.status === 201) {
-    //       history.push('/login')
-    //     }
-    //   })
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: 'error' })
-    // }
+    closeSnackbar()
+
+    try {
+      await mutateAsync({
+        datas: result,
+        token: token,
+      }).then((response) => {
+        if (response && (response.status === 201 || response.status === 200)) {
+          reset({ ...initialValues })
+          const refreshedUserInfo = setUserDatas(response)
+          dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
+          Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
+
+          enqueueSnackbar(getResponse(response), { variant: 'success' })
+          setTimeout(
+            () =>
+              history.push({
+                pathname: '/mon-compte/mes-reservations',
+                state: {
+                  from: location.pathname,
+                  pagename: 'Mes reservations',
+                },
+              }),
+            2000
+          )
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
   }
 
-  const houseOptions = houses.map(({ name, id }) => ({
-    value: id,
+  const setTotalPrice = () => {
+    const startdate = getValues('startdate')
+
+    const enddate = getValues('enddate')
+
+    const currentSuiteValue = getValues('suite')
+
+    if (startdate && enddate && currentSuiteValue) {
+      const diff = moment(enddate).diff(startdate, 'days')
+      const currentSuite = suiteBatch.find(
+        (suit) => suit.value === currentSuiteValue
+      )
+      const totalPrice = currentSuite.price * diff
+      setValue('price', totalPrice)
+    }
+  }
+
+  const houseOptions = withSuitsHouzes.map(({ name, uuid }) => ({
+    value: uuid,
     label: name,
   }))
 
@@ -111,17 +205,12 @@ function BookingPage() {
     location.state && location.state.house
       ? { name: location.state.house.name, value: location.state.house.id }
       : []
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     history.push('/login')
-  //   }
-  // }, [])
 
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>Réservation</Bread>
+        <PageTitle>Réservation</PageTitle>
 
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <List className="formList">
@@ -129,7 +218,7 @@ function BookingPage() {
               <Controller
                 control={control}
                 name="house"
-                defaultValue={initialHouse}
+                defaultValue={initialValues.house}
                 rules={{
                   required: 'veillez choisir un établissement',
                 }}
@@ -137,16 +226,10 @@ function BookingPage() {
                   <TextField
                     {...field}
                     onChange={(e) => {
-                      const houseId = e.target.value
-                      field.onChange(houseId)
-                      const newHouse = houses.find(
-                        (house) => house.id === houseId
-                      )
-                      const newSuites = newHouse.suits.map((suit) => ({
-                        label: suit.name,
-                        value: suit.id,
-                      }))
-                      setSuites(newSuites)
+                      const houseUuid = e.target.value
+                      field.onChange(houseUuid)
+                      setSuites(getSuites(houseUuid))
+                      setTotalPrice()
                     }}
                     sx={{ m: 1, width: '100%' }}
                     id="filled-select-house"
@@ -168,17 +251,22 @@ function BookingPage() {
             <ListItem>
               <Controller
                 control={control}
-                name="suit"
-                defaultValue={initialSuit}
+                name="suite"
+                defaultValue={initialValues.suite}
                 rules={{
                   required: 'veillez choisir une suite',
                 }}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+
+                      setTotalPrice()
+                    }}
                     sx={{ m: 1, width: '100%' }}
                     id="filled-select-suites"
+                    defaultValue={initialValues.suite}
                     select
                     label="Choisissez une suite"
                     variant="filled"
@@ -194,8 +282,149 @@ function BookingPage() {
                 )}
               />
             </ListItem>
+            <ListItem>
+              <Controller
+                name="startdate"
+                control={control}
+                defaultValue={[new Date()]}
+                rules={{
+                  required: 'la date de debut est obligatoire',
+                }}
+                render={({ field }) => (
+                  <DesktopDatePicker
+                    {...field}
+                    label="Date de début"
+                    minDate={moment(new Date())}
+                    onChange={(newValue) => {
+                      field.onChange(newValue)
+                      setTotalPrice()
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        label="Date de début"
+                        variant="filled"
+                        error={Boolean(errors.startdate)}
+                        helperText={
+                          errors.startdate ? errors.startdate.message : ''
+                        }
+                        {...params}
+                      />
+                    )}
+                  />
+                )}
+              />
+            </ListItem>
+            <ListItem>
+              <Controller
+                name="enddate"
+                control={control}
+                defaultValue={[new Date()]}
+                rules={{
+                  validate: {
+                    greather: (value) => {
+                      const startdate = getValues('startdate')
+                      return (
+                        value.diff(startdate, 'days') > 0 ||
+                        'La date de fin doit etre différente de la date de début'
+                      )
+                    },
+                  },
+                }}
+                render={({ field }) => (
+                  <DesktopDatePicker
+                    {...field}
+                    label="Date de fin"
+                    minDate={moment(new Date())}
+                    onChange={(newValue) => {
+                      field.onChange(newValue)
+                      setTotalPrice()
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        label="Date de début"
+                        variant="filled"
+                        error={Boolean(errors.enddate)}
+                        helperText={
+                          errors.enddate ? errors.enddate.message : ''
+                        }
+                        {...params}
+                      />
+                    )}
+                  />
+                )}
+              />
+            </ListItem>
+            <ListItem>
+              <Controller
+                control={control}
+                name="price"
+                defaultValue={'0'}
+                rules={{
+                  required: 'Prix total',
+                }}
+                render={({ field }) => (
+                  <TextField
+                    disabled
+                    {...field}
+                    sx={{ m: 1, width: '100%' }}
+                    id="filled-select-house"
+                    label="Prix total"
+                    variant="filled"
+                    error={Boolean(errors.house)}
+                    helperText={errors.house ? errors.house.message : ''}
+                  ></TextField>
+                )}
+              />
+            </ListItem>
 
-            <ListItem className="hideUpMd">
+            {/* <ListItem>
+              <Controller
+                name="bookingdates"
+                control={control}
+                defaultValue={[new Date()]}
+                rules={{
+                  validate: {
+                    greather: (value) =>
+                      value[0].isAfter(value[1]) ||
+                      'La date de fin doit etre différente de la date de début',
+                  },
+                }}
+                render={({ field }) => (
+                  <DesktopDatePicker
+                    {...field}
+                    startText="Date de debut"
+                    minDate={moment(new Date())}
+                    onChange={(newValue) => {
+                      field.onChange(newValue)
+                    }}
+                    renderInput={(startProps, endProps) => (
+                      <>
+                        <TextField
+                          variant="filled"
+                          {...startProps}
+                          label="Date de début"
+                        />
+                        <Box sx={{ mx: 2 }}> au </Box>
+                        <TextField
+                          variant="filled"
+                          {...endProps}
+                          label="Date de fin"
+                          error={Boolean(errors.bookingdates)}
+                          helperText={
+                            errors.bookingdates
+                              ? errors.bookingdates.message
+                              : ''
+                          }
+                        />
+                      </>
+                    )}
+                  />
+                )}
+              />
+            </ListItem> */}
+            {/* <ListItem>
               <Controller
                 name="bookingdates"
                 control={control}
@@ -239,7 +468,7 @@ function BookingPage() {
                   />
                 )}
               />
-            </ListItem>
+            </ListItem> */}
             {/* <ListItem className={classes.hideDownMd}>
               <Stack spacing={3}>
                 <Controller
@@ -276,6 +505,7 @@ function BookingPage() {
 
             <ListItem>
               <ButtonPrimary
+                fullWidth
                 type="submit"
                 disabled={isMutating || isSubmitting}
               >

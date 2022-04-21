@@ -4,18 +4,37 @@ const getDatesInRange = require('../../utils/getDatesInRange')
 
 const isSuiteAvailable = async (datas) => {
   const { suiteUuid, startdate, enddate } = datas
+
+  const startRange = Number(startdate)
+  const endRange = Number(enddate)
+  const range = getDatesInRange(startdate, enddate)
   try {
     const currentSuite = await suite.findOne({ where: { uuid: suiteUuid } })
 
+    // const existingBookings = await booking.findAll({
+    //   where: {
+    //     suiteId: currentSuite.id,
+    //     [Op.or]: {
+    //       startdate: { [Op.in]: range },
+    //       enddate: { [Op.in]: range },
+    //     },
+    //   },
+    // })
     const existingBookings = await booking.findAll({
       where: {
         suiteId: currentSuite.id,
-        [Op.or]: [
-          { startdate: getDatesInRange(startdate, enddate) },
-          { enddate: getDatesInRange(startdate, enddate) },
-        ],
       },
     })
+
+    const booked1 = existingBookings.find(
+      (booking) =>
+        range.includes(Number(booking.startdate)) ||
+        range.includes(Number(booking.enddate))
+    )
+    if (booked1) return { suiteIsAvailable: false }
+    console.log('booked1--------------', booked1)
+
+    console.log('------------------------checked: ', existingBookings)
 
     return { suiteIsAvailable: existingBookings && existingBookings.length < 1 }
   } catch (error) {
