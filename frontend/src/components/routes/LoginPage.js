@@ -43,7 +43,7 @@ function LoginPage() {
         if (response && response.status === 200) {
           const userInfo = setUserDatas(response)
           dispatch({ type: 'USER_LOGIN', payload: userInfo })
-          Cookies.set('userInfo', JSON.stringify(userInfo))
+          Cookies.set('userInfo', JSON.stringify(userInfo), { expires: 2 })
           const { from } = location.state || { from: { pathname: '/' } }
           history.replace(cart.cartItems.length > 0 ? '/reserver' : from)
         }

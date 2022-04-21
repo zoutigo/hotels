@@ -15,49 +15,92 @@ import TextInput from './TextInput'
 import FileInput from './FileInput'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
+import getResponse from '../utils/getResponse'
+import setUserDatas from '../utils/setUserDatas'
 
 function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
+  const {
+    dispatch,
+    state: {
+      userInfo: { token, house },
+    },
+  } = useAppContext()
   const location = useLocation()
   const isUpdating =
-    action === 'update' && location.state && location.state.suit
+    action === 'update' && location.state && location.state.suite
 
-  const { palette } = useTheme()
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { dispatch, state } = useAppContext()
-  const { userInfo } = state
+
   const { mutateAsync, isMutating } = useMutate(queryKey, poster)
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      title: isUpdating ? location.state.suit.title : '',
-      file: isUpdating ? location.state.suit.file : '',
-      description: isUpdating ? location.state.suit.description : '',
-      price: isUpdating ? location.state.suit.price : '',
-      bookinglink: isUpdating ? location.state.suit.bookinglink : '',
-      files: isUpdating ? location.state.suit.images : [],
+      title: isUpdating ? location.state.suite.title : '',
+      file: isUpdating ? location.state.suite.file : '',
+      description: isUpdating ? location.state.suite.description : '',
+      price: isUpdating ? location.state.suite.price : '',
+      bookinglink: isUpdating ? location.state.suite.bookinglink : '',
+      // files: isUpdating ? location.state.suite.images : [],
     },
   })
 
+  const initialValues = {
+    title: '',
+    description: '',
+    price: '',
+    bookinglink: '',
+    file: '',
+    files: '',
+  }
+
   const onSubmit = async (datas) => {
-    console.log(datas)
-    // closeSnackbar()
-    // try {
-    //   await mutateAsync(datas).then((response) => {
-    //     if (response && response.status === 200) {
-    //       dispatch({ type: 'USER_LOGIN', payload: response.data })
-    //       Cookies.set('userInfo', JSON.stringify(response.data))
-    //       const { from } = location.state || { from: { pathname: '/' } }
-    //       history.replace(from)
-    //     }
-    //   })
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: 'error' })
-    // }
+    const { files, file, title, description, price, bookinglink } = datas
+    const createDatas = {
+      title,
+      description,
+      price,
+      bookinglink,
+      file: file ? file[0] : null,
+      files,
+      houseUuid: house.uuid,
+    }
+    const updateDatas = { title, description, price, bookinglink, files }
+    closeSnackbar()
+    try {
+      await mutateAsync({
+        datas: isUpdating ? updateDatas : createDatas,
+        token,
+        uuid: isUpdating ? location.state.suite.uuid : null,
+      }).then((response) => {
+        if (response && (response.status === 201 || response.status === 200)) {
+          reset({ ...initialValues })
+          const refreshedUserInfo = setUserDatas(response)
+          dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
+          Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
+
+          enqueueSnackbar(getResponse(response), { variant: 'success' })
+          setTimeout(
+            () =>
+              history.push({
+                pathname: isUpdating ? `/` : '/',
+                state: {
+                  from: location.pathname,
+                  pagename: isUpdating ? `/` : '/',
+                },
+              }),
+            2000
+          )
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
   }
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -154,7 +197,7 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
             }}
           />
         </ListItem>
-        <ListItem>
+        {/* <ListItem>
           <FileInput
             control={control}
             label={
@@ -166,7 +209,7 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
             example=""
             defaultValue=""
           />
-        </ListItem>
+        </ListItem> */}
         <ListItem>
           <FileInput
             control={control}

@@ -71,6 +71,14 @@ export const apiHousesList = async () => {
   })
   return data
 }
+export const apiHouseGet = async (uuid) => {
+  const URL = `${PREFIX}/api/houses/${uuid}`
+  const response = await axios({
+    method: 'get',
+    url: URL,
+  })
+  return response
+}
 
 export const apiHouseCreate = async ({ token, datas }) => {
   const URL = `${PREFIX}/api/houses`
@@ -124,22 +132,113 @@ export const apiHouseDelete = async ({ token, uuid }) => {
   })
   return response
 }
-export const apiSuitCreate = async (datas) => {
-  const URL = `${PREFIX}/api/suit/create`
 
-  const response = await axios.post(URL, datas)
+export const apiSuitGet = async ({ uuid }) => {
+  const URL = `${PREFIX}/api/suites/${uuid}`
+  const response = await axios({
+    method: 'get',
+    url: URL,
+
+    headers: { ...commonHeaders },
+  })
   return response
 }
-export const apiSuitUpdate = async (datas) => {
-  const URL = `${PREFIX}/api/suit/update`
 
-  const response = await axios.post(URL, datas)
+export const apiSuitCreate = async ({ token, datas }) => {
+  const URL = `${PREFIX}/api/suites`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+  const formdata = new FormData()
+
+  // if (datas && datas.file) {
+  //   formdata.append('file', datas.file)
+  // }
+  if (datas && datas.files) {
+    for (let i = 0; i < datas.files.length; i += 1) {
+      formdata.append('files', datas.files[i])
+    }
+  }
+  if (datas && datas.title) {
+    formdata.append('title', datas.title)
+  }
+  if (datas && datas.description) {
+    formdata.append('description', datas.description)
+  }
+  if (datas && datas.price) {
+    formdata.append('price', datas.price)
+  }
+  if (datas && datas.bookinglink) {
+    formdata.append('bookinglink', datas.bookinglink)
+  }
+  if (datas && datas.houseUuid) {
+    formdata.append('houseUuid', datas.houseUuid)
+  }
+
+  const response = await axios({
+    method: 'post',
+    url: URL,
+    data: formdata,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
+
   return response
 }
-export const apiSuitDelete = async (datas) => {
-  const URL = `${PREFIX}/api/suit/delete`
 
-  const response = await axios.post(URL, datas)
+export const apiSuitUpdate = async ({ token, datas, uuid }) => {
+  const URL = `${PREFIX}/api/suites/${uuid}`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+  const formdata = new FormData()
+
+  if (datas && datas.files) {
+    for (let i = 0; i < datas.files.length; i += 1) {
+      formdata.append('files', datas.files[i])
+    }
+  }
+  if (datas && datas.title) {
+    formdata.append('title', datas.title)
+  }
+  if (datas && datas.description) {
+    formdata.append('description', datas.description)
+  }
+  if (datas && datas.price) {
+    formdata.append('price', datas.price)
+  }
+  if (datas && datas.bookinglink) {
+    formdata.append('bookinglink', datas.bookinglink)
+  }
+  if (datas && datas.houseUuid) {
+    formdata.append('houseUuid', datas.houseUuid)
+  }
+
+  const response = await axios({
+    method: 'put',
+    url: URL,
+    data: formdata,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
+
+  return response
+}
+
+export const apiSuitImageDelete = async ({ suiteUuid, imageUuid, token }) => {
+  const URL = `${PREFIX}/api/suites/${suiteUuid}/${imageUuid}`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+
+  const response = await axios({
+    method: 'delete',
+    url: URL,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
+  return response
+}
+export const apiSuitDelete = async ({ uuid, token }) => {
+  const URL = `${PREFIX}/api/suites/${uuid}`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+
+  const response = await axios({
+    method: 'delete',
+    url: URL,
+    headers: { ...commonHeaders, ...tokenHeader },
+  })
   return response
 }
 export const apiBookingCreate = async (datas) => {

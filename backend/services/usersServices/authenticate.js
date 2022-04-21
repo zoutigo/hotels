@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt')
 const { BadRequest } = require('../../utils/errors')
-const { user } = require('../../database/models')
+const { user, house, suite } = require('../../database/models')
 const generateToken = require('../../utils/generateToken')
-const { userInclude } = require('../../constants/includes')
+const { userInclude, userTokenInclude } = require('../../constants/includes')
 
 const authenticate = async (req, res, next) => {
   const { username: email, password } = req.body
@@ -12,7 +12,7 @@ const authenticate = async (req, res, next) => {
 
   const userVerified = await user.findOne({
     where: { email },
-    // include: userInclude,
+    include: userTokenInclude,
   })
 
   if (!userVerified) {

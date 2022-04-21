@@ -1,7 +1,7 @@
-const { Booking, House, Suite } = require('../database/models')
+const { booking, house, suite, image } = require('../database/models')
 
 module.exports.userInclude = [
-  { model: House },
+  { model: house },
   {
     // model: Booking,
     // include: [
@@ -10,5 +10,17 @@ module.exports.userInclude = [
     //     attributes: ['uuid', 'name'],
     //   },
     // ],
+  },
+]
+
+module.exports.userTokenInclude = [
+  {
+    model: house,
+    attributes: ['uuid', 'name', 'bannerUrl', 'description', 'address'],
+    include: { model: suite, include: { model: image } },
+  },
+  {
+    model: booking,
+    include: { model: suite },
   },
 ]

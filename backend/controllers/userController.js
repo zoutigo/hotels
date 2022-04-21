@@ -13,8 +13,15 @@ module.exports.login = authenticate
 module.exports.getUsers = async (req, res, next) => {
   const users = await user.findAll({
     order: [['lastname', 'ASC']],
-    include: { model: house, attributes: ['name', 'uuid'] },
-    group: ['user.id', 'house.id'],
+    include: { all: true, nested: true },
+    // include: [
+    //   {
+    //     model: house,
+    //     attributes: ['name', 'uuid'],
+    //     as: 'house',
+    //     right: true,
+    //   },
+    // ],
   })
 
   if (!users) {

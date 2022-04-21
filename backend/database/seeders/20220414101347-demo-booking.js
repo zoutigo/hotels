@@ -23,7 +23,7 @@ module.exports = {
 
       const bookings = devBookings.map((booking) => ({
         ...booking,
-        userId: users[2].id,
+        userId: users[Math.floor(Math.random() * users.length)].id,
         suiteId: suites[3].id,
       }))
       await queryInterface.bulkInsert('bookings', bookings, {

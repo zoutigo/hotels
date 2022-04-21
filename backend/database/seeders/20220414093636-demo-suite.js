@@ -16,9 +16,9 @@ module.exports = {
         }
       )
 
-      const suites = devSuites.map((suite) => ({
-        ...suite,
-        houseId: houses[3].id,
+      const suites = await devSuites.map((suit) => ({
+        ...suit,
+        houseId: houses[Math.floor(Math.random() * 5)].id,
       }))
       await queryInterface.bulkInsert('suites', suites, {
         transaction,

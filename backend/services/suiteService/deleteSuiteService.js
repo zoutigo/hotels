@@ -4,7 +4,7 @@ const deleteSuiteService = async (uuid) => {
   try {
     await suite.destroy({ where: { uuid } })
 
-    return { destroyed: true }
+    return { destroyed: true, error: null }
   } catch (error) {
     return { error, destroyed: false }
   }

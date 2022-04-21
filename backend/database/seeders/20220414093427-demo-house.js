@@ -16,9 +16,10 @@ module.exports = {
           type: QueryTypes.SELECT,
         }
       )
+      const managers = users.filter((user) => user.roles.includes('manager'))
       const houses = devHouses.map((house) => ({
         ...house,
-        userId: users[0].id,
+        userId: users[Math.floor(Math.random() * managers.length)].id,
       }))
       await queryInterface.bulkInsert('houses', houses, {
         transaction,

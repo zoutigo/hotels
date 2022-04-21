@@ -51,7 +51,7 @@ const pages = [
     component: BookingPage,
   },
   {
-    name: 'Mes Mon compte',
+    name: 'Mon compte',
     path: '/mon-compte',
     access: 'user',
     component: AccountPage,
