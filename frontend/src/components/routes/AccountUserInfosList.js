@@ -34,22 +34,6 @@ function AccountUserinfosList() {
     state: { userInfo },
   } = useAppContext()
 
-  console.log('userinfo', userInfo)
-
-  const excludedKeys = ['token', 'iat', 'exp', 'uuid', 'suites', 'bookings']
-
-  const usefullInfos = Object.entries(userInfo)
-    .filter(([key, value]) => !excludedKeys.includes(key))
-    .map(([key, value]) => {
-      const objectArray = Object.entries(userInfoRenames).find(
-        ([k, v]) => k === key
-      )
-
-      const newKey = objectArray ? objectArray[1] : key
-
-      return [newKey, value]
-    })
-
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
@@ -59,19 +43,48 @@ function AccountUserinfosList() {
         <StyledTableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableBody>
-              {usefullInfos.map(([key, value]) => (
-                <TableRow
-                  key={key}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>
-                    <StyledKeyTypo variant="h5">{key} </StyledKeyTypo>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">{value} </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>
+                  <StyledKeyTypo variant="h5">Nom </StyledKeyTypo>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body1">{userInfo?.lastname} </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>
+                  <StyledKeyTypo variant="h5">Prénom </StyledKeyTypo>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body1">
+                    {userInfo?.firstname}{' '}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>
+                  <StyledKeyTypo variant="h5">email </StyledKeyTypo>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body1">{userInfo?.email} </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>
+                  <StyledKeyTypo variant="h5">role </StyledKeyTypo>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body1">{userInfo?.roles[0]} </Typography>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </StyledTableContainer>
