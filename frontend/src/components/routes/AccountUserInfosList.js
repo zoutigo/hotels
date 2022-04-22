@@ -34,7 +34,9 @@ function AccountUserinfosList() {
     state: { userInfo },
   } = useAppContext()
 
-  const excludedKeys = ['token', 'iat', 'exp', 'uuid']
+  console.log('userinfo', userInfo)
+
+  const excludedKeys = ['token', 'iat', 'exp', 'uuid', 'suites', 'bookings']
 
   const usefullInfos = Object.entries(userInfo)
     .filter(([key, value]) => !excludedKeys.includes(key))

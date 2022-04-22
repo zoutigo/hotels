@@ -38,15 +38,16 @@ const useStyles = (theme) => ({
   textLeft: {
     textAlign: 'letf',
   },
-  formList: {
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '50%',
-    },
-    '& >button': {
-      width: '100%',
-    },
-  },
+  // formList: {
+  //   padding: '0 auto',
+  //   width: '100%',
+  //   [theme.breakpoints.up('md')]: {
+  //     width: '50%',
+  //   },
+  //   '& >button': {
+  //     width: '100%',
+  //   },
+  // },
   noclicksetting: {
     pointerEvents: 'none !important',
     background: `${theme.palette.secondary.main} !important`,

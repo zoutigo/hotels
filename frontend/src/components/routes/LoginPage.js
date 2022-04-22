@@ -1,5 +1,5 @@
 import { List, ListItem, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { useTheme, styled } from '@mui/material/styles'
 import React, { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -19,6 +19,14 @@ import PageTitle from '../customs/PageTitle'
 import StyledNavLink from '../customs/StyledNavLink'
 import setUserDatas from '../utils/setUserDatas'
 import useIslogged from '../hook/useIsLogged'
+
+const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
+  width: '50%',
+  margin: '0  auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}))
 
 function LoginPage() {
   const isLogged = useIslogged()
@@ -65,8 +73,8 @@ function LoginPage() {
         <Bread>Login</Bread>
         <PageTitle>Liogin</PageTitle>
 
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <List className="formList">
+        <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
+          <List>
             <ListItem className="field">
               <TextInput
                 control={control}
@@ -126,7 +134,7 @@ function LoginPage() {
               </StyledNavLink>
             </ListItem>
           </List>
-        </StyledForm>
+        </ResponsiveForm>
       </StyledSection>
     </StyledPage>
   )

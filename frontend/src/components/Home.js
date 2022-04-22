@@ -7,7 +7,7 @@ import Body from './Body'
 import Footer from './Footer'
 
 const StyledHome = styled(Box)(({ theme }) => ({
-  backgroundColor: 'yellow',
+  backgroundColor: 'white',
   minWidth: '300px',
   padding: '0rem 0rem',
 

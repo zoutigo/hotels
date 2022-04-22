@@ -42,11 +42,14 @@ import { housesQueryKey } from '../constants/queryKeys'
 import setUserDatas from '../utils/setUserDatas'
 import getResponse from '../utils/getResponse'
 
-const StyledListItem = styled(ListItem)(() => ({
-  '& .datepicker': {
+const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
+  width: '50%',
+  margin: '0  auto',
+  [theme.breakpoints.down('md')]: {
     width: '100%',
   },
 }))
+
 function BookingPage() {
   const [suiteBatch, setSuiteBatch] = useState(null)
   const location = useLocation()
@@ -55,9 +58,7 @@ function BookingPage() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const {
     dispatch,
-    state: {
-      userInfo: { token },
-    },
+    state: { userInfo },
   } = useAppContext()
 
   const [suites, setSuites] = useState([])
@@ -146,7 +147,7 @@ function BookingPage() {
     try {
       await mutateAsync({
         datas: result,
-        token: token,
+        token: userInfo?.token,
       }).then((response) => {
         if (response && (response.status === 201 || response.status === 200)) {
           reset({ ...initialValues })
@@ -211,8 +212,8 @@ function BookingPage() {
         <Bread>Réservation</Bread>
         <PageTitle>Réservation</PageTitle>
 
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <List className="formList">
+        <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
+          <List>
             <ListItem>
               <Controller
                 control={control}
@@ -388,7 +389,7 @@ function BookingPage() {
               </ButtonPrimary>
             </ListItem>
           </List>
-        </StyledForm>
+        </ResponsiveForm>
       </StyledSection>
     </StyledPage>
   )

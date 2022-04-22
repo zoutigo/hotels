@@ -70,6 +70,27 @@ module.exports.getHouse = async (req, res, next) => {
 
   return res.status(200).send(requestedHouse)
 }
+/// details opérations
+module.exports.getHouseSuites = async (req, res, next) => {
+  if (!req.params || !req.params.uuid)
+    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
+
+  const { uuid } = req.params
+  const isAllowed = true
+
+  if (!isAllowed)
+    return next(new Forbidden('vous ne pouvez pas consulter cette information'))
+
+  const { error, requestedHouse, serverError } = await getHouseSuitesService(
+    uuid
+  )
+
+  if (serverError) return next(serverError)
+  if (error) return next(new BadRequest(error))
+
+  return res.status(200).send(requestedHouse)
+}
+
 module.exports.putHouse = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))

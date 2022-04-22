@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { PropTypes } from 'prop-types'
-import { useTheme } from '@mui/material/styles'
+import { useTheme, styled } from '@mui/material/styles'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -14,6 +14,14 @@ import FileInput from './FileInput'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
 import getResponse from '../utils/getResponse'
+
+const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
+  width: '50%',
+  margin: '0  auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}))
 
 function HouseCreateForm({ queryKey, queryParams, action, poster }) {
   const location = useLocation()
@@ -98,7 +106,7 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
     }
   }
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
       <List>
         <ListItem>
           <TextInput
@@ -206,7 +214,7 @@ function HouseCreateForm({ queryKey, queryParams, action, poster }) {
           </ButtonPrimary>
         </ListItem>
       </List>
-    </StyledForm>
+    </ResponsiveForm>
   )
 }
 

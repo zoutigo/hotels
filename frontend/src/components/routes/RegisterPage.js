@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { List, ListItem } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { useTheme, styled } from '@mui/material/styles'
 import React, { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -20,6 +20,14 @@ import PageTitle from '../customs/PageTitle'
 import useIslogged from '../hook/useIsLogged'
 import { emailPattern, passwordPattern } from '../constants/patterns'
 import setUserDatas from '../utils/setUserDatas'
+
+const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
+  width: '50%',
+  margin: '0  auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}))
 
 function RegisterPage() {
   const location = useLocation()
@@ -94,8 +102,8 @@ function RegisterPage() {
         <Bread>Inscription</Bread>
         <PageTitle>Inscription</PageTitle>
 
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <List className="formList">
+        <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
+          <List>
             <ListItem className="field">
               <TextInput
                 control={control}
@@ -222,7 +230,7 @@ function RegisterPage() {
               </ButtonPrimary>
             </ListItem>
           </List>
-        </StyledForm>
+        </ResponsiveForm>
       </StyledSection>
     </StyledPage>
   )

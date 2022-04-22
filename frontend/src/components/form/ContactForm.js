@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { ListItem, List, TextField, MenuItem } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
@@ -15,6 +16,14 @@ import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
 import { apiContactCreate } from '../utils/api'
 import { emailPattern } from '../constants/patterns'
+
+const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
+  width: '50%',
+  margin: '0  auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}))
 
 function ContactForm() {
   const { pathname } = useLocation()
@@ -78,7 +87,7 @@ function ContactForm() {
     }
   }
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
       <List>
         <ListItem>
           <TextInput
@@ -202,7 +211,7 @@ function ContactForm() {
           </ButtonPrimary>
         </ListItem>
       </List>
-    </StyledForm>
+    </ResponsiveForm>
   )
 }
 

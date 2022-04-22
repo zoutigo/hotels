@@ -55,6 +55,7 @@ const noclickSettings = [
   '/mon-compte/gestion',
   '/mon-compte/gestion-suite',
   '/mon-compte',
+  '/mon-compte/administration',
 ]
 
 // 'noclicksetting' class

@@ -25,6 +25,8 @@ router.post('/', verifyTokenService, uploadImages.single('file'), postHouse)
 
 /* GET house */
 router.get('/:uuid', getHouse)
+/* GET house */
+// router.get('/:houseUuid/suites', getHouseSuites)
 
 /* PUT houses updating. */
 router.put('/:uuid', verifyTokenService, putHouse)
