@@ -97,7 +97,6 @@ function CardSuit({ suite }) {
         token,
       }).then((response) => {
         if (response.status === 200) {
-          console.log('resp', response)
           const refreshedUserInfo = setUserDatas(response)
           dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
           Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
