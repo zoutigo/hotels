@@ -8,7 +8,7 @@ function useIslogged() {
   const { userInfo } = state
 
   useEffect(() => {
-    if (userInfo && userInfo.exp > new Date().getTime() / 1000) {
+    if (userInfo && userInfo?.exp > new Date().getTime() / 1000) {
       setIsLogged(true)
     } else {
       setIsLogged(false)

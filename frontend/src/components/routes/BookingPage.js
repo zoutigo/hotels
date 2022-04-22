@@ -41,7 +41,7 @@ import useFetch from '../hook/useFetch'
 import { housesQueryKey } from '../constants/queryKeys'
 import setUserDatas from '../utils/setUserDatas'
 import getResponse from '../utils/getResponse'
-
+import useIslogged from '../hook/useIsLogged'
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -61,8 +61,6 @@ function BookingPage() {
     dispatch,
 
     state: { userInfo },
-
-
   } = useAppContext()
 
   const [suites, setSuites] = useState([])
@@ -81,7 +79,6 @@ function BookingPage() {
       : []
 
   const getHouse = () => {
-
     if (location.state && location.state.origin === 'cardsuit') {
       const {
         suite: { houseId },
@@ -94,9 +91,7 @@ function BookingPage() {
   }
 
   const getSuites = (houseUuid) => {
-
     const houz = withSuitsHouzes?.find((houz) => houz.uuid === houseUuid)
-
 
     const { suites } = houz
 
@@ -123,6 +118,7 @@ function BookingPage() {
     enddate: moment(new Date()),
   }
 
+  const isLogged = useIslogged()
 
   const {
     control,
@@ -137,11 +133,10 @@ function BookingPage() {
   })
 
   const onSubmit = async (datas) => {
-
-    if (!userInfo) {
-      history.push('/login')
-    }
-
+    closeSnackbar()
+    // if (isLogged === 'NAN') {
+    //   history.push('/register')
+    // }
 
     const {
       house: houseUuid,
@@ -159,12 +154,9 @@ function BookingPage() {
 
     /// Traiter le cas de l'utilisateur non connecté
 
-    closeSnackbar()
-
     try {
       await mutateAsync({
         datas: result,
-
         token: userInfo?.token,
       }).then((response) => {
         if (response && (response.status === 201 || response.status === 200)) {
@@ -232,10 +224,8 @@ function BookingPage() {
         <Bread>Réservation</Bread>
         <PageTitle>Réservation</PageTitle>
 
-
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>
-
             <ListItem>
               <Controller
                 control={control}
@@ -401,7 +391,6 @@ function BookingPage() {
               />
             </ListItem>
 
-
             <ListItem>
               <ButtonPrimary
                 fullWidth
@@ -412,12 +401,10 @@ function BookingPage() {
               </ButtonPrimary>
             </ListItem>
           </List>
-
+        </ResponsiveForm>
       </StyledSection>
     </StyledPage>
   )
 }
 
-
 export default React.memo(BookingPage)
-

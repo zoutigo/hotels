@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { useForm, Controller } from 'react-hook-form'
 
@@ -8,13 +9,10 @@ import { useSnackbar } from 'notistack'
 import { ListItem, List, TextField, MenuItem } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-
-
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
 import getError from '../utils/getError'
 import TextInput from './TextInput'
-
 
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
@@ -31,6 +29,23 @@ const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
 
 function ContactForm() {
   const { pathname } = useLocation()
+  const options = [
+    {
+      label: 'Je souhaite poser une réclamation',
+      value: 'reclammation',
+    },
+    {
+      label: 'Je souhaite commander un service supplémentaire',
+      value: 'service supplémantaire',
+    },
+
+    {
+      label: 'Je souhaite en savoir plus sur une suite',
+      value: 'soucis avec cette application',
+    },
+
+    { label: 'J’ai un souci avec cette application', value: 'en savoir plus' },
+  ]
 
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
@@ -41,75 +56,21 @@ function ContactForm() {
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
-
-import FileInput from './FileInput'
-import ButtonPrimary from '../customs/ButtonPrimary'
-import StyledForm from '../customs/StyledForm'
-
-function ContactForm({ queryKey, queryParams, poster }) {
-  const location = useLocation()
-
-  const { palette } = useTheme()
-  const history = useHistory()
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { dispatch, state } = useAppContext()
-  const { userInfo } = state
-  const { mutateAsync, isMutating } = useMutate(queryKey, poster)
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      title: '',
-      email: '',
-      message: '',
-    },
-  })
-
-
-  const options = [
-    { label: 'je souhaite poser une reclammation', value: 'reclammation' },
-    {
-      label: 'je souhaite commander un service supplémentaire',
-      value: 'service supplémantaire',
-    },
-    {
-      label: 'je souhaite en savoir plus sur une suite',
-      value: 'en savoir plus',
-    },
-    {
-      label: "j'ai un soucis avec cette application",
-      value: 'isssoucis avec cette applicationue',
-    },
-  ]
+  } = useForm({ mode: 'onChange' })
 
   const onSubmit = async (datas) => {
-    console.log('hello')
-    console.log(datas)
     closeSnackbar()
     try {
       await mutateAsync({ datas }).then((response) => {
         if (response && response.status === 200) {
-          setTimeout(
-            () =>
-              history.push({
-                pathname: '/liste-des-etablissements',
-                state: {
-                  from: pathname,
-                  pagename: 'liste des établissement',
-                },
-              }),
-            2000
-          )
+          history.push('/liste-des-etablissements')
         }
       })
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
   }
+
   return (
     <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
       <List>
@@ -117,7 +78,7 @@ function ContactForm({ queryKey, queryParams, poster }) {
           <TextInput
             control={control}
             name="firstname"
-            label="Prénom "
+            label="Prénom"
             defaultValue={userInfo ? userInfo.firstname : 'null'}
             variant="filled"
             example=""
@@ -130,46 +91,6 @@ function ContactForm({ queryKey, queryParams, poster }) {
               maxLength: {
                 value: 30,
                 message: 'le prénom doit avoir 30 caractères au plus',
-
-  const onSubmit = async (datas) => {
-    console.log(datas)
-    // closeSnackbar()
-    // try {
-    //   await mutateAsync(datas).then((response) => {
-    //     if (response && response.status === 200) {
-    //       dispatch({ type: 'USER_LOGIN', payload: response.data })
-    //       Cookies.set('userInfo', JSON.stringify(response.data))
-    //       const { from } = location.state || { from: { pathname: '/' } }
-    //       history.replace(from)
-    //     }
-    //   })
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: 'error' })
-    // }
-  }
-  return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <List>
-        <ListItem> le nom</ListItem>
-        <ListItem> le prénom</ListItem>
-        <ListItem> le mail</ListItem>
-        <ListItem>
-          <TextInput
-            control={control}
-            name="title"
-            label="Objet du message"
-            variant="filled"
-            example=""
-            rules={{
-              required: "l'objet du message est obligatoire",
-              minLength: {
-                value: 2,
-                message: 'objet doit avoir 2 caractères au moins',
-              },
-              maxLength: {
-                value: 30,
-                message: 'objet doit avoir 30 caractères au plus',
-
               },
             }}
           />
@@ -177,7 +98,6 @@ function ContactForm({ queryKey, queryParams, poster }) {
         <ListItem>
           <TextInput
             control={control}
-
             name="lastname"
             label="Nom "
             defaultValue={userInfo ? userInfo.lastname : 'null'}
@@ -201,8 +121,7 @@ function ContactForm({ queryKey, queryParams, poster }) {
             control={control}
             name="email"
             label="Email"
-            defaultValue=""
-
+            defaultValue={userInfo ? userInfo.email : 'null'}
             variant="filled"
             example=""
             rules={{
@@ -211,12 +130,10 @@ function ContactForm({ queryKey, queryParams, poster }) {
               pattern: {
                 value: emailPattern,
                 message: 'Format mail invalide',
-
               },
             }}
           />
         </ListItem>
-
 
         <ListItem>
           <Controller
@@ -254,7 +171,6 @@ function ContactForm({ queryKey, queryParams, poster }) {
           <TextInput
             control={control}
             name="content"
-
             label="Message"
             variant="filled"
             multiline
@@ -281,18 +197,8 @@ function ContactForm({ queryKey, queryParams, poster }) {
           </ButtonPrimary>
         </ListItem>
       </List>
-
     </ResponsiveForm>
   )
-}
-
-  )
-}
-
-ContactForm.propTypes = {
-  queryKey: PropTypes.arrayOf(PropTypes.string).isRequired,
-  queryParams: PropTypes.string.isRequired,
-  poster: PropTypes.func.isRequired,
 }
 
 export default ContactForm
