@@ -7,7 +7,8 @@ NPM 8.1.0
 Postgresql 12.9
 VsCode
 
-## Lancer l'environnement de developpement
+
+# Lancer l'environnement de developpement
 
 - demarrer apache
   `sudo systemctl apache2 start`
@@ -15,11 +16,13 @@ VsCode
 - demarrer postgres avec la commande
   `sudo systemctl postgresql start`
 
+
 ## Lancement environnement backend
 
 ### créer une base de données postgres sur votre poste de travail LAMP
 
 - se mettre sur un user , par exemple postgres
+
   `sudo -i -u postgres`
 - Entrer dans l'outil psql
   `psql`
@@ -91,3 +94,36 @@ Cors reconnait ce port 3000 . il se pourrait qu'un autre port ne fonctionne pas 
 - l'adminstateur a pour identifiants admin@test.com || password
 - les gérants ont manager{i}@test.com || password
 - le profil manager a été crée , mais il n'es pas d'utilité . Les gérants sont ceux à qui des etablissements ont été assignés
+### option 2 :
+
+- installer les dépendances du projet
+  `npm install`
+- créer la base donnée grace à sequelize
+  `npx sequelize-cli db:create`
+
+c'est la base de donnée indiquée dans les variables d'environnement qui est crée
+
+## mettre à jour les variables d'environnement du projet
+
+- dans le fichier .env situé à la racine du site , renseignez les informations de votre base de données
+
+## Environnement Backend
+
+- Installer les dépendances
+  `npm install`
+
+- Réaliser les migrations
+  `npm run migrate`
+
+- Démarrer le site
+  `npm run back-server`
+
+  La console vous indique le port sur lequel vous pouvez vous connecter sur le site : localhost:3500
+
+## environnement Frontend
+
+- naviguer sur dans le dossier frontend
+  `cd ./fronted `
+
+-installer les dépendences
+`npm install`

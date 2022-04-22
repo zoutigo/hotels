@@ -38,6 +38,7 @@ const useStyles = (theme) => ({
   textLeft: {
     textAlign: 'letf',
   },
+
   // formList: {
   //   padding: '0 auto',
   //   width: '100%',
@@ -48,6 +49,7 @@ const useStyles = (theme) => ({
   //     width: '100%',
   //   },
   // },
+
   noclicksetting: {
     pointerEvents: 'none !important',
     background: `${theme.palette.secondary.main} !important`,

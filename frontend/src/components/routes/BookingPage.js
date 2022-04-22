@@ -42,6 +42,7 @@ import { housesQueryKey } from '../constants/queryKeys'
 import setUserDatas from '../utils/setUserDatas'
 import getResponse from '../utils/getResponse'
 
+
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
   margin: '0  auto',
@@ -58,7 +59,10 @@ function BookingPage() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const {
     dispatch,
+
     state: { userInfo },
+
+
   } = useAppContext()
 
   const [suites, setSuites] = useState([])
@@ -77,18 +81,23 @@ function BookingPage() {
       : []
 
   const getHouse = () => {
+
     if (location.state && location.state.origin === 'cardsuit') {
       const {
         suite: { houseId },
       } = location.state
       const deHouse = withSuitsHouzes.find((houz) => houz.id === houseId)
+
       return deHouse
     }
     return null
   }
 
   const getSuites = (houseUuid) => {
+
     const houz = withSuitsHouzes?.find((houz) => houz.uuid === houseUuid)
+
+
     const { suites } = houz
 
     const result = suites.map(({ title, uuid, price }) => ({
@@ -109,9 +118,11 @@ function BookingPage() {
       value: location.state.suite?.uuid,
     },
     price: location.state ? location.state.suite?.price : 0,
+
     startdate: moment(new Date()),
     enddate: moment(new Date()),
   }
+
 
   const {
     control,
@@ -126,9 +137,11 @@ function BookingPage() {
   })
 
   const onSubmit = async (datas) => {
+
     if (!userInfo) {
       history.push('/login')
     }
+
 
     const {
       house: houseUuid,
@@ -151,6 +164,7 @@ function BookingPage() {
     try {
       await mutateAsync({
         datas: result,
+
         token: userInfo?.token,
       }).then((response) => {
         if (response && (response.status === 201 || response.status === 200)) {
@@ -187,10 +201,12 @@ function BookingPage() {
 
     if (startdate && enddate && currentSuiteValue) {
       const diff = moment(enddate).diff(startdate, 'days')
+
       const currentSuite = suiteBatch?.find(
         (suit) => suit.value === currentSuiteValue
       )
       const totalPrice = currentSuite?.price * diff
+
       setValue('price', totalPrice)
     }
   }
@@ -216,8 +232,10 @@ function BookingPage() {
         <Bread>Réservation</Bread>
         <PageTitle>Réservation</PageTitle>
 
+
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>
+
             <ListItem>
               <Controller
                 control={control}
@@ -383,6 +401,7 @@ function BookingPage() {
               />
             </ListItem>
 
+
             <ListItem>
               <ButtonPrimary
                 fullWidth
@@ -393,10 +412,12 @@ function BookingPage() {
               </ButtonPrimary>
             </ListItem>
           </List>
-        </ResponsiveForm>
+
       </StyledSection>
     </StyledPage>
   )
 }
 
+
 export default React.memo(BookingPage)
+

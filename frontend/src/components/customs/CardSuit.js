@@ -26,6 +26,7 @@ import setUserDatas from '../utils/setUserDatas'
 const StyledGrid = styled(Grid)(({ theme }) => ({
   '& .card-suit-media': {
     cursor: 'pointer',
+
     maxHeight: '500px',
     overflow: 'hidden',
     '& img': {
@@ -43,6 +44,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 function CardSuit({ suite }) {
   const {
     dispatch,
+
     state: { userInfo },
   } = useAppContext()
   const token = userInfo?.token
@@ -98,6 +100,8 @@ function CardSuit({ suite }) {
         token,
       }).then((response) => {
         if (response.status === 200) {
+
+
           const refreshedUserInfo = setUserDatas(response)
           dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
           Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
@@ -171,6 +175,7 @@ function CardSuit({ suite }) {
             </Grid>
             <Grid item xs={6}>
               {update ? (
+
                 <Grid
                   item
                   container
@@ -179,6 +184,8 @@ function CardSuit({ suite }) {
                 >
                   <ButtonUpdate
                     sx={{ width: '45%', height: '35px !important' }}
+
+
                     onClick={handleUpdateSuit}
                   >
                     Modifier
@@ -195,7 +202,10 @@ function CardSuit({ suite }) {
                 <StyledNavLink
                   to={{
                     pathname: '/reservation',
+
                     state: { suite, from: pathname, origin: 'cardsuit' },
+
+
                   }}
                 >
                   <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>
@@ -206,7 +216,9 @@ function CardSuit({ suite }) {
         </Grid>
       </Grid>
       {showAlbum && (
+
         <Grid container spacing={2} mt={2}>
+
           <ModalImage
             modal={modal}
             setModal={setModal}

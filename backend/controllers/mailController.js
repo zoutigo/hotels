@@ -1,8 +1,10 @@
+
 const { mail } = require('../database/models')
 const { BadRequest } = require('../utils/errors')
 
 module.exports.getMailList = async (req, res, next) => {
   const mails = await mail.findAll()
+
 
   if (!mails) {
     return BadRequest('mails')
@@ -11,6 +13,7 @@ module.exports.getMailList = async (req, res, next) => {
   return res.status(200).send(mails)
 }
 module.exports.postMail = async (req, res, next) => {
+
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
@@ -24,6 +27,9 @@ module.exports.postMail = async (req, res, next) => {
   } catch (error) {
     return next(error)
   }
+
+  res.send('post mail')
+
 }
 
 /// details opérations

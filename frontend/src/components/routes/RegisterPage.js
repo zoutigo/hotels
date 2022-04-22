@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import { List, ListItem } from '@mui/material'
+
 import { useTheme, styled } from '@mui/material/styles'
+
 import React, { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -102,8 +104,11 @@ function RegisterPage() {
         <Bread>Inscription</Bread>
         <PageTitle>Inscription</PageTitle>
 
+
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>
+
+
             <ListItem className="field">
               <TextInput
                 control={control}
@@ -231,6 +236,7 @@ function RegisterPage() {
             </ListItem>
           </List>
         </ResponsiveForm>
+
       </StyledSection>
     </StyledPage>
   )

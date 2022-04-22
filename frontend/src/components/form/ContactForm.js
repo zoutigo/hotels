@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { useForm, Controller } from 'react-hook-form'
 
 import { useLocation } from 'react-router-dom'
@@ -7,10 +8,13 @@ import { useSnackbar } from 'notistack'
 import { ListItem, List, TextField, MenuItem } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
+
+
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
 import getError from '../utils/getError'
 import TextInput from './TextInput'
+
 
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
@@ -37,6 +41,25 @@ function ContactForm() {
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
+
+import FileInput from './FileInput'
+import ButtonPrimary from '../customs/ButtonPrimary'
+import StyledForm from '../customs/StyledForm'
+
+function ContactForm({ queryKey, queryParams, poster }) {
+  const location = useLocation()
+
+  const { palette } = useTheme()
+  const history = useHistory()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { dispatch, state } = useAppContext()
+  const { userInfo } = state
+  const { mutateAsync, isMutating } = useMutate(queryKey, poster)
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -45,6 +68,7 @@ function ContactForm() {
       message: '',
     },
   })
+
 
   const options = [
     { label: 'je souhaite poser une reclammation', value: 'reclammation' },
@@ -106,6 +130,46 @@ function ContactForm() {
               maxLength: {
                 value: 30,
                 message: 'le prénom doit avoir 30 caractères au plus',
+
+  const onSubmit = async (datas) => {
+    console.log(datas)
+    // closeSnackbar()
+    // try {
+    //   await mutateAsync(datas).then((response) => {
+    //     if (response && response.status === 200) {
+    //       dispatch({ type: 'USER_LOGIN', payload: response.data })
+    //       Cookies.set('userInfo', JSON.stringify(response.data))
+    //       const { from } = location.state || { from: { pathname: '/' } }
+    //       history.replace(from)
+    //     }
+    //   })
+    // } catch (err) {
+    //   enqueueSnackbar(getError(err), { variant: 'error' })
+    // }
+  }
+  return (
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <List>
+        <ListItem> le nom</ListItem>
+        <ListItem> le prénom</ListItem>
+        <ListItem> le mail</ListItem>
+        <ListItem>
+          <TextInput
+            control={control}
+            name="title"
+            label="Objet du message"
+            variant="filled"
+            example=""
+            rules={{
+              required: "l'objet du message est obligatoire",
+              minLength: {
+                value: 2,
+                message: 'objet doit avoir 2 caractères au moins',
+              },
+              maxLength: {
+                value: 30,
+                message: 'objet doit avoir 30 caractères au plus',
+
               },
             }}
           />
@@ -113,6 +177,7 @@ function ContactForm() {
         <ListItem>
           <TextInput
             control={control}
+
             name="lastname"
             label="Nom "
             defaultValue={userInfo ? userInfo.lastname : 'null'}
@@ -137,17 +202,21 @@ function ContactForm() {
             name="email"
             label="Email"
             defaultValue=""
+
             variant="filled"
             example=""
             rules={{
               required: 'le mail est obligatoire',
+
               pattern: {
                 value: emailPattern,
                 message: 'Format mail invalide',
+
               },
             }}
           />
         </ListItem>
+
 
         <ListItem>
           <Controller
@@ -185,6 +254,7 @@ function ContactForm() {
           <TextInput
             control={control}
             name="content"
+
             label="Message"
             variant="filled"
             multiline
@@ -211,8 +281,18 @@ function ContactForm() {
           </ButtonPrimary>
         </ListItem>
       </List>
+
     </ResponsiveForm>
   )
+}
+
+  )
+}
+
+ContactForm.propTypes = {
+  queryKey: PropTypes.arrayOf(PropTypes.string).isRequired,
+  queryParams: PropTypes.string.isRequired,
+  poster: PropTypes.func.isRequired,
 }
 
 export default ContactForm

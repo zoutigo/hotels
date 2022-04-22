@@ -12,16 +12,19 @@ import useAppContext from '../hook/useAppContext'
 import { apiHouseGet, apiHousesList, apiSuitGet } from '../utils/api'
 import { housesQueryKey } from '../constants/queryKeys'
 import EtablissementPage from './EtablissementPage'
+
 import { useLocation, useHistory } from 'react-router-dom'
 
 function AccountGestionSuiteList() {
   const history = useHistory()
+
   const { palette } = useTheme()
   const {
     state: {
       userInfo: { house, roles },
     },
   } = useAppContext()
+
 
   if (!house.uuid) {
     history.push('/liste-des-etablissements')
@@ -33,13 +36,15 @@ function AccountGestionSuiteList() {
     apiHouseGet
   )
 
-  console.log(data)
+
 
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
         <Bread>Les suites</Bread>
+
         <PageTitle>Les suites</PageTitle>
+
         {/* {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />
@@ -61,8 +66,10 @@ function AccountGestionSuiteList() {
           </Grid>
         </StyledSection>
       )}
+
       {data && data.data && data.data.suites.length > 0 ? (
         data.data.suites.map((suite) => (
+
           <StyledSection key={suite.uuid} background={palette.tertiary.main}>
             <CardSuit suite={suite} />
           </StyledSection>

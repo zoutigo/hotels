@@ -8,6 +8,7 @@ import Footer from './Footer'
 
 const StyledHome = styled(Box)(({ theme }) => ({
   backgroundColor: 'white',
+
   minWidth: '300px',
   padding: '0rem 0rem',
 

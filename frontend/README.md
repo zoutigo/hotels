@@ -1,3 +1,4 @@
+
 # Projet Groupe hotelier
 
 Ce projet projet concernant un magnifique groupe hotelier a été réalisé dans le cadre d'un examen de fin de formation.
@@ -17,6 +18,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Base de donnée
 
 Le projet est réalisé avec Postgres sql.
+=======
+# Getting Started with Create React App
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Available Scripts
+
 
 In the project directory, you can run:
 

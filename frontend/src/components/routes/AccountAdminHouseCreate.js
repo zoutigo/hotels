@@ -20,8 +20,10 @@ function AccountAdminHouseCreate() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
+
         <Bread>Créer un établissement</Bread>
         <PageTitle>Créer un établissement</PageTitle>
+
         <HouseCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

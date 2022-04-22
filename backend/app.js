@@ -18,11 +18,14 @@ const handleErrors = require('./middlewares/handleErrors')
 dotenv.config()
 const app = express()
 
+
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
   process.env.SERVER_ADRESS,
-]
+
+const allowedOrigins = ['http://localhost:3000', process.env.SERVER_ADRESS]
+
 
 app.use(
   cors({
