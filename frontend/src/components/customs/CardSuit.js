@@ -42,10 +42,9 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 function CardSuit({ suite }) {
   const {
     dispatch,
-    state: {
-      userInfo: { token },
-    },
+    state: { userInfo },
   } = useAppContext()
+  const token = userInfo?.token
   const { pathname } = useLocation()
   const history = useHistory()
   const managerLocation = '/mon-compte/gestion-suite/list'
@@ -53,8 +52,7 @@ function CardSuit({ suite }) {
 
   const { title, description, price, images, bannerUrl, bookinglink, uuid } =
     suite
-  const { palette } = useTheme()
-  const { image: pic } = useImage(bannerUrl)
+
   const [showAlbum, setShowAlbum] = useState(false)
   const [modal, setModal] = useState(false)
   const [tempImgSrc, setTempImgSrc] = useState(null)

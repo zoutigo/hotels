@@ -38,10 +38,11 @@ function EtablissementsListForm() {
             }}
             render={({ field }) => (
               <TextField
+                disabled
                 variant="outlined"
                 fullWidth
                 id="email"
-                label="Adresse mail"
+                label="rechercher un établissement"
                 placeholder="Entrez une adresse email"
                 inputProps={{ type: 'email' }}
                 error={Boolean(errors.email)}
