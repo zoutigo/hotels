@@ -14,7 +14,6 @@ import StyledPage from '../customs/StyledPage'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import useAppContext from '../hook/useAppContext'
-import userInfoRenames from '../constants/renames'
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   width: '50%',
