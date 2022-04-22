@@ -23,8 +23,9 @@ function AccountAdminHouseList() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread />
-        <PageTitle />
+        <Bread>List des établissements</Bread>
+        <PageTitle>Liste des établissements</PageTitle>
+
         {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />

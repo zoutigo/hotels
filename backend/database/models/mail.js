@@ -77,7 +77,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Mail',
+      modelName: 'mail',
+      tableName: 'mails',
     }
   )
   return Mail

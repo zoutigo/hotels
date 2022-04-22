@@ -18,7 +18,11 @@ const handleErrors = require('./middlewares/handleErrors')
 dotenv.config()
 const app = express()
 
-const allowedOrigins = ['http://localhost:3000', process.env.SERVER_ADRESS]
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  process.env.SERVER_ADRESS,
+]
 
 app.use(
   cors({
@@ -65,7 +69,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
-// app.use('/api/mails', mailsRouter)
+app.use('/api/mails', mailsRouter)
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

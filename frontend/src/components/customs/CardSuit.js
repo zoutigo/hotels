@@ -192,7 +192,7 @@ function CardSuit({ suite }) {
                 <StyledNavLink
                   to={{
                     pathname: '/reservation',
-                    state: { suite, from: pathname },
+                    state: { suite, from: pathname, origin: 'cardsuit' },
                   }}
                 >
                   <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>

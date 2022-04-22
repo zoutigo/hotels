@@ -76,11 +76,11 @@ function BookingPage() {
       : []
 
   const getHouse = () => {
-    if (location.state) {
+    if (location.state && location.state.origin === 'cardsuit') {
       const {
         suite: { houseId },
       } = location.state
-      const deHouse = withSuitsHouzes.find((houz) => houz.id == houseId)
+      const deHouse = withSuitsHouzes.find((houz) => houz.id === houseId)
       return deHouse
     }
     return null
@@ -104,15 +104,14 @@ function BookingPage() {
   const initialValues = {
     house: getHouse() ? { label: getHouse().name, value: getHouse().uuid } : '',
     suite: {
-      label: location.state.suite.title,
-      value: location.state.suite.uuid,
+      label: location.state.suite?.title,
+      value: location.state.suite?.uuid,
     },
-    price: location.state ? location.state.suite.price : 0,
+    price: location.state ? location.state.suite?.price : 0,
     startdate: moment(new Date()),
     enddate: moment(new Date()),
   }
 
-  console.log('initialValues', initialValues)
   const {
     control,
     handleSubmit,
@@ -378,130 +377,6 @@ function BookingPage() {
                 )}
               />
             </ListItem>
-
-            {/* <ListItem>
-              <Controller
-                name="bookingdates"
-                control={control}
-                defaultValue={[new Date()]}
-                rules={{
-                  validate: {
-                    greather: (value) =>
-                      value[0].isAfter(value[1]) ||
-                      'La date de fin doit etre différente de la date de début',
-                  },
-                }}
-                render={({ field }) => (
-                  <DesktopDatePicker
-                    {...field}
-                    startText="Date de debut"
-                    minDate={moment(new Date())}
-                    onChange={(newValue) => {
-                      field.onChange(newValue)
-                    }}
-                    renderInput={(startProps, endProps) => (
-                      <>
-                        <TextField
-                          variant="filled"
-                          {...startProps}
-                          label="Date de début"
-                        />
-                        <Box sx={{ mx: 2 }}> au </Box>
-                        <TextField
-                          variant="filled"
-                          {...endProps}
-                          label="Date de fin"
-                          error={Boolean(errors.bookingdates)}
-                          helperText={
-                            errors.bookingdates
-                              ? errors.bookingdates.message
-                              : ''
-                          }
-                        />
-                      </>
-                    )}
-                  />
-                )}
-              />
-            </ListItem> */}
-            {/* <ListItem>
-              <Controller
-                name="bookingdates"
-                control={control}
-                defaultValue={[new Date()]}
-                rules={{
-                  validate: {
-                    greather: (value) =>
-                      value[0].isAfter(value[1]) ||
-                      'La date de fin doit etre différente de la date de début',
-                  },
-                }}
-                render={({ field }) => (
-                  <MobileDateRangePicker
-                    {...field}
-                    startText="Date de debut"
-                    minDate={moment(new Date())}
-                    onChange={(newValue) => {
-                      field.onChange(newValue)
-                    }}
-                    renderInput={(startProps, endProps) => (
-                      <>
-                        <TextField
-                          variant="filled"
-                          {...startProps}
-                          label="Date de début"
-                        />
-                        <Box sx={{ mx: 2 }}> au </Box>
-                        <TextField
-                          variant="filled"
-                          {...endProps}
-                          label="Date de fin"
-                          error={Boolean(errors.bookingdates)}
-                          helperText={
-                            errors.bookingdates
-                              ? errors.bookingdates.message
-                              : ''
-                          }
-                        />
-                      </>
-                    )}
-                  />
-                )}
-              />
-            </ListItem> */}
-            {/* <ListItem className={classes.hideDownMd}>
-              <Stack spacing={3}>
-                <Controller
-                  name="startdate"
-                  control={control}
-                  defaultValue={[new Date()]}
-                  render={({ field }) => (
-                    <DesktopDateRangePicker
-                      startText="Desktop start"
-                      {...field}
-                      onChange={(newValue) => {
-                        field.onChange(newValue)
-                      }}
-                      renderInput={(startProps, endProps) => (
-                        <>
-                          <TextField
-                            variant="filled"
-                            {...startProps}
-                            label="Date de début"
-                          />
-                          <Box sx={{ mx: 2 }}> au </Box>
-                          <TextField
-                            variant="filled"
-                            {...endProps}
-                            label="Date de fin"
-                          />
-                        </>
-                      )}
-                    />
-                  )}
-                />
-              </Stack>
-            </ListItem> */}
 
             <ListItem>
               <ButtonPrimary

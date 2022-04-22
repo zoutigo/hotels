@@ -18,7 +18,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 import ButtonNavbar from './customs/ButtonNavBar'
 import StyledNavLink from './customs/StyledNavLink'
 import pages from './constants/pages'
-import useIslogged from './hook/useIsLogged'
 import getRandomKey from './utils/getRandomkey'
 import useAppContext from './hook/useAppContext'
 
@@ -27,6 +26,14 @@ const routesExclusions = [
   '/register',
   '/login',
   '/mon-compte/loggout',
+]
+
+const headerRoutes = [
+  '/',
+  '/liste-des-etablissements',
+  '/contact',
+  '/reservation',
+  '/contact',
 ]
 const settingsEclusions = [
   '/mon-compte/gestion',
@@ -64,6 +71,7 @@ const adminSettings = settings.filter(
 )
 
 function Header() {
+  const theme = useTheme()
   const {
     state: { userInfo },
   } = useAppContext()
@@ -145,24 +153,27 @@ function Header() {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {routes.map((page) => (
-                  <MenuItem
-                    key={getRandomKey(99999999)}
-                    onClick={handleCloseNavMenu}
-                  >
-                    <StyledNavLink
-                      to={{
-                        pathname: page.path,
-                        state: {
-                          pagename: page.name,
-                          from: pathname,
-                        },
-                      }}
+                {routes
+                  .filter((route) => headerRoutes.includes(route.path))
+                  .map((page) => (
+                    <MenuItem
+                      key={getRandomKey(99999999)}
+                      onClick={handleCloseNavMenu}
                     >
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </StyledNavLink>
-                  </MenuItem>
-                ))}
+                      <StyledNavLink
+                        to={{
+                          pathname: page.path,
+                          state: {
+                            pagename: page.name,
+                            from: pathname,
+                            origin: 'header',
+                          },
+                        }}
+                      >
+                        <Typography textAlign="center">{page.name}</Typography>
+                      </StyledNavLink>
+                    </MenuItem>
+                  ))}
               </Menu>
             </Box>
             <Typography
@@ -185,31 +196,34 @@ function Header() {
                 pr: '4rem',
               }}
             >
-              {routes.map((page) => (
-                <StyledNavLink
-                  key={getRandomKey(99999999)}
-                  to={{
-                    pathname: page.path,
-                    state: {
-                      pagename: page.name,
-                      from: pathname,
-                    },
-                  }}
-                >
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{
-                      my: 2,
-                      mx: 3,
-                      color: palette.secondarytext.main,
-                      textTransform: 'capitalize',
-                      display: 'block',
+              {routes
+                .filter((route) => headerRoutes.includes(route.path))
+                .map((page) => (
+                  <StyledNavLink
+                    key={getRandomKey(99999999)}
+                    to={{
+                      pathname: page.path,
+                      state: {
+                        pagename: page.name,
+                        from: pathname,
+                        origin: 'header',
+                      },
                     }}
                   >
-                    {page.name}
-                  </Button>
-                </StyledNavLink>
-              ))}
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{
+                        my: 2,
+                        mx: 3,
+                        color: palette.secondarytext.main,
+                        textTransform: 'capitalize',
+                        display: 'block',
+                      }}
+                    >
+                      {page.name}
+                    </Button>
+                  </StyledNavLink>
+                ))}
             </Box>
             {!isLogged ? (
               <StyledNavLink
@@ -252,6 +266,14 @@ function Header() {
                   {isUser &&
                     userSettings.map((set) => (
                       <MenuItem
+                        sx={
+                          noclickSettings.includes(set.path)
+                            ? {
+                                pointerEvents: 'none ! important',
+                                bgcolor: theme.palette.tertiary.main,
+                              }
+                            : {}
+                        }
                         key={getRandomKey(999999999)}
                         onClick={() => {
                           handleCloseUserMenu()
@@ -270,6 +292,14 @@ function Header() {
                   {isManager &&
                     managerSettings.map((set) => (
                       <MenuItem
+                        sx={
+                          noclickSettings.includes(set.path)
+                            ? {
+                                pointerEvents: 'none ! important',
+                                bgcolor: theme.palette.tertiary.main,
+                              }
+                            : {}
+                        }
                         key={getRandomKey(999999999)}
                         onClick={() => {
                           handleCloseUserMenu()

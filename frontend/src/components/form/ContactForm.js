@@ -1,34 +1,33 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
-import { PropTypes } from 'prop-types'
-import { useTheme } from '@mui/material/styles'
+import { useForm, Controller } from 'react-hook-form'
+
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { useSnackbar } from 'notistack'
-import { ListItem, List } from '@mui/material'
+import { ListItem, List, TextField, MenuItem } from '@mui/material'
 
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
 import getError from '../utils/getError'
 import TextInput from './TextInput'
-import FileInput from './FileInput'
+
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
+import { apiContactCreate } from '../utils/api'
+import { emailPattern } from '../constants/patterns'
 
-function ContactForm({ queryKey, queryParams, poster }) {
-  const location = useLocation()
+function ContactForm() {
+  const { pathname } = useLocation()
 
-  const { palette } = useTheme()
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { dispatch, state } = useAppContext()
+  const { state } = useAppContext()
   const { userInfo } = state
-  const { mutateAsync, isMutating } = useMutate(queryKey, poster)
+  const { mutateAsync, isMutating } = useMutate(['contact'], apiContactCreate)
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -38,70 +37,145 @@ function ContactForm({ queryKey, queryParams, poster }) {
     },
   })
 
+  const options = [
+    { label: 'je souhaite poser une reclammation', value: 'reclammation' },
+    {
+      label: 'je souhaite commander un service supplémentaire',
+      value: 'service supplémantaire',
+    },
+    {
+      label: 'je souhaite en savoir plus sur une suite',
+      value: 'en savoir plus',
+    },
+    {
+      label: "j'ai un soucis avec cette application",
+      value: 'isssoucis avec cette applicationue',
+    },
+  ]
+
   const onSubmit = async (datas) => {
+    console.log('hello')
     console.log(datas)
-    // closeSnackbar()
-    // try {
-    //   await mutateAsync(datas).then((response) => {
-    //     if (response && response.status === 200) {
-    //       dispatch({ type: 'USER_LOGIN', payload: response.data })
-    //       Cookies.set('userInfo', JSON.stringify(response.data))
-    //       const { from } = location.state || { from: { pathname: '/' } }
-    //       history.replace(from)
-    //     }
-    //   })
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: 'error' })
-    // }
+    closeSnackbar()
+    try {
+      await mutateAsync({ datas }).then((response) => {
+        if (response && response.status === 200) {
+          setTimeout(
+            () =>
+              history.push({
+                pathname: '/liste-des-etablissements',
+                state: {
+                  from: pathname,
+                  pagename: 'liste des établissement',
+                },
+              }),
+            2000
+          )
+        }
+      })
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
   }
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <List>
-        <ListItem> le nom</ListItem>
-        <ListItem> le prénom</ListItem>
-        <ListItem> le mail</ListItem>
         <ListItem>
           <TextInput
             control={control}
-            name="title"
-            label="Objet du message"
+            name="firstname"
+            label="Prénom "
+            defaultValue={userInfo ? userInfo.firstname : 'null'}
             variant="filled"
             example=""
             rules={{
-              required: "l'objet du message est obligatoire",
+              required: 'le prénom est obligatoire',
               minLength: {
                 value: 2,
-                message: 'objet doit avoir 2 caractères au moins',
+                message: 'le prénom doit avoir 2 caractères au moins',
               },
               maxLength: {
                 value: 30,
-                message: 'objet doit avoir 30 caractères au plus',
+                message: 'le prénom doit avoir 30 caractères au plus',
               },
             }}
           />
         </ListItem>
         <ListItem>
+          <TextInput
+            control={control}
+            name="lastname"
+            label="Nom "
+            defaultValue={userInfo ? userInfo.lastname : 'null'}
+            variant="filled"
+            example=""
+            rules={{
+              required: 'le nom est obligatoire',
+              minLength: {
+                value: 2,
+                message: 'le nom doit avoir 2 caractères au moins',
+              },
+              maxLength: {
+                value: 30,
+                message: 'le nom doit avoir 30 caractères au plus',
+              },
+            }}
+          />
+        </ListItem>
+        <ListItem className="field">
           <TextInput
             control={control}
             name="email"
             label="Email"
+            defaultValue=""
             variant="filled"
             example=""
             rules={{
               required: 'le mail est obligatoire',
-              validate: {
-                pattern: {
-                  value: /^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$/,
-                  message: 'veillez rentrer un mail au bon format',
-                },
+              pattern: {
+                value: emailPattern,
+                message: 'Format mail invalide',
               },
             }}
           />
         </ListItem>
+
+        <ListItem>
+          <Controller
+            control={control}
+            name="topic"
+            defaultValue=""
+            rules={{
+              required: 'veillez choisir un motif',
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e.target.value)
+                }}
+                sx={{ m: 1, width: '100%' }}
+                id="filled-select-house"
+                select
+                label="Quel est le sujet de votre message ?"
+                variant="filled"
+                error={Boolean(errors.topic)}
+                helperText={errors.topic ? errors.topic.message : ''}
+              >
+                {options.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        </ListItem>
+
         <ListItem>
           <TextInput
             control={control}
-            name="message"
+            name="content"
             label="Message"
             variant="filled"
             multiline
@@ -130,12 +204,6 @@ function ContactForm({ queryKey, queryParams, poster }) {
       </List>
     </StyledForm>
   )
-}
-
-ContactForm.propTypes = {
-  queryKey: PropTypes.arrayOf(PropTypes.string).isRequired,
-  queryParams: PropTypes.string.isRequired,
-  poster: PropTypes.func.isRequired,
 }
 
 export default ContactForm
