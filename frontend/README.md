@@ -1,8 +1,22 @@
-# Getting Started with Create React App
+# Projet Groupe hotelier
+
+Ce projet projet concernant un magnifique groupe hotelier a été réalisé dans le cadre d'un examen de fin de formation.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Environnement technique
+
+- Nodejs
+- Reactjs
+- Ubuntu
+- Vs Code
+- LAMP
+
+## Lancement de l'environnement de developpement
+
+### Base de donnée
+
+Le projet est réalisé avec Postgres sql.
 
 In the project directory, you can run:
 

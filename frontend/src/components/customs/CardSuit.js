@@ -26,11 +26,12 @@ import setUserDatas from '../utils/setUserDatas'
 const StyledGrid = styled(Grid)(({ theme }) => ({
   '& .card-suit-media': {
     cursor: 'pointer',
-    maxHeight: '30vh',
+    maxHeight: '500px',
     overflow: 'hidden',
     '& img': {
-      width: '100%',
-      objectFit: 'contain',
+      width: '300px',
+      maxHeight: '200px',
+      objectFit: 'fit',
       borderRadius: '5px',
       '&:hover': {
         filter: 'opacity(.8)',
@@ -170,16 +171,21 @@ function CardSuit({ suite }) {
             </Grid>
             <Grid item xs={6}>
               {update ? (
-                <Grid item container justifyContent="space-between">
+                <Grid
+                  item
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
                   <ButtonUpdate
-                    sx={{ width: '45%' }}
+                    sx={{ width: '45%', height: '35px !important' }}
                     onClick={handleUpdateSuit}
                   >
                     Modifier
                   </ButtonUpdate>
 
                   <ButtonDelete
-                    sx={{ width: '45%' }}
+                    sx={{ width: '45%', height: '35px !important' }}
                     onClick={handleDeleteSuite}
                   >
                     Supprimer
@@ -200,7 +206,7 @@ function CardSuit({ suite }) {
         </Grid>
       </Grid>
       {showAlbum && (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} mt={2}>
           <ModalImage
             modal={modal}
             setModal={setModal}

@@ -88,7 +88,7 @@ function BookingPage() {
   }
 
   const getSuites = (houseUuid) => {
-    const houz = withSuitsHouzes.find((houz) => houz.uuid === houseUuid)
+    const houz = withSuitsHouzes?.find((houz) => houz.uuid === houseUuid)
     const { suites } = houz
 
     const result = suites.map(({ title, uuid, price }) => ({
@@ -126,6 +126,10 @@ function BookingPage() {
   })
 
   const onSubmit = async (datas) => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+
     const {
       house: houseUuid,
       suite: suiteUuid,
@@ -183,10 +187,10 @@ function BookingPage() {
 
     if (startdate && enddate && currentSuiteValue) {
       const diff = moment(enddate).diff(startdate, 'days')
-      const currentSuite = suiteBatch.find(
+      const currentSuite = suiteBatch?.find(
         (suit) => suit.value === currentSuiteValue
       )
-      const totalPrice = currentSuite.price * diff
+      const totalPrice = currentSuite?.price * diff
       setValue('price', totalPrice)
     }
   }
@@ -395,4 +399,4 @@ function BookingPage() {
   )
 }
 
-export default BookingPage
+export default React.memo(BookingPage)
