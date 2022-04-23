@@ -27,8 +27,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin
-      // (like mobile apps or curl requests)
       if (!origin) return callback(null, true)
       if (allowedOrigins.indexOf(origin) === -1) {
         const msg =
@@ -39,7 +37,7 @@ app.use(
       return callback(null, true)
     },
     credentials: true,
-    exposedHeaders: ['x-access-token'],
+    exposedHeaders: ['authorization'],
   })
 )
 
@@ -87,6 +85,7 @@ app.use('/api/mails', mailsRouter)
 //   res.render('error')
 // })
 app.disable('x-powered-by')
+
 app.use(handleErrors)
 
 // app.get('*', (req, res) => {

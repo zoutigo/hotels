@@ -41,7 +41,11 @@ module.exports.postBooking = async (req, res, next) => {
 
   req.body.userUuid = userUuid
 
-  const { suiteIsAvailable } = await isSuiteAvailable(req.body)
+  const { suiteIsAvailable, error } = await isSuiteAvailable(req.body)
+
+  if (error) {
+    return next(error)
+  }
 
   if (!suiteIsAvailable)
     return next(

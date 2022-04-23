@@ -10,33 +10,31 @@ const authenticate = async (req, res, next) => {
     return next(new BadRequest('password or email missing'))
   }
 
-  const userVerified = await user.findOne({
-    where: { email },
-    include: userTokenInclude,
-  })
+  try {
+    const userVerified = await user.findOne({
+      where: { email },
+      include: userTokenInclude,
+    })
 
-  if (!userVerified) {
-    return next(new BadRequest('utilisateur inconnu'))
+    if (!userVerified) {
+      return next(new BadRequest('utilisateur inconnu'))
+    }
+
+    // check password
+    const passwordVerified = await bcrypt.compare(
+      password,
+      userVerified.password
+    )
+    if (!passwordVerified)
+      return next(new BadRequest('email ou mot de pass invalide'))
+
+    return res.status(200).send({
+      message: 'connection effectuée avec succès',
+      token: generateToken(userVerified),
+    })
+  } catch (error) {
+    return next(error)
   }
-
-  // check password
-  const passwordVerified = await bcrypt.compare(password, userVerified.password)
-  if (!passwordVerified)
-    return next(new BadRequest('email ou mot de pass invalide'))
-
-  // const userInfos = {
-  //   token: generateToken(userVerified),
-  //   lastname: userVerified.lastname,
-  //   firstname: userVerified.firstname,
-  //   email: userVerified.email,
-  //   roles: userVerified.roles,
-  //   uuid: userVerified.uuid,
-  // }
-
-  return res.status(200).send({
-    message: 'connection effectuée avec succès',
-    token: generateToken(userVerified),
-  })
 }
 
 module.exports = authenticate

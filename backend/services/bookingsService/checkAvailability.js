@@ -9,40 +9,28 @@ const isSuiteAvailable = async (datas) => {
   const endRange = Number(enddate)
   const range = getDatesInRange(startdate, enddate)
   try {
-    const currentSuite = await suite.findOne({ where: { uuid: suiteUuid } })
-
-    // const existingBookings = await booking.findAll({
-    //   where: {
-    //     suiteId: currentSuite.id,
-    //     [Op.or]: {
-    //       startdate: { [Op.in]: range },
-    //       enddate: { [Op.in]: range },
-    //     },
-    //   },
-    // })
-    const existingBookings = await booking.findAll({
-      where: {
-        suiteId: currentSuite.id,
-      },
+    const currentSuite = await suite.findOne({
+      where: { uuid: suiteUuid },
     })
+    if (!currentSuite)
+      return { suiteIsAvailable: false, error: 'la suite exite pas' }
 
-    const booked1 = existingBookings.find(
+    const bookings = await currentSuite.getBookings()
+    if (!bookings) return { suiteIsAvailable: true, error: false }
+
+    const matchBooking = bookings.find(
       (booking) =>
         range.includes(Number(booking.startdate)) ||
         range.includes(Number(booking.enddate))
     )
-    if (booked1) return { suiteIsAvailable: false }
-    console.log('booked1--------------', booked1)
 
-    console.log('------------------------checked: ', existingBookings)
+    if (matchBooking) return { suiteIsAvailable: false, error: false }
 
-    return { suiteIsAvailable: existingBookings && existingBookings.length < 1 }
+    return { suiteIsAvailable: true, error: false }
   } catch (error) {
-    console.log(error)
+    return { suiteIsAvailable: false, error }
   }
   return true
 }
 
 module.exports = isSuiteAvailable
-
-// const date = moment('2016-10-11 18:06:03').tz('Europe/Paris').format()
