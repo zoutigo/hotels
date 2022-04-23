@@ -109,8 +109,8 @@ function BookingPage() {
   const initialValues = {
     house: getHouse() ? { label: getHouse().name, value: getHouse().uuid } : '',
     suite: {
-      label: location.state.suite?.title,
-      value: location.state.suite?.uuid,
+      label: location?.state?.suite?.title || '',
+      value: location?.state?.suite?.uuid || '',
     },
     price: location.state ? location.state.suite?.price : 0,
 
@@ -181,6 +181,20 @@ function BookingPage() {
       })
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' })
+
+      if (err.message === 'Request failed with status code 498') {
+        setTimeout(
+          () =>
+            history.push({
+              pathname: '/login',
+              state: {
+                from: location.pathname,
+                pagename: 'login',
+              },
+            }),
+          1500
+        )
+      }
     }
   }
 

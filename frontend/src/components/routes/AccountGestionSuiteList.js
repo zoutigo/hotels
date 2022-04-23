@@ -25,7 +25,6 @@ function AccountGestionSuiteList() {
     },
   } = useAppContext()
 
-
   if (!house.uuid) {
     history.push('/liste-des-etablissements')
   }
@@ -36,13 +35,10 @@ function AccountGestionSuiteList() {
     apiHouseGet
   )
 
-
-
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
         <Bread>Les suites</Bread>
-
         <PageTitle>Les suites</PageTitle>
 
         {/* {isLoading && (
@@ -69,7 +65,6 @@ function AccountGestionSuiteList() {
 
       {data && data.data && data.data.suites.length > 0 ? (
         data.data.suites.map((suite) => (
-
           <StyledSection key={suite.uuid} background={palette.tertiary.main}>
             <CardSuit suite={suite} />
           </StyledSection>

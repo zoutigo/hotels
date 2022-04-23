@@ -1,5 +1,4 @@
 import axios from 'axios'
-import UserDetais from '../customs/UserDetais'
 
 const LOCALHOST = 'http://localhost:3500'
 
@@ -36,6 +35,16 @@ export const apiUsersList = async () => {
     method: 'get',
     url: registerURL,
     headers: { ...commonHeaders },
+  })
+  return response
+}
+export const apiUserBookings = async ({ uuid, token }) => {
+  const registerURL = `${PREFIX}/api/users/${uuid}/bookings`
+  const tokenHeader = { Authorization: 'Bearer ' + token }
+  const response = await axios({
+    method: 'get',
+    url: registerURL,
+    headers: { ...commonHeaders, ...tokenHeader },
   })
   return response
 }

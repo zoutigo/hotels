@@ -1,27 +1,14 @@
-// const getDatesInRange = (startDate, endDate) => {
-//   const date = new Date(startDate.getTime())
+const Moment = require('moment'),
+  MomentRange = require('moment-range'),
+  moment = MomentRange.extendMoment(Moment)
 
-//   const dates = []
+const getDatesInRange = (startdate, enddate) => {
+  const dates = [moment(startdate).format('L'), moment(enddate).format('L')]
+  const range = moment.range(dates)
+  const array = Array.from(range.by('days'))
+  const timestamps = array.map((d) => d.valueOf())
 
-//   while (date <= endDate) {
-//     dates.push(new Date(date))
-//     date.setDate(date.getDate() + 1)
-//   }
-
-//   return dates
-// }
-const getDatesInRange = (startDate, endDate) => {
-  // startdate and enddate are timestamp : 1656028800000
-  const date = new Date(startDate)
-
-  const dates = []
-
-  while (date <= endDate) {
-    dates.push(new Date(date).getTime())
-    date.setDate(date.getDate() + 1)
-  }
-
-  return dates
+  return timestamps
 }
 
 module.exports = getDatesInRange

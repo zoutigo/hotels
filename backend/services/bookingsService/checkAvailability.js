@@ -8,6 +8,7 @@ const isSuiteAvailable = async (datas) => {
   const startRange = Number(startdate)
   const endRange = Number(enddate)
   const range = getDatesInRange(startdate, enddate)
+
   try {
     const currentSuite = await suite.findOne({
       where: { uuid: suiteUuid },

@@ -58,6 +58,7 @@ module.exports.postBooking = async (req, res, next) => {
 
   if (serverError) return next(serverError)
   if (errors) return next(new BadRequest(errors.join(' ')))
+  if (!createdBooking) return next("la reservation ne s'est pas bien deroulée")
   const token = await refreshTokenService(userUuid)
 
   return res.status(200).send({
@@ -78,6 +79,30 @@ module.exports.getBooking = async (req, res, next) => {
   const isAllowedRole = roles.includes('admin')
 
   // on peut aussi donner l'acces au manager et au propiétaire
+
+  const isAllowed = isAllowedRole
+
+  if (!isAllowed)
+    return next(new Forbidden('vous ne pouvez pas consulter cette information'))
+
+  const { error, requestedBooking, serverError } = await getBookingService(
+    bookingUuid
+  )
+  if (serverError) return next(serverError)
+  if (error) return next(new BadRequest(error))
+
+  return res.status(200).send(requestedBooking)
+}
+module.exports.getUserBookings = async (req, res, next) => {
+  if (!req.params || !req.params.bookingUuid)
+    return next(new BadRequest('veillez indiquer la suite recherchée'))
+
+  const { bookingUuid } = req.params
+  const { roles, uuid: userUuid } = req.user
+
+  const isAllowedRole = roles.includes('admin')
+
+  //on vérifie que le user est le propriétaire
 
   const isAllowed = isAllowedRole
 

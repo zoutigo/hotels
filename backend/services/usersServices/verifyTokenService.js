@@ -30,8 +30,11 @@ const verifyTokenService = async (req, res, next) => {
 
     next()
   } catch (err) {
-    console.log(err)
-    return next(new TokenInvalid(err))
+    return next(
+      new TokenInvalid(
+        'Veillez vous connecter ou vous incrire pour obtenir cette ressource'
+      )
+    )
   }
   return null
 }

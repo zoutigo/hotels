@@ -4,9 +4,15 @@ const { user, house } = require('../database/models')
 const authenticate = require('../services/usersServices/authenticate')
 const createUserService = require('../services/usersServices/createUserService')
 const deleteUserService = require('../services/usersServices/deleteUserService')
+const getUserBookingService = require('../services/usersServices/getUserBookingsService')
 const getUserService = require('../services/usersServices/getUserService')
 const updateUserService = require('../services/usersServices/updateUserService')
-const { BadRequest, Forbidden, Unauthorized } = require('../utils/errors')
+const {
+  BadRequest,
+  Forbidden,
+  Unauthorized,
+  NotFound,
+} = require('../utils/errors')
 
 module.exports.login = authenticate
 
@@ -103,6 +109,29 @@ module.exports.getUser = async (req, res, next) => {
 
   return res.status(200).send(user)
 }
+module.exports.getUserBookings = async (req, res, next) => {
+  if (!req.params || !req.params.uuid)
+    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
+
+  const { roles, uuid: userUuid } = req.user
+
+  const isAllowedRole = roles.includes('manager') || roles.includes('admin')
+
+  const isAllowedUser = userUuid === req.params.uuid
+
+  const isAllowed = isAllowedUser || isAllowedRole
+
+  if (!isAllowed)
+    return next(new Forbidden('vous ne pouvez pas consulter cette information'))
+
+  const { error, bookings } = await getUserBookingService(req.params.uuid)
+  if (error) return next(error)
+  if (!bookings)
+    return next(new NotFound("vous n'avez pas de reservation actuellement"))
+
+  return res.status(200).send(bookings)
+}
+
 module.exports.putUsers = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
