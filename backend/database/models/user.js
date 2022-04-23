@@ -2,11 +2,6 @@ const { Model, Sequelize } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({ house, booking }) {
       house.belongsTo(this, {
         onDelete: 'SET NULL',
@@ -26,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
 
     // toJSON() {
     //   return { ...this.get(), id: undefined }
-    // }
-
-    // async hashPass(value) {
-    //   return await hashPassword(value)
     // }
   }
   User.init(
