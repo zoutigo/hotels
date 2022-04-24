@@ -7,7 +7,6 @@ NPM 8.1.0
 Postgresql 12.9
 VsCode
 
-
 # Lancer l'environnement de developpement
 
 - demarrer apache
@@ -16,7 +15,6 @@ VsCode
 - demarrer postgres avec la commande
   `sudo systemctl postgresql start`
 
-
 ## Lancement environnement backend
 
 ### créer une base de données postgres sur votre poste de travail LAMP
@@ -24,6 +22,7 @@ VsCode
 - se mettre sur un user , par exemple postgres
 
   `sudo -i -u postgres`
+
 - Entrer dans l'outil psql
   `psql`
 - créer une base de données ,par exemple hotels_dev
@@ -89,11 +88,12 @@ Cors reconnait ce port 3000 . il se pourrait qu'un autre port ne fonctionne pas 
 
 ## Jeux de role
 
-- Pour simulerles différents roles , des profils ont été crée dans les fixtures
+- Pour simuler les différents roles , des profils ont été crée dans les fixtures
   notamment l'admin.
 - l'adminstateur a pour identifiants admin@test.com || password
 - les gérants ont manager{i}@test.com || password
-- le profil manager a été crée , mais il n'es pas d'utilité . Les gérants sont ceux à qui des etablissements ont été assignés
+- le role manager a été crée , mais il n'es pas d'utilité . Les gérants sont ceux à qui des etablissements ont été assignés: les devmanagers
+
 ### option 2 :
 
 - installer les dépendances du projet
@@ -127,3 +127,8 @@ c'est la base de donnée indiquée dans les variables d'environnement qui est cr
 
 -installer les dépendences
 `npm install`
+
+- demarrer le projet
+  `npm run front-server`
+
+Le projet frontend

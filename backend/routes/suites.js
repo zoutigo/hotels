@@ -34,7 +34,7 @@ router.put(
   putSuite
 )
 
-/* PUT suites updating. */
+/* DELETE suites updating. */
 router.delete('/:suiteUuid', verifyTokenService, deleteSuite)
 
 /* DELETE suite image. */
