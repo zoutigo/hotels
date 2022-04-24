@@ -94,41 +94,28 @@ Cors reconnait ce port 3000 . il se pourrait qu'un autre port ne fonctionne pas 
 - les gérants ont manager{i}@test.com || password
 - le role manager a été crée , mais il n'es pas d'utilité . Les gérants sont ceux à qui des etablissements ont été assignés: les devmanagers
 
-### option 2 :
+# Déploiement chez O2SWITCH
 
-- installer les dépendances du projet
-  `npm install`
-- créer la base donnée grace à sequelize
-  `npx sequelize-cli db:create`
+## Solution hebergement
 
-c'est la base de donnée indiquée dans les variables d'environnement qui est crée
+## Création de la base de donnée
 
-## mettre à jour les variables d'environnement du projet
+## Création de l'espace de travail
 
-- dans le fichier .env situé à la racine du site , renseignez les informations de votre base de données
+### Créer un sous domaine
 
-## Environnement Backend
+### Créer un repository
 
-- Installer les dépendances
-  `npm install`
+- creer le repo
+- lier le répo au dépot local git
+  `git remote add upstream ssh://kojy5082@kojy5082.odns.fr/home/kojy5082/repositories/hotels-nodejs`
+- créer le hook dans le repository
+- envoyer les données
+  `git push -u upstream master`
 
-- Réaliser les migrations
-  `npm run migrate`
+### Créer un node setup
 
-- Démarrer le site
-  `npm run back-server`
-
-  La console vous indique le port sur lequel vous pouvez vous connecter sur le site : localhost:3500
-
-## environnement Frontend
-
-- naviguer sur dans le dossier frontend
-  `cd ./fronted `
-
--installer les dépendences
-`npm install`
-
-- demarrer le projet
-  `npm run front-server`
-
-Le projet frontend
+- renseigner les information
+- indiquer les variables d'environnement
+- lancer les scripts
+- redemarrer
