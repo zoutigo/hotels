@@ -117,5 +117,11 @@ Cors reconnait ce port 3000 . il se pourrait qu'un autre port ne fonctionne pas 
 
 - renseigner les information
 - indiquer les variables d'environnement
+  POSTGRES_DB
+  POSTGRES_PASSWORD
+  POSTGRES_USER
+
+  TOKEN_SECRET=cequevousvoulezmettreici
+  TOKEN_LOGIN_DURATION=1d
 - lancer les scripts
 - redemarrer
