@@ -35,7 +35,7 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
       ssl: {
-        require: true,
+        require: false,
         rejectUnauthorized: false,
       },
     },
