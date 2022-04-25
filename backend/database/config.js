@@ -34,6 +34,10 @@ module.exports = {
     logging: false,
     native: true,
     ssl: true,
-    dialectOptions: {},
+    dialectOptions: {
+      ssl: {
+        require: true,
+      },
+    },
   },
 }
