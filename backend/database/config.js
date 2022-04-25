@@ -33,13 +33,8 @@ module.exports = {
     dialect: 'postgres',
     logging: false,
     operatorsAliases: 0,
-    ssl: false,
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
+    dialectOptions: {
+      bigNumberStrings: true,
     },
-    dialectOptions: {},
   },
 }
