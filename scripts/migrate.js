@@ -22,4 +22,8 @@ const URL = `postgres://${config.username}:${config.password}@127.0.0.1:5432/${c
 
 //   DATABASE_URL="postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8"
 
-execute(`npx sequelize-cli db:migrate --url ${URL} --debug`)
+try {
+  execute(`npx sequelize-cli db:migrate --url ${URL} --debug`)
+} catch (error) {
+  console.log('our error:-------------------', error)
+}
