@@ -22,10 +22,12 @@ const config = require(`${__dirname}/../backend/database/config.js`)[env]
 //   DATABASE_URL="postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8"
 
 const migrate = async () => {
-  const URL = `postgres://${config.username}:${config.password}@127.0.0.1:5432/${config.database}`
+  //   const URL = `postgres://${config.username}:${config.password}@127.0.0.1:5432/${config.database}`
+  const URL =
+    'postgres://kojy5082_zoutigo:kOjG1UZ%NcuE@127.0.0.1:5432/kojy5082_hotels'
 
   try {
-    await execute(`npx sequelize-cli db:migrate --url ${URL} --debug`)
+    await execute(`npx sequelize-cli db:migrate --url ${URL}`)
   } catch (error) {
     console.log('our error:-------------------', error)
   }
