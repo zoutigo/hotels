@@ -34,9 +34,6 @@ module.exports = {
     logging: false,
     dialectOptions: {
       bigNumberStrings: true,
-      ssl: {
-        rejectUnauthorized: false,
-      },
     },
   },
 }
