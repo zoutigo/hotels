@@ -13,7 +13,7 @@
     "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
-    "migrate": "npx sequelize-cli db:migrate  --debug"
+    "migrate": "node ./scripts/migrate.js"
   },
   "dependencies": {
     "@getvim/execute": "^1.0.0",
