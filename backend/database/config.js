@@ -32,9 +32,12 @@ module.exports = {
     port: process.env.POSTGRES_PORT,
     dialect: 'postgres',
     logging: false,
-    operatorsAliases: 0,
     dialectOptions: {
       bigNumberStrings: true,
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   },
 }
