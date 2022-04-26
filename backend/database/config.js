@@ -36,6 +36,7 @@ module.exports = {
       bigNumberStrings: true,
       ssl: {
         require: true,
+        native: true,
         rejectUnauthorized: false,
       },
     },
