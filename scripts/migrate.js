@@ -1,5 +1,7 @@
 const { execute } = require('@getvim/execute')
 
+// "migrate": "npx sequelize-cli db:migrate --url postgres://kojy5082_secondary:ValeryMBELE1979@127.0.0.1:5432/kojy5082_hotels_secondary?sslmode=disable"
+
 // "migrate": "npx sequelize-cli db:migrate --url postgres://kojy5082_secondary:ValeryMBELE1979@127.0.0.1:5432/kojy5082_hotels_secondary/"
 
 const migrate = async () => {
