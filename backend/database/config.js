@@ -32,7 +32,6 @@ module.exports = {
     port: process.env.POSTGRES_PORT,
     dialect: 'postgres',
     logging: false,
-    sslmode: false,
     dialectOptions: {
       bigNumberStrings: true,
     },

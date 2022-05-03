@@ -21,7 +21,7 @@ function EtablissementPage({ house: managerHouse }) {
     pathname === '/mon-compte/gestion-suite/list' && managerHouse
       ? managerHouse
       : commonHouse
-  const { suites, name, description } = house
+  const { suites, name, description, uuid } = house
 
   return (
     <StyledPage>
@@ -37,7 +37,7 @@ function EtablissementPage({ house: managerHouse }) {
       {suites.length > 0 &&
         suites.map((suite) => (
           <StyledSection key={suite.uuid} background={palette.tertiary.main}>
-            <CardSuit suite={suite} />
+            <CardSuit suite={suite} house={{ houseUuid: uuid, name }} />
           </StyledSection>
         ))}
     </StyledPage>

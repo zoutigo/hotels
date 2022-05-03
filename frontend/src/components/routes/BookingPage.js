@@ -34,9 +34,6 @@ import useAppContext from '../hook/useAppContext'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
-import StyledNavLink from '../customs/StyledNavLink'
-import selectStyles from '../constants/selectStyles'
-import houses from '../constants/houses'
 import useFetch from '../hook/useFetch'
 import { housesQueryKey } from '../constants/queryKeys'
 import setUserDatas from '../utils/setUserDatas'
@@ -59,7 +56,6 @@ function BookingPage() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const {
     dispatch,
-
     state: { userInfo },
   } = useAppContext()
 
@@ -73,15 +69,23 @@ function BookingPage() {
     apiHousesList
   )
 
-  const withSuitsHouzes =
+  const withSuitsHouzes = useCallback(
     data && data.datas && Array.isArray(data.datas)
       ? data.datas.filter((house) => house.suites && house.suites.length > 0)
-      : []
+      : [],
+    [data]
+  )
+
+  // const withSuitsHouzes =
+  //   data && data.datas && Array.isArray(data.datas)
+  //     ? data.datas.filter((house) => house.suites && house.suites.length > 0)
+  //     : []
 
   const getHouse = () => {
     if (location.state && location.state.origin === 'cardsuit') {
       const {
         suite: { houseId },
+        house,
       } = location.state
       const deHouse = withSuitsHouzes.find((houz) => houz.id === houseId)
 
@@ -90,22 +94,32 @@ function BookingPage() {
     return null
   }
 
-  const getSuites = (houseUuid) => {
-    const houz = withSuitsHouzes?.find((houz) => houz.uuid === houseUuid)
+  const getSuites = useCallback(
+    (houseUuid) => {
+      const houz = withSuitsHouzes?.find(
+        (houz) =>
+          houz.uuid === houseUuid ||
+          houz.uuid === location?.state.house?.houseUuid
+      )
 
-    const { suites } = houz
+      console.log('houz', houz)
 
-    const result = suites.map(({ title, uuid, price }) => ({
-      label: title,
-      value: uuid,
-      price,
-    }))
+      const { suites } = houz
 
-    setSuiteBatch(result)
-    return result
-  }
+      const result = suites.map(({ title, uuid, price }) => ({
+        label: title,
+        value: uuid,
+        price,
+      }))
+
+      setSuiteBatch(result)
+      return result
+    },
+    [location, withSuitsHouzes]
+  )
 
   const { mutateAsync, isMutating } = useMutate(queryKey, apiBookingCreate)
+
   const initialValues = {
     house: getHouse() ? { label: getHouse().name, value: getHouse().uuid } : '',
     suite: {
@@ -192,18 +206,19 @@ function BookingPage() {
                 pagename: 'login',
               },
             }),
-          1500
+          2000
         )
       }
     }
   }
 
-  const setTotalPrice = () => {
+  const setTotalPrice = useCallback(() => {
     const startdate = getValues('startdate')
 
     const enddate = getValues('enddate')
 
     const currentSuiteValue = getValues('suite')
+    console.log('currentSuiteValue', currentSuiteValue)
 
     if (startdate && enddate && currentSuiteValue) {
       const diff = moment(enddate).diff(startdate, 'days')
@@ -211,11 +226,31 @@ function BookingPage() {
       const currentSuite = suiteBatch?.find(
         (suit) => suit.value === currentSuiteValue
       )
+
       const totalPrice = currentSuite?.price * diff
 
       setValue('price', totalPrice)
     }
-  }
+  }, [getValues, setValue, suiteBatch])
+
+  // const setTotalPrice = () => {
+  //   const startdate = getValues('startdate')
+
+  //   const enddate = getValues('enddate')
+
+  //   const currentSuiteValue = getValues('suite')
+
+  //   if (startdate && enddate && currentSuiteValue) {
+  //     const diff = moment(enddate).diff(startdate, 'days')
+
+  //     const currentSuite = suiteBatch?.find(
+  //       (suit) => suit.value === currentSuiteValue
+  //     )
+  //     const totalPrice = currentSuite?.price * diff
+
+  //     setValue('price', totalPrice)
+  //   }
+  // }
 
   const houseOptions = withSuitsHouzes.map(({ name, uuid }) => ({
     value: uuid,
@@ -244,7 +279,6 @@ function BookingPage() {
               <Controller
                 control={control}
                 name="house"
-                defaultValue={initialValues.house}
                 rules={{
                   required: 'veillez choisir un établissement',
                 }}
@@ -264,6 +298,7 @@ function BookingPage() {
                     variant="filled"
                     error={Boolean(errors.house)}
                     helperText={errors.house ? errors.house.message : ''}
+                    // disabled={location.state.suite}
                   >
                     {houseOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -296,8 +331,11 @@ function BookingPage() {
                     select
                     label="Choisissez une suite"
                     variant="filled"
-                    error={Boolean(errors.suit)}
-                    helperText={errors.suit ? errors.suit.message : ''}
+                    error={Boolean(errors.suite)}
+                    helperText={errors.suit ? errors.suite.message : ''}
+                    // SelectProps={{
+                    //   renderValue: (option) => option.label,
+                    // }}
                   >
                     {suites.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -399,7 +437,7 @@ function BookingPage() {
                     label="Prix total"
                     variant="filled"
                     error={Boolean(errors.house)}
-                    helperText={errors.house ? errors.house.message : ''}
+                    helperText={errors.price ? errors.price.message : ''}
                   ></TextField>
                 )}
               />

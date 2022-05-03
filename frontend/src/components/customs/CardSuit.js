@@ -41,7 +41,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }))
 
-function CardSuit({ suite }) {
+function CardSuit({ suite, house }) {
   const {
     dispatch,
 
@@ -100,8 +100,6 @@ function CardSuit({ suite }) {
         token,
       }).then((response) => {
         if (response.status === 200) {
-
-
           const refreshedUserInfo = setUserDatas(response)
           dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
           Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
@@ -175,7 +173,6 @@ function CardSuit({ suite }) {
             </Grid>
             <Grid item xs={6}>
               {update ? (
-
                 <Grid
                   item
                   container
@@ -184,8 +181,6 @@ function CardSuit({ suite }) {
                 >
                   <ButtonUpdate
                     sx={{ width: '45%', height: '35px !important' }}
-
-
                     onClick={handleUpdateSuit}
                   >
                     Modifier
@@ -203,9 +198,7 @@ function CardSuit({ suite }) {
                   to={{
                     pathname: '/reservation',
 
-                    state: { suite, from: pathname, origin: 'cardsuit' },
-
-
+                    state: { suite, from: pathname, origin: 'cardsuit', house },
                   }}
                 >
                   <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>
@@ -216,9 +209,7 @@ function CardSuit({ suite }) {
         </Grid>
       </Grid>
       {showAlbum && (
-
         <Grid container spacing={2} mt={2}>
-
           <ModalImage
             modal={modal}
             setModal={setModal}
@@ -280,6 +271,10 @@ CardSuit.propTypes = {
       ).isRequired,
     })
   ).isRequired,
+  house: PropTypes.shape({
+    houseUuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
 }
 
 export default React.memo(CardSuit)
