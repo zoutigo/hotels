@@ -21,6 +21,9 @@ const app = express()
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'hotels.artsi.fr',
+  'http://hotels.artsi.fr',
+  'http://www.hotels.artsi.fr',
   process.env.SERVER_ADRESS,
 ]
 
