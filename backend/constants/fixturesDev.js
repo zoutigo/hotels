@@ -10,7 +10,7 @@ for (let a = 0; a < 10; a++) {
     firstname: faker.name.firstName(),
     email: `manager${a}@test.com`,
     password: 'password',
-    roles: ['manager'],
+    roles: JSON.stringify(['manager']),
     createdAt: new Date(),
     updatedAt: new Date(),
   }

@@ -55,10 +55,16 @@ module.exports = {
             type: Sequelize.STRING(64),
           },
           roles: {
-            type: Sequelize.JSON(
-              Sequelize.STRING(Sequelize.ENUM('admin', 'manager', 'client'))
-            ),
+            type: Sequelize.STRING,
+            get() {
+              const rawValue = this.getDataValue('roles')
+              return rawValue ? JSON.parse(rawValue) : []
+            },
+            set(value) {
+              this.setDataValue('roles', JSON.stringify(value))
+            },
           },
+
           createdAt: {
             allowNull: false,
             type: Sequelize.DATE,
