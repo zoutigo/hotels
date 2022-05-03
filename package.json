@@ -8,14 +8,14 @@
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
     "build": "cd ./frontend && npm run build",
-    "postbuild": "cp -r ./client/build/* ./public/html && rm -rf ./client/build",
-    "reseedall": "npx sequelize-cli db:seed:all --debug",
-    "seedall": "npx sequelize-cli db:seed:all --debug --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "seedall": "npx sequelize-cli db:seed:all --debug",
+    "prodseedall": "npx sequelize-cli db:seed:all --debug --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
     "seedundoall": "npx sequelize-cli db:seed:undo:all",
+    "prodseedundoall": "npx sequelize-cli db:seed:undo:all --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
     "remigrate": "npx sequelize-cli db:migrate ",
-    "migrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'"
+    "prodmigrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'"
     
   },
   "dependencies": {
