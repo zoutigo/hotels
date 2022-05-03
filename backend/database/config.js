@@ -1,17 +1,24 @@
 require('dotenv').config()
 
 module.exports = {
+  // development: {
+  //   username: process.env.POSTGRES_USER,
+  //   password: process.env.POSTGRES_PASSWORD,
+  //   database: process.env.POSTGRES_DB,
+  //   host: '127.0.0.1',
+  //   port: 5432,
+  //   dialect: 'postgres',
+  //   logging: true,
+  //   dialectOptions: {
+  //     bigNumberStrings: true,
+  //   },
+  // },
   development: {
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB,
+    username: 'zoutigo',
+    password: 'valery54',
+    database: 'hotels_dev',
     host: '127.0.0.1',
-    port: 5432,
-    dialect: 'postgres',
-    logging: true,
-    dialectOptions: {
-      bigNumberStrings: true,
-    },
+    dialect: 'mysql',
   },
   test: {
     username: process.env.POSTGRES_USER,
