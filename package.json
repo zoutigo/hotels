@@ -9,13 +9,14 @@
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
     "build": "cd ./frontend && npm run build",
     "seedall": "npx sequelize-cli db:seed:all --debug",
+    "prodmigrateundoall": "npx sequelize-cli db:migrate:undo:all --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "prodmigrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
     "prodseedall": "npx sequelize-cli db:seed:all --debug --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
-    "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "prodseedundoall": "npx sequelize-cli db:seed:undo:all --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
-    "remigrate": "npx sequelize-cli db:migrate ",
-    "prodmigrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'"
+    "remigrate": "npx sequelize-cli db:migrate "
   },
   "dependencies": {
     "@faker-js/faker": "^6.1.2",
