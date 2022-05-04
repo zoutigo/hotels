@@ -16,9 +16,9 @@
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
     "remigrate": "npx sequelize-cli db:migrate ",
     "prodmigrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'"
-    
   },
   "dependencies": {
+    "@faker-js/faker": "^6.1.2",
     "@getvim/execute": "^1.0.0",
     "@sequelize/core": "^7.0.0-alpha.10",
     "bcrypt": "^5.0.1",
@@ -40,10 +40,9 @@
     "sequelize": "^6.19.0",
     "sequelize-cli": "^6.4.1",
     "sharp": "^0.30.3",
-    "@faker-js/faker": "^6.1.2"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-   
     "cross-env": "^7.0.3",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",

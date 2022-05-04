@@ -16,10 +16,27 @@ module.exports = {
         }
       )
 
-      const suites = await devSuites.map((suit) => ({
-        ...suit,
-        houseId: houses[Math.floor(Math.random() * 5)].id,
-      }))
+      let countHouses = houses.length
+      let increment = 0
+
+      const suites = await devSuites.map((suit) => {
+        increment += 1
+
+        const house = houses[countHouses]
+
+        const updatedSuite = {
+          ...suit,
+          houseId: house ? house.id : houses[0].id,
+        }
+
+        if (increment === 4) {
+          increment = 0
+          countHouses = countHouses - 1
+        }
+
+        return updatedSuite
+      })
+
       await queryInterface.bulkInsert('suites', suites, {
         transaction,
       })

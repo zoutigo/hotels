@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid')
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
@@ -13,7 +15,7 @@ module.exports = {
           },
           uuid: {
             type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV4,
+            defaultValue: uuidv4(),
           },
           lastname: {
             type: Sequelize.STRING(30),
