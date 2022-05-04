@@ -25,8 +25,8 @@ function EtablissementListPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread>List des établissements</Bread>
         <PageTitle>Liste des établissements</PageTitle>
+        <Bread>Liste des établissements</Bread>
         <Grid item container>
           <EtablissementsListForm />
         </Grid>

@@ -47,7 +47,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     '& img': {
       width: '100%',
 
-      objectFit: 'contain',
+      objectFit: 'cover',
       borderRadius: '19px',
     },
   },
@@ -78,7 +78,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function CardSmallHouse({ house }) {
   const { name, description, bannerUrl, city, slug, uuid } = house
-  console.log('bannerUrl', bannerUrl)
+
   const [showDeleteConfirm, setshowDeleteConfirm] = useState(false)
   const adminLocation = '/mon-compte/administration/liste-etablissements'
   const { pathname } = useLocation()

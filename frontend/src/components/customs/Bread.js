@@ -10,19 +10,12 @@ const StyledTypo = styled(Typography)(({ theme }) => ({
 
 const StyledGrid = styled(Grid)(() => ({
   alignItems: 'center',
-  '& span': {
-    width: '3rem',
-    height: '2px',
-    background: 'blue',
-    marginRight: '2rem',
-  },
 }))
 
 function Bread({ children }) {
   return (
-    <StyledGrid container className="hideDownMd">
-      <span>&nbsp;</span>
-      <StyledTypo variant="body1">{children}</StyledTypo>
+    <StyledGrid container className="hideUpMd">
+      <StyledTypo variant="h3"> --- {children} ---</StyledTypo>
     </StyledGrid>
   )
 }
