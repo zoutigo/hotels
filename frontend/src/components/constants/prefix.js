@@ -4,5 +4,5 @@
 //     : 'http://localhost:3500/images/'
 export const IMG_PREFIX =
   process.env.NODE_ENV === 'production'
-    ? 'hotels.artsi.fr/'
+    ? '/images/'
     : 'http://localhost:3500/images/'
