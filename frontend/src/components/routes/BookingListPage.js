@@ -40,7 +40,7 @@ function BookingListPage() {
     token: state.userInfo?.token,
   }
 
-  const queryKey = ['bookings', state.userInfo.uuid, 'user1']
+  const queryKey = ['bookings', state.userInfo.uuid]
 
   const { isLoading, isError, data, errorMessage } = useFetch(
     queryKey,

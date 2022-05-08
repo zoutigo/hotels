@@ -17,6 +17,12 @@ import ShareIcon from '@mui/icons-material/Share'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IMG_PREFIX } from '../constants/prefix'
+import useAppContext from '../hook/useAppContext'
+import useMutate from '../hook/useMutate'
+import { apiBookingDelete } from '../utils/api'
+import { useSnackbar } from 'notistack'
+import getError from '../utils/getError'
+import getResponse from '../utils/getResponse'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props
@@ -52,14 +58,39 @@ export default function CardBooking({ booking }) {
     setExpanded(!expanded)
   }
 
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar()
+
+  const {
+    state: {
+      userInfo: { token, uuid: userUuid },
+    },
+  } = useAppContext()
+
+  const queryKey = ['bookings', userUuid]
+  const { mutateAsync, isMutating } = useMutate(queryKey, apiBookingDelete)
+
+  const handleDelete = React.useCallback(async () => {
+    closeSnackbar()
+    try {
+      await mutateAsync({
+        uuid,
+        token,
+      }).then((response) => {
+        enqueueSnackbar(getResponse(response), { variant: 'success' })
+      })
+    } catch (error) {
+      enqueueSnackbar(getError(error), { variant: 'error' })
+    }
+  }, [closeSnackbar, enqueueSnackbar, mutateAsync, token, uuid])
+
   return (
     <Card sx={{ maxWidth: 345, width: '100%' }}>
       <CardHeader
-        // avatar={
-        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-        //     R
-        //   </Avatar>
-        // }
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            R
+          </Avatar>
+        }
         // action={
         //   <IconButton aria-label="settings">
         //     <MoreVertIcon />
@@ -76,16 +107,18 @@ export default function CardBooking({ booking }) {
         alt={suiteTitle}
       />
       <CardContent>
-        <Typography variant="h4" color="text.secondary">
+        <Typography variant="h5" color="text.secondary">
           {suiteTitle}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.primary">
           Du {moment(startdate).format('dddd DD MMMM YYYY')}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.primary">
           Au {moment(enddate).format('dddd DD MMMM YYYY')}
         </Typography>
-        <Typography paragraph>{houseAddress + '  ,  ' + houseCity}</Typography>
+        <Typography paragraph color="text.secondary">
+          {houseAddress + '  ,  ' + houseCity}
+        </Typography>
         {/* <Typography variant="body2" color="text.secondary">
           This impressive paella is a perfect party dish and a fun meal to cook
           together with your guests. Add 1 cup of frozen peas along with the
@@ -93,7 +126,7 @@ export default function CardBooking({ booking }) {
         </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="annuler la reservation">
+        <IconButton aria-label="annuler la reservation" onClick={handleDelete}>
           <CancelIcon />
         </IconButton>
 

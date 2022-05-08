@@ -129,7 +129,9 @@ module.exports.deleteBooking = async (req, res, next) => {
     return next(new BadRequest('veillez indiquer la suite recherchée'))
 
   const { bookingUuid } = req.params
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
   const isAllowedRole = roles.includes('admin')
 
   const { bookingExists } = await checkExistBookingService(bookingUuid)
