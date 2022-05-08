@@ -91,8 +91,6 @@ function BookingPage() {
     //   history.push('/register')
     // }
 
-    console.log('datas', datas)
-
     const {
       house: houseUuid,
       suite: suiteUuid,
