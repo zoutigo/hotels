@@ -94,10 +94,15 @@ function SelectInput({
         break
       case 'suite':
         const suiteUuid = e.target.value
-        const [{ price }] = getSuites().filter(
-          (suite) => suite.uuid === suiteUuid
+        onChange(suiteUuid)
+
+        const choosenSuite = getSuites().find(
+          (suit) => suit.value === suiteUuid
         )
-        setSuiteUnitPrice(price)
+        if (choosenSuite) {
+          setSuiteUnitPrice(choosenSuite.price)
+        }
+
         break
 
       default:
@@ -132,15 +137,16 @@ function SelectInput({
     switch (name) {
       case 'house':
         if (willBookDatas) return willBookDatas.houseUuid
-        break
+        return options()[0].value
+
       case 'suite':
         if (willBookDatas) return willBookDatas.suiteUuid
-        break
+        return options()[0].value
 
       default:
         break
     }
-  }, [willBookDatas, name])
+  }, [willBookDatas, name, options])
 
   useEffect(() => {
     onChange(defaultValue())
