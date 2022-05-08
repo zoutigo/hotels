@@ -32,7 +32,10 @@ module.exports.postBooking = async (req, res, next) => {
       new BadRequest('veillez renseigner les informations de reservation')
     )
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
+
   const { suiteUuid } = req.body
 
   if (!suiteUuid) return next(new BadRequest('veillez indiquer la suite'))
@@ -52,12 +55,13 @@ module.exports.postBooking = async (req, res, next) => {
       new Conflit('Ces dates ne sont pas disponibles pour cette suite')
     )
 
-  const { createdBooking, errors, serverError } = await createBookingService(
-    req.body
+  const { createdBooking, serverError } = await createBookingService(
+    req.body,
+    userUuid
   )
 
   if (serverError) return next(serverError)
-  if (errors) return next(new BadRequest(errors.join(' ')))
+
   if (!createdBooking) return next("la reservation ne s'est pas bien deroulée")
   const token = await refreshTokenService(userUuid)
 

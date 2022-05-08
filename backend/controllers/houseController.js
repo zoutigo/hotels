@@ -22,7 +22,9 @@ module.exports.postHouse = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('admin')
 
@@ -100,7 +102,9 @@ module.exports.putHouse = async (req, res, next) => {
 
   const { uuid: houseUuid } = req.params
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('admin')
 
@@ -133,7 +137,9 @@ module.exports.deleteHouse = async (req, res, next) => {
 
   const { uuid: houseUuid } = req.params
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('admin')
 

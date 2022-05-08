@@ -113,7 +113,9 @@ module.exports.getUserBookings = async (req, res, next) => {
   if (!req.params || !req.params.uuid)
     return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 
@@ -142,7 +144,9 @@ module.exports.putUsers = async (req, res, next) => {
   // if (!uuidRegexExp.test(req.params.uuid))
   //   return next(new BadRequest("ceci n'est pas l'identifiant d'un utilisateur"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 
@@ -183,7 +187,9 @@ module.exports.deleteUsers = async (req, res, next) => {
   if (!req.params || !req.params.uuid)
     return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 

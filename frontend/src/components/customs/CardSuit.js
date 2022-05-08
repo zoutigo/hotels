@@ -56,7 +56,6 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 function CardSuit({ suite, house }) {
   const {
     dispatch,
-
     state: { userInfo },
   } = useAppContext()
   const token = userInfo?.token
@@ -64,6 +63,14 @@ function CardSuit({ suite, house }) {
   const history = useHistory()
   const managerLocation = '/mon-compte/gestion-suite/list'
   const update = managerLocation === pathname
+
+  const willBookDatas = {
+    houseUuid: house?.houseUuid,
+    houseName: house?.name,
+    suiteUuid: suite?.uuid,
+    suiteTitle: suite?.title,
+    suitePrice: suite?.price,
+  }
 
   const { title, description, price, images, bannerUrl, bookinglink, uuid } =
     suite
@@ -218,7 +225,24 @@ function CardSuit({ suite, house }) {
                     state: { suite, from: pathname, origin: 'cardsuit', house },
                   }}
                 >
-                  <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>
+                  <ButtonPrimary
+                    fullWidth
+                    onClick={() => {
+                      dispatch({
+                        type: 'WILL_BOOK_DATAS',
+                        payload: willBookDatas,
+                      })
+                      Cookies.set(
+                        'willbookdatas',
+                        JSON.stringify(willBookDatas),
+                        {
+                          expires: 2,
+                        }
+                      )
+                    }}
+                  >
+                    Réserver maintenant
+                  </ButtonPrimary>
                 </StyledNavLink>
               )}
             </Grid>

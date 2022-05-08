@@ -6,39 +6,48 @@ const moment = MomentRange.extendMoment(Moment)
 const { user, suite, booking } = require('../../database/models')
 const getDatesInRange = require('../../utils/getDatesInRange')
 
-const createBookingService = async (datas) => {
-  const { suiteUuid, userUuid, startdate, enddate, price } = datas
+const createBookingService = async (datas, userUuid) => {
+  const { suiteUuid, startdate, enddate, price } = datas
+  console.log('datas:', datas)
 
-  const {
-    0: first,
-    length,
-    [length - 1]: last,
-  } = getDatesInRange(startdate, enddate)
-
-  const createdAt = new Date()
   try {
+    const createdAt = new Date()
+    const {
+      0: first,
+      length,
+      [length - 1]: last,
+    } = getDatesInRange(startdate, enddate)
+
+    console.log('after range creation ----------------------')
+    console.log('first ----', first)
     // réserver
     const currentUser = await user.findOne({ where: { uuid: userUuid } })
     const currentSuite = await suite.findOne({ where: { uuid: suiteUuid } })
+
+    console.log('start booking creation ----------------------')
     const bookingDatas = {
       startdate: first,
       enddate: last,
       price: Number(price),
       createdAt,
     }
+    console.log('before booking creation ----------------------')
 
     const newbook = await currentUser.createBooking({
       ...bookingDatas,
       suiteId: currentSuite.id,
     })
 
+    console.log('after booking creation ----------------------')
+
     if (newbook) {
-      return { createdBooking: newbook, error: false }
+      return { createdBooking: newbook, serverError: false }
     }
 
-    return { error: "une erreur s'est produite" }
+    return { serverError: "une erreur s'est produite", createdBooking: null }
   } catch (error) {
-    return { error, createdBooking: null }
+    console.log('error:', error)
+    return { serverError: error, createdBooking: null }
   }
 }
 
