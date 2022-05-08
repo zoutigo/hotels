@@ -168,7 +168,7 @@ function BookingPage() {
       const diff = moment(enddate).diff(startdate, 'days')
 
       const totalPrice = suiteUnitPrice * diff
-      console.log('totalprice', totalPrice)
+
       setValue('price', totalPrice)
     }
   }, [getValues, setValue, suiteUnitPrice])

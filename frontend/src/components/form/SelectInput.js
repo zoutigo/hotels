@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useController, Controller } from 'react-hook-form'
 import PropTypes from 'prop-types'
-import { TextField, InputAdornment } from '@mui/material'
+import { TextField } from '@mui/material'
 
 import useFetch from '../hook/useFetch'
 import { housesQueryKey } from '../constants/queryKeys'
@@ -141,7 +141,8 @@ function SelectInput({
 
       case 'suite':
         if (willBookDatas) return willBookDatas.suiteUuid
-        return options()[0].value
+        if (options() && options().length > 0) return options()[0].value
+        return null
 
       default:
         break
