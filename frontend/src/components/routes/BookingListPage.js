@@ -9,7 +9,7 @@ import PageTitle from '../customs/PageTitle'
 import useFetch from '../hook/useFetch'
 import { apiUserBookings } from '../utils/api'
 import StyledSection from '../customs/StyledSection'
-import { Grid } from '@mui/material'
+import { Alert, Box, Container, Grid, LinearProgress } from '@mui/material'
 import CardBooking from '../customs/CardBooking'
 
 function BookingListPage() {
@@ -53,6 +53,17 @@ function BookingListPage() {
       <StyledSection background={palette.white.main}>
         <Bread>Mes réservations</Bread>
         <PageTitle>Mes réservations</PageTitle>
+
+        {isLoading && (
+          <Box sx={{ width: '100%' }}>
+            <LinearProgress color="primary" />
+          </Box>
+        )}
+        {isError && (
+          <Container>
+            <Alert severity="error">{errorMessage}</Alert>
+          </Container>
+        )}
 
         <Grid
           container

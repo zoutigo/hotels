@@ -18,8 +18,9 @@ module.exports.login = authenticate
 
 module.exports.getUsers = async (req, res, next) => {
   const users = await user.findAll({
+    raw: true,
     order: [['lastname', 'ASC']],
-    include: { all: true, nested: true },
+    // include: { all: true, nested: true },
     // include: [
     //   {
     //     model: house,
