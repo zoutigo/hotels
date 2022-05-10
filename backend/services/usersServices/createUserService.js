@@ -8,9 +8,13 @@ const createUserService = async (usere) => {
       return {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
-    return { newUser }
+    const {
+      dataValues: { id, password, ...rest },
+    } = newUser
+    const createdUser = Object.assign({}, rest)
+
+    return { createdUser }
   } catch (error) {
-    console.log(error)
     return { errors: getValidationErrorsArray(error) }
   }
 }

@@ -76,12 +76,14 @@ module.exports.postUsers = async (req, res, next) => {
     roles,
   }
 
-  const { errors, serverError, newUser } = await createUserService(toCreateUser)
+  const { errors, serverError, createdUser } = await createUserService(
+    toCreateUser
+  )
   if (errors && errors.length > 0) return next(new BadRequest(errors.join()))
   if (serverError) return next(serverError)
 
   return res.status(201).send({
-    datas: newUser,
+    datas: createdUser,
     message: 'Votre compte client est correctement crée.',
   })
 }

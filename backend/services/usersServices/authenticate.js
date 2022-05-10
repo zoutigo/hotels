@@ -23,7 +23,7 @@ const authenticate = async (req, res, next) => {
     // check password
     const passwordVerified = await bcrypt.compare(
       password,
-      userVerified.password
+      userVerified.dataValues.password
     )
     if (!passwordVerified)
       return next(new BadRequest('email ou mot de pass invalide'))
