@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       })
       booking.belongsTo(this)
     }
+    toJSON() {
+      return { ...this.get(), id: undefined }
+    }
   }
   Suite.init(
     {

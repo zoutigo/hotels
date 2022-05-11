@@ -8,8 +8,6 @@ const isSuiteManagerService = async (suiteUuid, userUuid) => {
     const checkedHouse = await checkedSuite.getHouse()
     const manager = await checkedHouse.getUser()
 
-    console.log(manager.uuid === userUuid)
-
     return { isHouseManager: manager.uuid === userUuid }
   } catch (error) {
     return { error }

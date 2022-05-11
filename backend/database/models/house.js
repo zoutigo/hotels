@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       })
       suite.belongsTo(this)
     }
-    // toJSON() {
-    //   return { ...this.get(), id: undefined }
-    // }
+    toJSON() {
+      return { ...this.get(), id: undefined }
+    }
   }
   House.init(
     {
