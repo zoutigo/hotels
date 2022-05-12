@@ -43,12 +43,16 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env: 
-      MYSQL_TEST_USER: zoutigo
-      MYSQL_TEST_PASSWORD: valery54
-      MYSQL_TEST_DATABASE: hotels
-      MYSQL_TEST_HOST: 127.0.0.1 
-      TOKEN_SECRET: ilnefautpasallersuelalachasse
-      TOKEN_LOGIN_DURATION: 1d
+      
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
 
     steps:
@@ -58,18 +62,25 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     # install dependencies backend dependencies
-    - run: npm install --force
-    # install dependencies frontend dependencies
-    - run: cd ./frontend && npm install --force
-    # Buid React app
-    - run: cd ./frontend && npm run build
-    # Setup Mysql
-    - run: |
-        sudo /etc/init.d/mysql start
-        mysql -e 'CREATE DATABASE IF NOT EXISTS ${{env.MYSQL_TEST_DATABASE }};' -u${{env.MYSQL_TEST_USER}} -p${{ env.MYSQL_TEST_PASSWORD }}
-        mysql -e 'status ;' -u${{env.MYSQL_TEST_USER }} -p${{ env.MYSQL_TEST_PASSWORD }}
-        mysql -e 'SHOW VARIABLES ;' -u${{env.MYSQL_TEST_USER}} -p${{env.MYSQL_TEST_USER}}
+    - name: npm install , build and test
+      run: |
+         npm install --force
+         sudo service mysql start
+         mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u:root -p:password < etc/original.sql
+         mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u:root -p:password -e "SHOW DATABASES"
+         node scripts/ci ${{ job.services.mysql.ports['3306'] }}
+         npm test
+      env:
+        CI: true
+        MYSQL_TEST_USER: zoutigo
+        MYSQL_TEST_PASSWORD: valery54
+        MYSQL_TEST_DATABASE: hotels
+        MYSQL_TEST_HOST: 127.0.0.1 
+        TOKEN_SECRET: ilnefautpasallersuelalachasse
+        TOKEN_LOGIN_DURATION: 1d
+
 
 
 
