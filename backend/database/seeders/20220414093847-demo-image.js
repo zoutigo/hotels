@@ -15,10 +15,24 @@ module.exports = {
         }
       )
 
-      const images = devImages.map((image) => ({
-        ...image,
-        suiteId: suites[2].id,
-      }))
+      let countSuites = suites.length
+      let increment = 0
+
+      const images = devImages.map((image) => {
+        increment += 1
+        const suite = suites[countSuites]
+        const img = {
+          ...image,
+          suiteId: suite ? suite.id : suites[0].id,
+        }
+
+        if (increment === 10) {
+          increment = 0
+          countSuites = countSuites - 1
+        }
+
+        return img
+      })
       await queryInterface.bulkInsert('images', images, {
         transaction,
       })

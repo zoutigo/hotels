@@ -4,7 +4,7 @@ const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray'
 const updateHouseService = async (uuid, datas) => {
   try {
     const { managerUuid, ...rest } = datas
-    console.log('-------------------------uuid:', uuid)
+
     const toUpdateHouse = await house.update({ ...rest }, { where: { uuid } })
     if (!toUpdateHouse)
       return {

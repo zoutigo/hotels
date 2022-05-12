@@ -7,6 +7,7 @@ const initialTheme = createTheme({
       lineHeight: 1.2,
       fontWeight: 'bold',
       margin: '1rem 0',
+      opacity: '65%',
     },
     h2: {
       fontSize: '3rem',

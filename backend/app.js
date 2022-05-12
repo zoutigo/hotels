@@ -1,10 +1,10 @@
-const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const moment = require('moment')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
@@ -16,11 +16,16 @@ const loginRouter = require('./routes/login')
 const handleErrors = require('./middlewares/handleErrors')
 
 dotenv.config()
+moment.locale('fr')
+moment.suppressDeprecationWarnings = true
 const app = express()
 
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'hotels.artsi.fr',
+  'http://hotels.artsi.fr',
+  'http://www.hotels.artsi.fr',
   process.env.SERVER_ADRESS,
 ]
 
@@ -69,30 +74,9 @@ app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
 app.use('/api/mails', mailsRouter)
 
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404))
-// })
-
-// // error handler
-// app.use(function (err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message
-//   res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-//   // render the error page
-//   res.status(err.status || 500)
-//   res.render('error')
-// })
 app.disable('x-powered-by')
 
 app.use(handleErrors)
-
-// app.get('*', (req, res) => {
-//   const location = path.join(__dirname, '..', 'public', 'html', 'index.html')
-//   console.log('location:', location)
-//   res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'))
-// })
 
 const root = require('path').join(__dirname, '..', 'frontend', 'build')
 app.use(express.static(root))

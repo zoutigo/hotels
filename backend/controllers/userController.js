@@ -18,8 +18,9 @@ module.exports.login = authenticate
 
 module.exports.getUsers = async (req, res, next) => {
   const users = await user.findAll({
+    raw: true,
     order: [['lastname', 'ASC']],
-    include: { all: true, nested: true },
+    // include: { all: true, nested: true },
     // include: [
     //   {
     //     model: house,
@@ -75,12 +76,14 @@ module.exports.postUsers = async (req, res, next) => {
     roles,
   }
 
-  const { errors, serverError, newUser } = await createUserService(toCreateUser)
+  const { errors, serverError, createdUser } = await createUserService(
+    toCreateUser
+  )
   if (errors && errors.length > 0) return next(new BadRequest(errors.join()))
   if (serverError) return next(serverError)
 
   return res.status(201).send({
-    datas: newUser,
+    datas: createdUser,
     message: 'Votre compte client est correctement crée.',
   })
 }
@@ -113,7 +116,9 @@ module.exports.getUserBookings = async (req, res, next) => {
   if (!req.params || !req.params.uuid)
     return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 
@@ -142,7 +147,9 @@ module.exports.putUsers = async (req, res, next) => {
   // if (!uuidRegexExp.test(req.params.uuid))
   //   return next(new BadRequest("ceci n'est pas l'identifiant d'un utilisateur"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 
@@ -183,7 +190,9 @@ module.exports.deleteUsers = async (req, res, next) => {
   if (!req.params || !req.params.uuid)
     return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
 

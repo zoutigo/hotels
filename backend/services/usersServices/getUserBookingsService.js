@@ -4,29 +4,73 @@ const getUserBookingService = async (uuid) => {
   try {
     const requestedUser = await user.findOne({
       where: { uuid },
-      includes: {
-        model: booking,
-        // attributes: ['startdate', 'enddate', 'price'],
-        includes: [
-          {
-            model: suite,
-            attributes: ['title'],
-            includes: [
-              { model: house, attributes: ['name', 'city', 'address'] },
-              { model: image, attributes: ['startdate', 'enddate'] },
-            ],
-          },
-        ],
-      },
     })
+
+    if (!requestedUser)
+      return {
+        bookings: null,
+        error: "Cet utilisateur n'existe plus -- userBookingService",
+      }
 
     const userBookings = await requestedUser.getBookings()
 
-    if (!requestedUser) return { bookings: null, error: false }
+    if (!userBookings || userBookings.length < 1)
+      return { bookings: [], error: false }
 
-    return { bookings: userBookings, error: false }
+    const completeBookings = await Promise.all(
+      userBookings.map(async (booking) => {
+        const suite = await booking.getSuite()
+        const house = await suite.getHouse()
+
+        return {
+          ...booking,
+          suiteUuid: suite.uuid,
+          suiteTitle: suite.title,
+          suiteBanner: suite.bannerUrl,
+          suiteDescription: suite.description,
+          houseUuid: house.uuid,
+          houseName: house.name,
+          houseCity: house.city,
+          houseAddress: house.address,
+          houseDescription: house.description,
+        }
+      })
+    )
+
+    const bookings = completeBookings.map((booking) => {
+      const {
+        dataValues,
+        houseAddress,
+        houseCity,
+        houseName,
+        houseDescription,
+        houseUuid,
+        suiteBanner,
+        suiteTitle,
+        suiteDescription,
+        suiteUuid,
+      } = booking
+
+      return {
+        houseAddress,
+        houseCity,
+        houseName,
+        houseDescription,
+        houseUuid,
+        suiteBanner,
+        suiteTitle,
+        suiteDescription,
+        suiteUuid,
+        uuid: dataValues.uuid,
+        startdate: dataValues.startdate,
+        enddate: dataValues.enddate,
+        price: dataValues.price,
+        createdAt: dataValues.createdAt,
+      }
+    })
+
+    return { bookings: bookings, error: false }
   } catch (error) {
-    console.log('error', error)
     return { error, bookings: null }
   }
 }

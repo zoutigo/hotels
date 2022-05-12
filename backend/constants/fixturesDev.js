@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker')
+const { v4: uuidv4 } = require('uuid')
 const { default: hashPassword } = require('../utils/hashPassword')
 const slugify = require('../utils/slugify')
 const mailTopics = require('./mailTopics')
@@ -10,9 +11,10 @@ for (let a = 0; a < 10; a++) {
     firstname: faker.name.firstName(),
     email: `manager${a}@test.com`,
     password: 'password',
-    roles: ['manager'],
+    roles: JSON.stringify(['manager']),
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devManagers.push(devManager)
 }
@@ -25,6 +27,7 @@ const devAdmin = {
   roles: ['admin'],
   createdAt: new Date(),
   updatedAt: new Date(),
+  uuid: uuidv4(),
 }
 
 const devClients = []
@@ -37,6 +40,7 @@ for (let i = 0; i < 10; i++) {
     roles: ['client'],
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devClients.push(client)
 }
@@ -50,23 +54,25 @@ for (let j = 0; j < 15; j++) {
     address: faker.address.streetAddress(),
     description: faker.lorem.paragraphs(2, '<br/>\n'),
     slug: slugify(name),
-    bannerUrl: `img${j}.jpg`,
+    bannerUrl: `img${Math.floor(Math.random() * 11)}.jpg`,
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devHouses.push(house)
 }
 
 const devSuites = []
-for (let k = 0; k < 20; k++) {
+for (let k = 0; k < 60; k++) {
   const suite = {
     title: faker.company.companyName(),
     description: faker.lorem.paragraphs(2, '<br/>\n'),
     price: faker.commerce.price(10, 10000, 2),
-    bannerUrl: `img${Math.floor(Math.random() * 10)}.jpg`,
+    bannerUrl: `img${Math.floor(Math.random() * 11)}.jpg`,
     bookinglink: faker.internet.url(),
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devSuites.push(suite)
 }
@@ -81,18 +87,20 @@ for (let l = 0; l < 20; l++) {
     topic: mailTopics[l % 2 === 0 ? 0 : 1],
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devMails.push(mail)
 }
 
 const devImages = []
 
-for (let m = 0; m < 10; m++) {
+for (let m = 0; m < 600; m++) {
   const image = {
     filename: faker.company.catchPhrase(),
-    filepath: `img${m}.jpg`,
+    filepath: `img${Math.floor(Math.random() * 11)}.jpg`,
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
 
   devImages.push(image)
@@ -106,6 +114,7 @@ for (let n = 0; n < 10; n++) {
     price: faker.commerce.price(10, 10000, 2),
     createdAt: new Date(),
     updatedAt: new Date(),
+    uuid: uuidv4(),
   }
   devBookings.push(booking)
 }

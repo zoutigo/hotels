@@ -1,0 +1,16 @@
+#!/bin/bash
+
+while read oldrev newrev ref
+do
+  branch=`echo $ref | cut -d/ -f3`
+
+  if [ "master" == "$branch" ]; then
+    git --work-tree=/home/kojy5082/projects/hotels/production checkout -f $branch
+    echo 'Changes pushed live.'
+  fi
+
+  if [ "develop" == "$branch" ]; then
+    git --work-tree=/home/kojy5082/projects/hotels/stage checkout -f $branch
+    echo 'Changes pushed to dev.'
+  fi
+done

@@ -1,13 +1,13 @@
-import { Container, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React from 'react'
 
 import { PropTypes } from 'prop-types'
 
 function PageTitle({ children }) {
   return (
-    <Container className="hideUpMd">
+    <Grid container className="hideDownMd ">
       <Typography variant="h1">{children}</Typography>
-    </Container>
+    </Grid>
   )
 }
 

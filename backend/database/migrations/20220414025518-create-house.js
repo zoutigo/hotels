@@ -12,8 +12,8 @@ module.exports = {
             type: Sequelize.INTEGER,
           },
           uuid: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.literal('uuid_generate_v4()'),
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV4,
           },
           name: {
             type: Sequelize.DataTypes.STRING(100),
@@ -93,10 +93,12 @@ module.exports = {
           createdAt: {
             allowNull: false,
             type: Sequelize.DATE,
+            defaultValue: new Date(),
           },
           updatedAt: {
             allowNull: false,
             type: Sequelize.DATE,
+            defaultValue: new Date(),
           },
         },
         { transaction }

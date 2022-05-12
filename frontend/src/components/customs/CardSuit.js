@@ -26,12 +26,24 @@ import setUserDatas from '../utils/setUserDatas'
 const StyledGrid = styled(Grid)(({ theme }) => ({
   '& .card-suit-media': {
     cursor: 'pointer',
+    '& .card-suit-media-paragraph': {
+      visibility: 'hidden',
+      position: 'relative',
+      bottom: '2rem',
+      left: '1rem',
+      color: theme.palette.secondary.main,
+    },
+    '&:hover': {
+      '& .card-suit-media-paragraph': {
+        visibility: 'visible',
+      },
+    },
 
     maxHeight: '500px',
     overflow: 'hidden',
-    '& img': {
-      width: '300px',
-      maxHeight: '200px',
+    '& >img': {
+      width: '100%',
+      maxHeight: '220px',
       objectFit: 'fit',
       borderRadius: '5px',
       '&:hover': {
@@ -41,10 +53,9 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }))
 
-function CardSuit({ suite }) {
+function CardSuit({ suite, house }) {
   const {
     dispatch,
-
     state: { userInfo },
   } = useAppContext()
   const token = userInfo?.token
@@ -52,6 +63,14 @@ function CardSuit({ suite }) {
   const history = useHistory()
   const managerLocation = '/mon-compte/gestion-suite/list'
   const update = managerLocation === pathname
+
+  const willBookDatas = {
+    houseUuid: house?.houseUuid,
+    houseName: house?.name,
+    suiteUuid: suite?.uuid,
+    suiteTitle: suite?.title,
+    suitePrice: suite?.price,
+  }
 
   const { title, description, price, images, bannerUrl, bookinglink, uuid } =
     suite
@@ -100,8 +119,6 @@ function CardSuit({ suite }) {
         token,
       }).then((response) => {
         if (response.status === 200) {
-
-
           const refreshedUserInfo = setUserDatas(response)
           dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
           Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
@@ -142,7 +159,7 @@ function CardSuit({ suite }) {
   return (
     <StyledGrid container>
       <Grid container>
-        <Typography variant="h2">{title}</Typography>
+        <Typography variant="h3">{title}</Typography>
       </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4} className="card-suit-media">
@@ -167,7 +184,12 @@ function CardSuit({ suite }) {
           <Grid item container alignItems="center">
             <Grid item xs={2}>
               <Tooltip title="album photo" arrow>
-                <Button onClick={handleclick}>Plus de photos</Button>
+                <Button
+                  onClick={handleclick}
+                  sx={{ color: showAlbum ? 'red' : 'green' }}
+                >
+                  {showAlbum ? 'Fermer' : 'Voir les photos'}{' '}
+                </Button>
               </Tooltip>
             </Grid>
             <Grid item xs={4} className="textCenter">
@@ -175,7 +197,6 @@ function CardSuit({ suite }) {
             </Grid>
             <Grid item xs={6}>
               {update ? (
-
                 <Grid
                   item
                   container
@@ -184,8 +205,6 @@ function CardSuit({ suite }) {
                 >
                   <ButtonUpdate
                     sx={{ width: '45%', height: '35px !important' }}
-
-
                     onClick={handleUpdateSuit}
                   >
                     Modifier
@@ -203,12 +222,27 @@ function CardSuit({ suite }) {
                   to={{
                     pathname: '/reservation',
 
-                    state: { suite, from: pathname, origin: 'cardsuit' },
-
-
+                    state: { suite, from: pathname, origin: 'cardsuit', house },
                   }}
                 >
-                  <ButtonPrimary fullWidth>Réserver maintenant</ButtonPrimary>
+                  <ButtonPrimary
+                    fullWidth
+                    onClick={() => {
+                      dispatch({
+                        type: 'WILL_BOOK_DATAS',
+                        payload: willBookDatas,
+                      })
+                      Cookies.set(
+                        'willbookdatas',
+                        JSON.stringify(willBookDatas),
+                        {
+                          expires: 2,
+                        }
+                      )
+                    }}
+                  >
+                    Réserver maintenant
+                  </ButtonPrimary>
                 </StyledNavLink>
               )}
             </Grid>
@@ -216,9 +250,7 @@ function CardSuit({ suite }) {
         </Grid>
       </Grid>
       {showAlbum && (
-
         <Grid container spacing={2} mt={2}>
-
           <ModalImage
             modal={modal}
             setModal={setModal}
@@ -231,8 +263,9 @@ function CardSuit({ suite }) {
               <Grid
                 key={imge.uuid}
                 item
-                sm={12}
-                md={6}
+                xs={12}
+                sm={6}
+                md={4}
                 lg={3}
                 className="card-suit-media"
                 onClick={() =>
@@ -243,6 +276,9 @@ function CardSuit({ suite }) {
                 }
               >
                 <Image filepath={`${IMG_PREFIX + imge.filepath}`} alt={title} />
+                <p className="card-suit-media-paragraph">
+                  Cliquer pour aggrandir
+                </p>
                 {update && (
                   <ButtonDelete
                     onClick={() => handleDeleteImage(imge.uuid)}
@@ -280,6 +316,10 @@ CardSuit.propTypes = {
       ).isRequired,
     })
   ).isRequired,
+  house: PropTypes.shape({
+    houseUuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
 }
 
 export default React.memo(CardSuit)

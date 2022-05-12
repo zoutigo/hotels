@@ -22,6 +22,10 @@ const initialState = {
   userInfo: Cookies.get('userInfo')
     ? JSON.parse(Cookies.get('userInfo'))
     : null,
+
+  willBookDatas: Cookies.get('willbookdatas')
+    ? JSON.parse(Cookies.get('willbookdatas'))
+    : null,
 }
 
 const reducer = (state, action) => {
@@ -43,6 +47,7 @@ const reducer = (state, action) => {
       Cookies.set('cartItems', JSON.stringify(cartItems))
       return { ...state, cart: { ...state.cart, cartItems } }
     }
+
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item) => item._id !== action.payload._id
@@ -55,6 +60,12 @@ const reducer = (state, action) => {
         ...state,
         cart: { ...state.cart, shippingAddress: action.payload },
       }
+
+    case 'WILL_BOOK_DATAS':
+      return { ...state, willBookDatas: action.payload }
+
+    case 'CLEAR_WILL_BOOK_DATAS':
+      return { ...state, willBookDatas: null }
 
     case 'CART_CLEAR':
       return {

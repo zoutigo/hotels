@@ -32,7 +32,10 @@ module.exports.postBooking = async (req, res, next) => {
       new BadRequest('veillez renseigner les informations de reservation')
     )
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
+
   const { suiteUuid } = req.body
 
   if (!suiteUuid) return next(new BadRequest('veillez indiquer la suite'))
@@ -41,27 +44,25 @@ module.exports.postBooking = async (req, res, next) => {
 
   req.body.userUuid = userUuid
 
-  const { suiteIsAvailable, error } = await isSuiteAvailable(req.body)
+  const { suiteIsAvailable, error, msg } = await isSuiteAvailable(req.body)
 
   if (error) {
     return next(error)
   }
 
-  if (!suiteIsAvailable)
-    return next(
-      new Conflit('Ces dates ne sont pas disponibles pour cette suite')
-    )
+  if (!suiteIsAvailable) return next(new Conflit(msg))
 
-  const { createdBooking, errors, serverError } = await createBookingService(
-    req.body
+  const { createdBooking, serverError } = await createBookingService(
+    req.body,
+    userUuid
   )
 
   if (serverError) return next(serverError)
-  if (errors) return next(new BadRequest(errors.join(' ')))
+
   if (!createdBooking) return next("la reservation ne s'est pas bien deroulée")
   const token = await refreshTokenService(userUuid)
 
-  return res.status(200).send({
+  return res.status(201).send({
     message: 'la reservation a bien été effectuée',
     datas: createdBooking,
     token,
@@ -125,7 +126,9 @@ module.exports.deleteBooking = async (req, res, next) => {
     return next(new BadRequest('veillez indiquer la suite recherchée'))
 
   const { bookingUuid } = req.params
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
   const isAllowedRole = roles.includes('admin')
 
   const { bookingExists } = await checkExistBookingService(bookingUuid)

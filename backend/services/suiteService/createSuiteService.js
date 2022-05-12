@@ -21,8 +21,12 @@ const CreateSuiteService = async (data) => {
       })
     )
 
+    const {
+      dataValues: { id, ...others },
+    } = createdSuite
+
     if (filenames.leght === images.lenght) {
-      return { createdSuite }
+      return { createdSuite: { ...others } }
     }
     return { error: "une erreur s'est produite" }
   } catch (error) {

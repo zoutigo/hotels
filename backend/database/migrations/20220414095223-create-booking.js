@@ -8,8 +8,8 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       uuid: {
-        type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.literal('uuid_generate_v4()'),
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       startdate: {
         type: Sequelize.DataTypes.BIGINT(13),
@@ -70,10 +70,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
     })
   },

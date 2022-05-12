@@ -26,7 +26,7 @@ const verifyTokenService = async (req, res, next) => {
     if (!verifiedUser)
       return next(new BadRequest("Cet utilisateur n'existe plus"))
 
-    req.user = verifiedUser
+    req.user = { ...verifiedUser, roles: verifiedUser.getDataValue('roles') }
 
     next()
   } catch (err) {

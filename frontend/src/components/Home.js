@@ -16,6 +16,9 @@ const StyledHome = styled(Box)(({ theme }) => ({
     paddingTop: '3.5rem',
     '&>:first-child': {
       paddingTop: '5.5rem !important',
+      [theme.breakpoints.down('md')]: {
+        paddingTop: '0.5rem !important',
+      },
     },
   },
   ' .section': {
@@ -48,6 +51,9 @@ const StyledHome = styled(Box)(({ theme }) => ({
   ' .textCenter': {
     textAlign: 'center',
   },
+  ' .textLeft': {
+    textAlign: 'left',
+  },
   ' .formList': {
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -60,6 +66,12 @@ const StyledHome = styled(Box)(({ theme }) => ({
   ' .noclicksetting': {
     pointerEvents: 'none !important',
     background: `${theme.palette.secondary.main} !important`,
+  },
+  '& .etb-list-search-form': {
+    // background: theme.palette.offwhite.main,
+    background: 'whitesmoke',
+    borderRadius: '5px',
+    padding: '1rem',
   },
 }))
 

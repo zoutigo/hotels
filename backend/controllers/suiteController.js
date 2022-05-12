@@ -25,7 +25,10 @@ module.exports.postSuite = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
+
   const { houseUuid } = req.body
   if (!houseUuid)
     return next(new BadRequest("il manque l'établissement à votre requette"))
@@ -107,7 +110,10 @@ module.exports.putSuite = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
+
   const { suiteUuid } = req.params
   if (!suiteUuid)
     return next(new BadRequest("il manque l'établissement à votre requette"))
@@ -159,7 +165,7 @@ module.exports.putSuite = async (req, res, next) => {
 
   return res.status(200).send({
     message: 'la suite a bien été modifiée',
-    datas: updatedSuite,
+    datas: updatedSuite.dataValues,
     token,
   })
 }
@@ -170,7 +176,9 @@ module.exports.deleteSuite = async (req, res, next) => {
 
   const { suiteUuid } = req.params
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const { isHouseManager } = await isSuiteManagerService(suiteUuid, userUuid)
 
@@ -198,7 +206,9 @@ module.exports.deleteImage = async (req, res, next) => {
 
   const { imageUuid, suiteUuid } = req.params
 
-  const { roles, uuid: userUuid } = req.user
+  const {
+    dataValues: { uuid: userUuid, roles },
+  } = req.user
 
   const { isHouseManager } = await isSuiteManagerService(suiteUuid, userUuid)
 

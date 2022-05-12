@@ -23,14 +23,20 @@ function EtablissementsListForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <Grid item container alignItems="center" spacing={2}>
-        <Grid item xs={9}>
+      <Grid
+        item
+        container
+        alignItems="center"
+        spacing={1}
+        className="etb-list-search-form"
+      >
+        <Grid item md={9} xs={12}>
           <Controller
             name="email"
             control={control}
             defaultValue=""
             rules={{
-              required: 'saisissez une adresse mail',
+              required: "écrire le nom de l'établissement",
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$/,
                 message: 'le format mail est incorrect',
@@ -38,14 +44,11 @@ function EtablissementsListForm() {
             }}
             render={({ field }) => (
               <TextField
-
                 disabled
                 variant="outlined"
                 fullWidth
                 id="email"
                 label="rechercher un établissement"
-
-
                 placeholder="Entrez une adresse email"
                 inputProps={{ type: 'email' }}
                 error={Boolean(errors.email)}
@@ -55,7 +58,7 @@ function EtablissementsListForm() {
             )}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} md={3}>
           <ButtonPrimary
             startIcon={matches ? <SearchIcon /> : null}
             fullWidth

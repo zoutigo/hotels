@@ -11,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 // import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
+import 'moment/locale/fr'
 import { ThemeProvider } from '@mui/material/styles'
 
 import './App.css'

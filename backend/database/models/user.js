@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       booking.belongsTo(this)
     }
 
-    // toJSON() {
-    //   return { ...this.get(), id: undefined }
-    // }
+    toJSON() {
+      return { ...this.get(), id: undefined }
+    }
   }
   User.init(
     {
@@ -75,9 +75,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       roles: {
-        type: DataTypes.ARRAY(
-          DataTypes.STRING(DataTypes.ENUM('admin', 'manager', 'client'))
-        ),
+        type: DataTypes.STRING,
+        get() {
+          const rawValue = this.getDataValue('roles')
+          return rawValue ? JSON.parse(rawValue) : []
+        },
+        set(value) {
+          this.setDataValue('roles', JSON.stringify(value))
+        },
       },
     },
     {

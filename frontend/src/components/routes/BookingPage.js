@@ -3,17 +3,19 @@ import {
   ListItem,
   Typography,
   TextField,
+  InputAdornment,
   MenuItem,
   Stack,
   Box,
 } from '@mui/material'
+
 import { styled } from '@mui/material/styles'
 // import DesktopDateRangePicker from '@mui/x-date-pickers-pro/DesktopDateRangePicker'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 // import { MobileDatePicker, MobileDateRangePicker } from '@mui/x-date-pickers'
-import Select from 'react-select'
+
 // import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker'
 // import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker'
 import { useTheme } from '@mui/material/styles'
@@ -26,22 +28,17 @@ import Cookies from 'js-cookie'
 import StyledForm from '../customs/StyledForm'
 import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
-import TextInput from '../form/TextInput'
 import useMutate from '../hook/useMutate'
-import { apiBookingCreate, apiHousesList } from '../utils/api'
+import { apiBookingCreate } from '../utils/api'
 import getError from '../utils/getError'
 import useAppContext from '../hook/useAppContext'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
-import StyledNavLink from '../customs/StyledNavLink'
-import selectStyles from '../constants/selectStyles'
-import houses from '../constants/houses'
-import useFetch from '../hook/useFetch'
-import { housesQueryKey } from '../constants/queryKeys'
 import setUserDatas from '../utils/setUserDatas'
 import getResponse from '../utils/getResponse'
-import useIslogged from '../hook/useIsLogged'
+
+import SelectInput from '../form/SelectInput'
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -53,72 +50,29 @@ const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
 
 function BookingPage() {
   const [suiteBatch, setSuiteBatch] = useState(null)
+  const [suiteUnitPrice, setSuiteUnitPrice] = useState(0)
+  const [currentHouseUuid, setCurrentHouseUuid] = useState('')
   const location = useLocation()
   const { palette } = useTheme()
   const history = useHistory()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const {
     dispatch,
-
-    state: { userInfo },
+    state: { userInfo, willBookDatas },
   } = useAppContext()
-
-  const [suites, setSuites] = useState([])
 
   const queryKey = ['booking']
 
-  const { isLoading, isError, data, errorMessage } = useFetch(
-    housesQueryKey,
-    '',
-    apiHousesList
-  )
-
-  const withSuitsHouzes =
-    data && data.datas && Array.isArray(data.datas)
-      ? data.datas.filter((house) => house.suites && house.suites.length > 0)
-      : []
-
-  const getHouse = () => {
-    if (location.state && location.state.origin === 'cardsuit') {
-      const {
-        suite: { houseId },
-      } = location.state
-      const deHouse = withSuitsHouzes.find((houz) => houz.id === houseId)
-
-      return deHouse
-    }
-    return null
-  }
-
-  const getSuites = (houseUuid) => {
-    const houz = withSuitsHouzes?.find((houz) => houz.uuid === houseUuid)
-
-    const { suites } = houz
-
-    const result = suites.map(({ title, uuid, price }) => ({
-      label: title,
-      value: uuid,
-      price,
-    }))
-
-    setSuiteBatch(result)
-    return result
-  }
-
   const { mutateAsync, isMutating } = useMutate(queryKey, apiBookingCreate)
-  const initialValues = {
-    house: getHouse() ? { label: getHouse().name, value: getHouse().uuid } : '',
-    suite: {
-      label: location?.state?.suite?.title || '',
-      value: location?.state?.suite?.uuid || '',
-    },
-    price: location.state ? location.state.suite?.price : 0,
 
-    startdate: moment(new Date()),
-    enddate: moment(new Date()),
-  }
+  // const initialValues = {
+  //   house: willBookDatas?.houseUuid,
+  //   suite: willBookDatas ? willBookDatas.suiteUuid : '',
+  //   price: willBookDatas ? willBookDatas.suiteTitle : 0,
 
-  const isLogged = useIslogged()
+  //   startdate: moment(new Date()),
+  //   enddate: moment(new Date()),
+  // }
 
   const {
     control,
@@ -129,7 +83,6 @@ function BookingPage() {
     formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onChange',
-    defaultValues: initialValues,
   })
 
   const onSubmit = async (datas) => {
@@ -160,10 +113,17 @@ function BookingPage() {
         token: userInfo?.token,
       }).then((response) => {
         if (response && (response.status === 201 || response.status === 200)) {
-          reset({ ...initialValues })
+          // reset form
+          // reset({ ...initialValues })
           const refreshedUserInfo = setUserDatas(response)
+
+          // refresh token
           dispatch({ type: 'USER_LOGIN', payload: refreshedUserInfo })
           Cookies.set('userInfo', JSON.stringify(refreshedUserInfo))
+
+          // clear state and localstorage
+          dispatch({ type: 'CLEAR_WILL_BOOK_DATAS' })
+          Cookies.remove('willBookDatas')
 
           enqueueSnackbar(getResponse(response), { variant: 'success' })
           setTimeout(
@@ -192,45 +152,30 @@ function BookingPage() {
                 pagename: 'login',
               },
             }),
-          1500
+          2000
         )
       }
     }
   }
 
-  const setTotalPrice = () => {
+  const setTotalPrice = useCallback(() => {
     const startdate = getValues('startdate')
-
     const enddate = getValues('enddate')
 
-    const currentSuiteValue = getValues('suite')
-
-    if (startdate && enddate && currentSuiteValue) {
+    if (startdate && enddate) {
       const diff = moment(enddate).diff(startdate, 'days')
 
-      const currentSuite = suiteBatch?.find(
-        (suit) => suit.value === currentSuiteValue
-      )
-      const totalPrice = currentSuite?.price * diff
+      const totalPrice = suiteUnitPrice * diff
 
       setValue('price', totalPrice)
     }
-  }
+  }, [getValues, setValue, suiteUnitPrice])
 
-  const houseOptions = withSuitsHouzes.map(({ name, uuid }) => ({
-    value: uuid,
-    label: name,
-  }))
-
-  const initialHouse =
-    location.state && location.state.suit
-      ? { name: location.state.suit.name, value: location.state.suit.id }
-      : []
-
-  const initialSuit =
-    location.state && location.state.house
-      ? { name: location.state.house.name, value: location.state.house.id }
-      : []
+  useEffect(() => {
+    if (willBookDatas) {
+      setCurrentHouseUuid(willBookDatas.houseUuid)
+    }
+  }, [willBookDatas])
 
   return (
     <StyledPage>
@@ -241,73 +186,36 @@ function BookingPage() {
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>
             <ListItem>
-              <Controller
-                control={control}
+              <SelectInput
                 name="house"
-                defaultValue={initialValues.house}
-                rules={{
-                  required: 'veillez choisir un établissement',
-                }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    onChange={(e) => {
-                      const houseUuid = e.target.value
-                      field.onChange(houseUuid)
-                      setSuites(getSuites(houseUuid))
-                      setTotalPrice()
-                    }}
-                    sx={{ m: 1, width: '100%' }}
-                    id="filled-select-house"
-                    select
-                    label="Etablissement"
-                    variant="filled"
-                    error={Boolean(errors.house)}
-                    helperText={errors.house ? errors.house.message : ''}
-                  >
-                    {houseOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
+                control={control}
+                getValues={getValues}
+                setCurrentHouseUuid={setCurrentHouseUuid}
+                houseUuid={currentHouseUuid}
+                setValue={setValue}
+                willBookDatas={willBookDatas}
+                placeholder="xxx"
+                label="Etablissements disponibles"
+                disabled={isSubmitting}
               />
             </ListItem>
             <ListItem>
-              <Controller
-                control={control}
+              <SelectInput
                 name="suite"
-                defaultValue={initialValues.suite}
-                rules={{
-                  required: 'veillez choisir une suite',
-                }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e.target.value)
-
-                      setTotalPrice()
-                    }}
-                    sx={{ m: 1, width: '100%' }}
-                    id="filled-select-suites"
-                    defaultValue={initialValues.suite}
-                    select
-                    label="Choisissez une suite"
-                    variant="filled"
-                    error={Boolean(errors.suit)}
-                    helperText={errors.suit ? errors.suit.message : ''}
-                  >
-                    {suites.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
+                control={control}
+                getValues={getValues}
+                houseUuid={currentHouseUuid}
+                setCurrentHouseUuid={setCurrentHouseUuid}
+                setValue={setValue}
+                willBookDatas={willBookDatas}
+                setSuiteUnitPrice={setSuiteUnitPrice}
+                placeholder="xxx"
+                label="Suites  disponibles"
+                disabled={isSubmitting}
               />
             </ListItem>
+
+            <ListItem></ListItem>
             <ListItem>
               <Controller
                 name="startdate"
@@ -319,6 +227,7 @@ function BookingPage() {
                 render={({ field }) => (
                   <DesktopDatePicker
                     {...field}
+                    disabled={isSubmitting}
                     label="Date de début"
                     minDate={moment(new Date())}
                     onChange={(newValue) => {
@@ -352,7 +261,7 @@ function BookingPage() {
                       const startdate = getValues('startdate')
                       return (
                         value.diff(startdate, 'days') > 0 ||
-                        'La date de fin doit etre différente de la date de début'
+                        'La date de fin doit supérieure à date de début'
                       )
                     },
                   },
@@ -360,6 +269,7 @@ function BookingPage() {
                 render={({ field }) => (
                   <DesktopDatePicker
                     {...field}
+                    disabled={isSubmitting}
                     label="Date de fin"
                     minDate={moment(new Date())}
                     onChange={(newValue) => {
@@ -399,7 +309,7 @@ function BookingPage() {
                     label="Prix total"
                     variant="filled"
                     error={Boolean(errors.house)}
-                    helperText={errors.house ? errors.house.message : ''}
+                    helperText={errors.price ? errors.price.message : ''}
                   ></TextField>
                 )}
               />

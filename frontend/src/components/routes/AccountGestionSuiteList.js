@@ -20,15 +20,15 @@ function AccountGestionSuiteList() {
 
   const { palette } = useTheme()
   const {
-    state: {
-      userInfo: { house, roles },
-    },
+    state: { userInfo },
   } = useAppContext()
 
-  if (!house.uuid) {
+  if (!userInfo?.house || !userInfo.house?.uuid) {
     history.push('/liste-des-etablissements')
   }
-  const queryParams = house.uuid
+
+  const { house } = userInfo
+  const queryParams = userInfo.house.uuid
   const { isLoading, isError, data, errorMessage } = useFetch(
     housesQueryKey,
     queryParams,

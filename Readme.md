@@ -4,7 +4,7 @@ NODE 16.13.0
 LAMP
 Ubuntu 20.14
 NPM 8.1.0
-Postgresql 12.9
+MySql 5.2
 VsCode
 
 # Lancer l'environnement de developpement
@@ -94,41 +94,161 @@ Cors reconnait ce port 3000 . il se pourrait qu'un autre port ne fonctionne pas 
 - les gérants ont manager{i}@test.com || password
 - le role manager a été crée , mais il n'es pas d'utilité . Les gérants sont ceux à qui des etablissements ont été assignés: les devmanagers
 
-### option 2 :
+# Déploiement chez O2SWITCH
 
-- installer les dépendances du projet
+## Solution hebergement
+
+- Prendre la solution tout en un chez o2switch incluant le nom de domaine.
+- Les identifiants sont envoyés par mails , ainsi que le lien de connexion à l'interface cpanel
+
+## Création de la base de donnée
+
+- Après s'etre connecté au cpanel , se rendre dans la rubrique base de donnée mysql
+
+- Creer une base de donnée mysql , gardez bien le nom de votre base bien à l'abris
+
+- Créer un utilisateur avec un mot de pass de haut niveau de sécurité . Notez bien les identifiants dans un lieu secret
+
+- Assigner à cet utilisateur les droits sur la base de donnée
+
+## Création de l'espace de travail
+
+Dans votre espace de travail post connexion , vous avez un panneau avec plusieurs rubriques. Il faudra en utiliser quelques unes comme suit.
+
+### Création d'un domaine ou sous-domaine
+
+- se reendre dans l'onglet sous-domaine
+
+- Créer le sous domaine
+
+- Se rendre dans le panneau terminal
+
+- Lister les répertoires , vous pourrez alors voir un répertoire créé du type 'hotels.artsi.fr' . Ce répertoire n'est pas à supprimer ni à utiliser , car il contient le htacces qui va aider par la suite
+
+### Création de l'espace de stockage physique des fichiers
+
+on peut utiliser le terminal cpanel ou une connexion ssh
+
+- A la racine de votre projet , créer un dossier qui contiendra vos fichiers.
+  Il est préférable de créer 3 repertoires des ce dossier , l'un pour la production, le pour le developpement , l'un pour le release . pour notre cas , nous déployons sur la production : projects/hotels/prod
+
+### Création de l'application node
+
+#### Configuration
+
+- Se rendre dans l'onglet node setup
+
+- Cliquer sur créer l'application
+
+- Choisir la version node 16
+
+- Indiquer l'application root : projects/hotels/prod
+
+- Indiquez l'url de l'application : hotles.artsi.fr
+
+- Indiquer le chemin du fichier de demarrage de l'application: ./backend/bin/www
+
+#### Variables d'environnement
+
+Renseigner les variables d'environnement suivantes :
+
+- MYSQL_DATABASE
+
+- MYSQL_HOST : 127.0.0.1
+
+- MYSQL_PASSWORD
+
+- MYSQL_USER
+
+- SERVER_ADRESS eg : http://www.hotels.artsi.fr
+
+- TOKEN_LOGIN_DURATION : 1d
+
+- TOKEN_SECRET eg:toutcequevoulezymettre
+
+<!--
+#### Demarrage du server
+- Lancez npm install
+- Lancez le script 'prodmigrate'
+- Lancez le scrpit 'prodseedall'
+
+Vous pouvez maintenant voir que le site a été déployé  -->
+
+### Mise en place du repository
+
+#### Création du repository
+
+Dans l'onglet git version control
+
+- créer un repository pour votre projet
+
+- décocher la case clone existing repository
+
+- nommez votre repository
+
+- valider
+
+Vous obtenez alors un chemin git remote qu'il faut utiliser en local dans votre projet pour faire les déploienement
+
+`git remote add upstream ssh://kojy5082@kojy5082.odns.fr/home/kojy5082/repositories/hotels-nodejs`
+
+#### Création du hook post-receive
+
+Ce hook va permttre la copie des fichiers vers le répertoire physique du projet depuis le repository lorsque vous faite un push vers la branche concernée
+
+- se rendre dans le hook post-receive
+  ` cd repositories/monrepo/.git/hooks`
+  ` nano post-receive`
+
+- y mettre le code de routage
+
+```
+!/bin/sh
+
+while read oldrev newrev ref
+do
+branch=`echo $ref | cut -d/ -f3`
+```
+
+if [ "master" == "$branch" ]; then
+git --work-tree=/home/kojy5082/projects/hotels/prod checkout -f $branch
+echo 'Changes pushed live.'
+fi
+
+if [ "develop" == "$branch" ]; then
+git --work-tree=/home/kojy5082/projects/hotels/stage checkout -f $branch
+echo 'Changes pushed to dev.'
+fi
+done
+
+#### Tester le hook
+
+depuis votre machine
+
+- envoyer les données
+  `git push -u upstream master`
+
+- vous pouvez vous rendre dans la page d'acceuil du repository pour voir que c'est votre commit qui a été pris en compte
+
+- vous pouvez constater que le dossier /prod a été mis à jour
+
+### Demarrage du server
+
+- se rendre dans le panneau node- setup
+
+- cliquer sur modifier
+
+- lancez la commande
   `npm install`
-- créer la base donnée grace à sequelize
-  `npx sequelize-cli db:create`
 
-c'est la base de donnée indiquée dans les variables d'environnement qui est crée
+- lancez le script
+  `npm run prodmigrate`
 
-## mettre à jour les variables d'environnement du projet
+- lancez le script
+  `npm run prodseedall`
 
-- dans le fichier .env situé à la racine du site , renseignez les informations de votre base de données
+- redemarrer le server
 
-## Environnement Backend
+Votre site est desormais déployé !!!!!
 
-- Installer les dépendances
-  `npm install`
-
-- Réaliser les migrations
-  `npm run migrate`
-
-- Démarrer le site
-  `npm run back-server`
-
-  La console vous indique le port sur lequel vous pouvez vous connecter sur le site : localhost:3500
-
-## environnement Frontend
-
-- naviguer sur dans le dossier frontend
-  `cd ./fronted `
-
--installer les dépendences
-`npm install`
-
-- demarrer le projet
-  `npm run front-server`
-
-Le projet frontend
+# BRAVO

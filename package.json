@@ -7,18 +7,24 @@
     "start": "cd backend && node ./bin/www",
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
-
     "build": "cd ./frontend && npm run build",
-
-
-    "postbuild": "cp -r ./client/build/* ./public/html && rm -rf ./client/build",
     "seedall": "npx sequelize-cli db:seed:all --debug",
+    "prodmigrateundoall": "npx sequelize-cli db:migrate:undo:all --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "prodmigrate": "npx sequelize-cli db:migrate --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "prodseedall": "npx sequelize-cli db:seed:all --debug --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
+    "prodseedundoall": "npx sequelize-cli db:seed:undo:all --url 'mysql://kojy5082_admin_hotels_mysql:ValeryMBELE1979@localhost/kojy5082_hotels_mysql'",
     "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
-    "migrate": "npx sequelize-cli db:migrate --debug"
+    "remigrate": "npx sequelize-cli db:migrate ",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --coverage --verbose --runInBand ",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset"
   },
   "dependencies": {
+    "@faker-js/faker": "^6.1.2",
+    "@getvim/execute": "^1.0.0",
     "@sequelize/core": "^7.0.0-alpha.10",
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
@@ -33,13 +39,15 @@
     "moment-range": "^4.0.2",
     "morgan": "~1.9.1",
     "multer": "^1.4.4",
-    "pg": "^8.7.3",
+    "mysql2": "^2.3.3",
+    "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.19.0",
-    "sharp": "^0.30.3"
+    "sequelize-cli": "^6.4.1",
+    "sharp": "^0.30.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^6.1.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -48,9 +56,11 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "jest": "^28.1.0",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
-    "sequelize-cli": "^6.4.1"
+    "supertest": "^6.2.3"
   },
   "nodemonConfig": {
     "ignore": [
@@ -62,5 +72,14 @@
     "events": {
       "crash": "sh -c 'lsof -i :${PORT:-3500} -t | xargs kill'"
     }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "frontend"
+    ]
   }
 }

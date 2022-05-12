@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const { BadRequest } = require('../../utils/errors')
 const { user, house, suite } = require('../../database/models')
 const generateToken = require('../../utils/generateToken')
-const { userInclude, userTokenInclude } = require('../../constants/includes')
+const { userTokenInclude } = require('../../constants/includes')
 
 const authenticate = async (req, res, next) => {
   const { username: email, password } = req.body
@@ -23,7 +23,7 @@ const authenticate = async (req, res, next) => {
     // check password
     const passwordVerified = await bcrypt.compare(
       password,
-      userVerified.password
+      userVerified.dataValues.password
     )
     if (!passwordVerified)
       return next(new BadRequest('email ou mot de pass invalide'))
@@ -33,6 +33,7 @@ const authenticate = async (req, res, next) => {
       token: generateToken(userVerified),
     })
   } catch (error) {
+    console.log('err', error)
     return next(error)
   }
 }

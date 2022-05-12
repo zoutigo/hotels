@@ -1,7 +1,7 @@
 import { Grid, Box, Alert, LinearProgress } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
-import houses from '../constants/houses'
+
 import Bread from '../customs/Bread'
 import CardSmallHouse from '../customs/CardSmallHouse'
 import PageTitle from '../customs/PageTitle'
@@ -25,8 +25,8 @@ function EtablissementListPage() {
   return (
     <StyledPage>
       <StyledSection background={palette.white.main}>
-        <Bread>List des établissements</Bread>
         <PageTitle>Liste des établissements</PageTitle>
+        <Bread>Liste des établissements</Bread>
         <Grid item container>
           <EtablissementsListForm />
         </Grid>

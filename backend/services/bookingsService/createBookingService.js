@@ -1,29 +1,27 @@
-const { Op } = require('sequelize')
-const Moment = require('moment')
-const MomentRange = require('moment-range')
-const moment = MomentRange.extendMoment(Moment)
-
 const { user, suite, booking } = require('../../database/models')
 const getDatesInRange = require('../../utils/getDatesInRange')
 
-const createBookingService = async (datas) => {
-  const { suiteUuid, userUuid, startdate, enddate, price } = datas
+const createBookingService = async (datas, userUuid) => {
+  const { suiteUuid, startdate, enddate, price } = datas
 
-  const {
-    0: first,
-    length,
-    [length - 1]: last,
-  } = getDatesInRange(startdate, enddate)
-
-  const createdAt = new Date()
   try {
+    const createdAt = new Date()
+    const {
+      0: first,
+      length,
+      [length - 1]: last,
+    } = getDatesInRange(startdate, enddate)
+
     // réserver
     const currentUser = await user.findOne({ where: { uuid: userUuid } })
     const currentSuite = await suite.findOne({ where: { uuid: suiteUuid } })
+
+    const numberDays = getDatesInRange(startdate, enddate).length
+    const totalPrice = currentSuite.price * numberDays
     const bookingDatas = {
       startdate: first,
       enddate: last,
-      price: Number(price),
+      price: Number(totalPrice),
       createdAt,
     }
 
@@ -33,12 +31,15 @@ const createBookingService = async (datas) => {
     })
 
     if (newbook) {
-      return { createdBooking: newbook, error: false }
+      const {
+        dataValues: { id, suiteId, userId, ...others },
+      } = newbook
+      return { createdBooking: { ...others }, serverError: false }
     }
 
-    return { error: "une erreur s'est produite" }
+    return { serverError: "une erreur s'est produite", createdBooking: null }
   } catch (error) {
-    return { error, createdBooking: null }
+    return { serverError: error, createdBooking: null }
   }
 }
 
