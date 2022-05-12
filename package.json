@@ -16,15 +16,11 @@
     "seedundoall": "npx sequelize-cli db:seed:undo:all",
     "modelgenerate": "npx sequelize-cli model:generate --name Example --attributes firstName:string,lastName:string,email:string",
     "seedgenerate": "npx sequelize-cli seed:generate --name demo-example",
-<<<<<<< HEAD
-    "remigrate": "npx sequelize-cli db:migrate "
-=======
     "remigrate": "npx sequelize-cli db:migrate ",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --coverage --verbose --runInBand ",
     "pretest": "cross-env NODE_ENV=test npm run migrate:reset"
->>>>>>> c3c8835f9cd4ed180d1fe9094bdca03e5eb80360
   },
   "dependencies": {
     "@faker-js/faker": "^6.1.2",
@@ -63,12 +59,8 @@
     "jest": "^28.1.0",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.15",
-<<<<<<< HEAD
-    "prettier": "^2.6.2"
-=======
     "prettier": "^2.6.2",
     "supertest": "^6.2.3"
->>>>>>> c3c8835f9cd4ed180d1fe9094bdca03e5eb80360
   },
   "nodemonConfig": {
     "ignore": [
