@@ -12,7 +12,7 @@ function EtablissementsListForm() {
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting, isValid, errors },
+    formState: { isSubmitting, errors },
   } = useForm({
     mode: 'onChange',
   })

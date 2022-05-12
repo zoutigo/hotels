@@ -1,5 +1,5 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import useAppContext from './useAppContext'
 
 function useIslogged() {

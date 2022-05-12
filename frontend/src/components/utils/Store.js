@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import Cookies from 'js-cookie'
-import React, { createContext, useCallback, useReducer } from 'react'
+import React, { createContext, useReducer } from 'react'
 import PropTypes from 'prop-types'
 
 export const Store = createContext()

@@ -2,7 +2,6 @@ import React from 'react'
 import { useController, Controller } from 'react-hook-form'
 import PropTypes from 'prop-types'
 import { TextField } from '@mui/material'
-import StyledTextField from '../customs/StyledTextField'
 
 function TextInput({
   control,
@@ -14,8 +13,8 @@ function TextInput({
   ...rest
 }) {
   const {
-    field: { ref, ...inputProps },
-    fieldState: { invalid, error, isDirty },
+    field: { ref },
+    fieldState: { error, isDirty },
   } = useController({
     name,
     control,

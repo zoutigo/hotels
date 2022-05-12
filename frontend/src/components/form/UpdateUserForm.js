@@ -33,8 +33,10 @@ function UpdateUserForm({
     userInfo: { token },
   } = state
   const { mutateAsync, isMutating } = useMutate(queryKey, apiUsersUpdate)
-  const { mutateAsync: mutateAsyncHouse, isMutating: isMutatingHouse } =
-    useMutate(houseQueryKey, apiHouseUpdate)
+  const { mutateAsync: mutateAsyncHouse } = useMutate(
+    houseQueryKey,
+    apiHouseUpdate
+  )
   const initialHouse = { name: 'Hello', value: 'i love' }
   const { data: housesData } = useFetch(housesQueryKey, '', apiHousesList)
 

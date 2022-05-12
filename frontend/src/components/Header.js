@@ -18,7 +18,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import ButtonNavbar from './customs/ButtonNavBar'
 import StyledNavLink from './customs/StyledNavLink'
 import pages from './constants/pages'
-import useIslogged from './hook/useIsLogged'
+
 import getRandomKey from './utils/getRandomkey'
 import useAppContext from './hook/useAppContext'
 

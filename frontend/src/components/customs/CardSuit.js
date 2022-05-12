@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, Grid, Tooltip, Typography } from '@mui/material'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import { useLocation } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import Cookies from 'js-cookie'
-
-import useImage from '../hook/useImage'
 import StyledNavLink from './StyledNavLink'
 import ButtonPrimary from './ButtonPrimary'
 import ModalImage from './ModalImage'
@@ -80,11 +78,8 @@ function CardSuit({ suite, house }) {
   const [tempImgSrc, setTempImgSrc] = useState(null)
   const { closeSnackbar, enqueueSnackbar } = useSnackbar()
 
-  const { mutateAsync, isMutating } = useMutate(
-    housesQueryKey,
-    apiSuitImageDelete
-  )
-  const { mutateAsync: mutateAsyncDelete, isDeleteMutating } = useMutate(
+  const { mutateAsync } = useMutate(housesQueryKey, apiSuitImageDelete)
+  const { mutateAsync: mutateAsyncDelete } = useMutate(
     housesQueryKey,
     apiSuitDelete
   )

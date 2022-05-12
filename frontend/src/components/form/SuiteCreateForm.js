@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { PropTypes } from 'prop-types'
 
-import { useTheme, styled } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
@@ -19,7 +19,6 @@ import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
 import getResponse from '../utils/getResponse'
 import setUserDatas from '../utils/setUserDatas'
-
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -114,9 +113,7 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
     }
   }
   return (
-
     <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
-
       <List>
         <ListItem>
           <TextInput
@@ -244,7 +241,6 @@ function SuiteCreateForm({ queryKey, queryParams, action, poster }) {
         </ListItem>
       </List>
     </ResponsiveForm>
-
   )
 }
 

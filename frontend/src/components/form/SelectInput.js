@@ -23,20 +23,17 @@ function SelectInput({
   ...rest
 }) {
   const {
-    field: { ref, onChange, ...inputProps },
-    fieldState: { invalid, error, isDirty },
+    field: { onChange },
+    fieldState: { error },
   } = useController({
     name,
     control,
     rules,
   })
 
-  const { isLoading, isError, data, errorMessage } = useFetch(
-    housesQueryKey,
-    '',
-    apiHousesList
-  )
+  const { data } = useFetch(housesQueryKey, '', apiHousesList)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const withSuitsHouzes = useCallback(
     data && data.datas && Array.isArray(data.datas)
       ? willBookDatas

@@ -2,9 +2,8 @@ import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import Bread from '../customs/Bread'
+
 import CardSuit from '../customs/CardSuit'
-import PageTitle from '../customs/PageTitle'
 
 import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
