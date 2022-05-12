@@ -5,3 +5,4 @@ module.exports.userAttributes = [
   'uuid',
   'roles',
 ]
+module.exports.suiteAttributes = { exclude: ['id', 'houseId'] }

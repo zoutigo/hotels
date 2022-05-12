@@ -28,3 +28,11 @@ module.exports.userTokenInclude = [
     // include: { model: suite },
   },
 ]
+module.exports.suiteInclude = [
+  {
+    model: house,
+    attributes: { exclude: ['id', 'userId'] },
+    include: { model: suite, attributes: { exclude: ['id'] } },
+  },
+  { model: image, attributes: ['uuid', 'filename', 'filepath'] },
+]

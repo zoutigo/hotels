@@ -4,7 +4,12 @@ const getValidationErrorsArray = require('../sequelize/getValidationErrorsArray'
 const listSuiteService = async () => {
   try {
     const suites = await suite.findAll({
-      include: { model: house, include: { model: suite } },
+      include: {
+        model: house,
+        attributes: { exclude: ['id', 'userId'] },
+        include: { model: suite, attributes: { exclude: ['id'] } },
+      },
+      attributes: { exclude: ['id', 'houseId'] },
     })
     if (!suites)
       return {
@@ -13,7 +18,6 @@ const listSuiteService = async () => {
       }
     return { suites }
   } catch (error) {
-    console.log('error', error)
     return { errors: getValidationErrorsArray(error) }
   }
 }
