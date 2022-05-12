@@ -18,16 +18,6 @@ const generateToken = (user) => {
   } = user
   return jwt.sign(
     {
-<<<<<<< HEAD
-      uuid: user.uuid,
-      roles: user.getDataValue('roles'),
-      lastname: user.lastname,
-      firstname: user.firstname,
-      house: user.house,
-      bookings: user.bookings,
-      email: user.email,
-      createdAt: user.createdAt,
-=======
       // uuid: user.uuid,
       // roles: user.getDataValue('roles'),
       // lastname: user.lastname,
@@ -44,7 +34,6 @@ const generateToken = (user) => {
       booking,
       email,
       createdAt,
->>>>>>> c3c8835f9cd4ed180d1fe9094bdca03e5eb80360
     },
     process.env.TOKEN_SECRET,
     { expiresIn: process.env.TOKEN_LOGIN_DURATION }
