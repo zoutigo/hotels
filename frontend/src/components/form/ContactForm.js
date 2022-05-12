@@ -1,19 +1,13 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
 import { useForm, Controller } from 'react-hook-form'
-
-import { useLocation } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { ListItem, List, TextField, MenuItem } from '@mui/material'
 import { styled } from '@mui/material/styles'
-
 import useMutate from '../hook/useMutate'
 import useAppContext from '../hook/useAppContext'
 import getError from '../utils/getError'
 import TextInput from './TextInput'
-
 import ButtonPrimary from '../customs/ButtonPrimary'
 import StyledForm from '../customs/StyledForm'
 import { apiContactCreate } from '../utils/api'
@@ -28,7 +22,6 @@ const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
 }))
 
 function ContactForm() {
-  const { pathname } = useLocation()
   const options = [
     {
       label: 'Je souhaite poser une réclamation',

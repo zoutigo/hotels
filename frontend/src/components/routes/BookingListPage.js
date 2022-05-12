@@ -18,6 +18,7 @@ function BookingListPage() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { state } = useAppContext()
   if (!state.userInfo) {
+    closeSnackbar()
     enqueueSnackbar('il faut vous connecter our accéder à cette page', {
       variant: 'error',
     })

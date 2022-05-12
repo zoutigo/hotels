@@ -32,12 +32,6 @@ const StyledImageContainer = styled(Grid)(({ theme }) => ({
   },
 }))
 
-const StyledSectionChanged = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down('lg')]: {
-    paddingLeft: '1rem',
-  },
-}))
-
 const statistics = [
   {
     name: 'Suites homologuées',

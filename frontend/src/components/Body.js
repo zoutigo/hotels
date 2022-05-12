@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Redirect, Switch, Route, Link, withRouter } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { Grid, styled } from '@mui/material'
 import pages from './constants/pages'
 import getRandomKey from './utils/getRandomkey'

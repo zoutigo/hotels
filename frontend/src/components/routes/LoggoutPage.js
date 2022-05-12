@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react'
 import Cookies from 'js-cookie'
 import useAppContext from '../hook/useAppContext'
@@ -12,7 +13,7 @@ function LoggoutPage() {
     Cookies.remove('userInfo')
     Cookies.remove('cartItems')
     history.push('/')
-  }, [])
+  }, [dispatch, history])
 
   return null
 }

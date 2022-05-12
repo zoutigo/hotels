@@ -5,16 +5,14 @@ import moment from 'moment'
 import { Typography, Grid, Tooltip, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import UpdateUserForm from '../form/UpdateUserForm'
-import AssignUserForm from '../form/AssignUserForm'
 import DeleteUserForm from '../form/DeleteUserForm'
 
 function UserDetais({ details }) {
   const { lastname, firstname, email, uuid, createdAT, house } = details
   const [showDeleteContainer, setshowDeleteContainer] = useState(false)
   const [showUpdateContainer, setshowUpdateContainer] = useState(false)
-  const [showAssignContainer, setshowAssignContainer] = useState(false)
+  // const [showAssignContainer, setshowAssignContainer] = useState(false)
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
@@ -22,8 +20,8 @@ function UserDetais({ details }) {
     setshowDeleteContainer(!showDeleteContainer)
   const handleClickUpdateButton = () =>
     setshowUpdateContainer(!showUpdateContainer)
-  const handleClickAssignButton = () =>
-    setshowAssignContainer(!showAssignContainer)
+  // const handleClickAssignButton = () =>
+  //   setshowAssignContainer(!showAssignContainer)
 
   return (
     <Grid container>

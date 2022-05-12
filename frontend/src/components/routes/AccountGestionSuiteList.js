@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import { Grid, LinearProgress, Box, Alert, Typography } from '@mui/material'
 import StyledSection from '../customs/StyledSection'
 import StyledPage from '../customs/StyledPage'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
-import houses from '../constants/houses'
 import CardSuit from '../customs/CardSuit'
 import useFetch from '../hook/useFetch'
 import useAppContext from '../hook/useAppContext'
-import { apiHouseGet, apiHousesList, apiSuitGet } from '../utils/api'
+import { apiHouseGet } from '../utils/api'
 import { housesQueryKey } from '../constants/queryKeys'
-import EtablissementPage from './EtablissementPage'
 
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 function AccountGestionSuiteList() {
   const history = useHistory()
@@ -41,7 +39,7 @@ function AccountGestionSuiteList() {
         <Bread>Les suites</Bread>
         <PageTitle>Les suites</PageTitle>
 
-        {/* {isLoading && (
+        {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />
           </Box>
@@ -50,7 +48,7 @@ function AccountGestionSuiteList() {
           <Box sx={{ width: '100%' }}>
             <Alert severity="error">{errorMessage}</Alert>
           </Box>
-        )} */}
+        )}
       </StyledSection>
       {house.uuid && (
         <StyledSection background={palette.white.main}>

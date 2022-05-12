@@ -1,18 +1,8 @@
-import {
-  List,
-  ListItem,
-  Typography,
-  TextField,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  Box,
-} from '@mui/material'
+import { List, ListItem, TextField } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 // import DesktopDateRangePicker from '@mui/x-date-pickers-pro/DesktopDateRangePicker'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
+
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 // import { MobileDatePicker, MobileDateRangePicker } from '@mui/x-date-pickers'
 
@@ -49,7 +39,6 @@ const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
 }))
 
 function BookingPage() {
-  const [suiteBatch, setSuiteBatch] = useState(null)
   const [suiteUnitPrice, setSuiteUnitPrice] = useState(0)
   const [currentHouseUuid, setCurrentHouseUuid] = useState('')
   const location = useLocation()
@@ -65,21 +54,11 @@ function BookingPage() {
 
   const { mutateAsync, isMutating } = useMutate(queryKey, apiBookingCreate)
 
-  // const initialValues = {
-  //   house: willBookDatas?.houseUuid,
-  //   suite: willBookDatas ? willBookDatas.suiteUuid : '',
-  //   price: willBookDatas ? willBookDatas.suiteTitle : 0,
-
-  //   startdate: moment(new Date()),
-  //   enddate: moment(new Date()),
-  // }
-
   const {
     control,
     handleSubmit,
     getValues,
     setValue,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onChange',
@@ -92,7 +71,7 @@ function BookingPage() {
     // }
 
     const {
-      house: houseUuid,
+      // house: houseUuid,
       suite: suiteUuid,
       startdate,
       enddate,

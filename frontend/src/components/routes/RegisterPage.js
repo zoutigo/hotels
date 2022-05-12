@@ -94,7 +94,7 @@ function RegisterPage() {
     if (isLogged) {
       history.push('/')
     }
-  }, [])
+  }, [history, isLogged])
 
   const buttonText = `S'inscrire`
 
@@ -104,11 +104,8 @@ function RegisterPage() {
         <Bread>Inscription</Bread>
         <PageTitle>Inscription</PageTitle>
 
-
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>
-
-
             <ListItem className="field">
               <TextInput
                 control={control}
@@ -236,7 +233,6 @@ function RegisterPage() {
             </ListItem>
           </List>
         </ResponsiveForm>
-
       </StyledSection>
     </StyledPage>
   )

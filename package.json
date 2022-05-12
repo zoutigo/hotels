@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "frontend": "npm start --prefix frontend",
+    "backend": "npm start --prefix backend",
+    "dev":"concurrently \"npm run back-server\" \"npm run front-server\"",
     "start": "cd backend && node ./bin/www",
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
@@ -48,6 +51,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
