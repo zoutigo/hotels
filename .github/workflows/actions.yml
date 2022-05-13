@@ -64,8 +64,8 @@ jobs:
     - uses: shogo82148/actions-setup-mysql@v1
       with:
        mysql-version: '5.7'
-       user: ${{env.MYSQL_TEST_USER}}
-       password: ${{env.MYSQL_TEST_PASSWORD}}
+       user: zoutigo
+       password: valery54
     - run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
     - run: mysql -uroot -h127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS db1;'
     - run: mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
