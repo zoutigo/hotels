@@ -74,6 +74,8 @@ jobs:
     - name: npm install , build and test
       run: |
          npm install --force
+         mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
+         mysql -uroot -h127.0.0.1 -e 'SHOW VARIABLES;'
         
     
 
