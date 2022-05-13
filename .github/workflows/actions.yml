@@ -77,6 +77,14 @@ jobs:
          mysql -uroot -h127.0.0.1 -e 'SHOW VARIABLES;'
          mysql -u${{env.MYSQL_TEST_USER}} -p${{ env.MYSQL_TEST_PASSWORD }} -h127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS  ${{env.MYSQL_TEST_USER }};'
          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
+      env:
+        CI: true
+        MYSQL_TEST_USER: zoutigo
+        MYSQL_TEST_PASSWORD: valery54
+        MYSQL_TEST_DATABASE: hotels
+        MYSQL_TEST_HOST: 127.0.0.1 
+        TOKEN_SECRET: ilnefautpasallersuelalachasse
+        TOKEN_LOGIN_DURATION: 1d
         
     
 
