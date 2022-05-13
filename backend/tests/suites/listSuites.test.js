@@ -88,14 +88,11 @@ describe('SUITE -- GET: /api/suites', () => {
       .set('Authorization', `Bearer ${loginAdminResp.body.token}`)
       .send({ managerUuid: createOwnerResp.body.datas.uuid })
 
-    expect(assignHouseOwner.statusCode).toEqual(200)
-
     // login house owner
     const loginHouseOwnerResp = await request(app).post('/api/login').send({
       username: adminDatas.email,
       password: adminDatas.password,
     })
-    expect(loginHouseOwnerResp.statusCode).toEqual(200)
 
     // create suite1
     await request(app)
