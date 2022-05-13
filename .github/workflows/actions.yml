@@ -74,7 +74,6 @@ jobs:
     - name: npm install , build and test
       run: |
          npm install --force
-         mysql -uroot -h127.0.0.1 -e 'SHOW VARIABLES;'
          mysql -u${{env.MYSQL_TEST_USER}} -p${{ env.MYSQL_TEST_PASSWORD }} -h127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS  ${{env.MYSQL_TEST_DATABASE }};'
          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
          npm test

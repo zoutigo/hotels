@@ -24,14 +24,11 @@ const createBookingService = async (datas, userUuid) => {
       price: Number(totalPrice),
       createdAt,
     }
-    console.log('before booking creation ----------------------')
 
     const newbook = await currentUser.createBooking({
       ...bookingDatas,
       suiteId: currentSuite.id,
     })
-
-    console.log('after booking creation ----------------------')
 
     if (newbook) {
       const {
