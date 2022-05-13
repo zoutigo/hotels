@@ -67,6 +67,8 @@ jobs:
        user: ${env.MYSQL_TEST_USER}
        password: ${env.MYSQL_TEST_PASSWORD}
     - run: mysql -uroot -h127.0.0.1 -e 'SELECT version()'
+    - run: mysql -uroot -h127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS db1;'
+    - run: mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
 
     # install dependencies backend dependencies
     - name: npm install , build and test
