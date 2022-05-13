@@ -76,8 +76,6 @@ jobs:
          npm install --force
          mysql -u${{MYSQL_TEST_USER}} -p${{ env.MYSQL_TEST_PASSWORD }} -h127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS  ${{env.MYSQL_TEST_USER }};'
          mysql -uroot -h127.0.0.1 -e 'SHOW DATABASES;'
-         mysql -e 'CREATE DATABASE IF NOT EXISTS ${{env.MYSQL_TEST_DATABASE }};' -u${{env.DB_USER }} -p${{ env.DB_PASSWORD }}
-         mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u:root -p:password -e "SHOW DATABASES"
          npm test
     
 
