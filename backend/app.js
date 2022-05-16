@@ -5,6 +5,7 @@ const logger = require('morgan')
 const dotenv = require('dotenv')
 const cors = require('cors')
 const moment = require('moment')
+const helmet = require('helmet')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
@@ -55,6 +56,8 @@ app.all('', (req, res, next) => {
   )
   next()
 })
+app.disable('x-powered-by')
+// app.use(helmet())
 
 app.use(logger('dev'))
 app.use(express.json({ limit: '10mb', extended: true, inflate: true }))
@@ -73,8 +76,6 @@ app.use('/api/suites', suitesRouter)
 app.use('/api/houses', housesRouter)
 app.use('/api/bookings', bookingsRouter)
 app.use('/api/mails', mailsRouter)
-
-app.disable('x-powered-by')
 
 app.use(handleErrors)
 

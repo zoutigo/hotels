@@ -91,9 +91,7 @@ function BookingPage() {
         datas: result,
         token: userInfo?.token,
       }).then((response) => {
-        if (response && (response.status === 201 || response.status === 200)) {
-          // reset form
-          // reset({ ...initialValues })
+        if (response && response.status === 201) {
           const refreshedUserInfo = setUserDatas(response)
 
           // refresh token

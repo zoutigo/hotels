@@ -10,22 +10,22 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 const ownerDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 const userDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 
 const newHouse = {
@@ -98,21 +98,18 @@ describe('BOOKING -- POST: /api/bookings', () => {
       .send(ownerDatas)
 
     // assign house to owner
-    const assignHouseOwner = await request(app)
+    await request(app)
       .put(`/api/houses/${createHouseResp.body.datas.uuid}`)
       .set('Authorization', `Bearer ${loginAdminResp.body.token}`)
       .send({ managerUuid: createOwnerResp.body.datas.uuid })
-
-    expect(assignHouseOwner.statusCode).toEqual(200)
 
     // login house owner
     const loginHouseOwnerResp = await request(app).post('/api/login').send({
       username: adminDatas.email,
       password: adminDatas.password,
     })
-    expect(loginHouseOwnerResp.statusCode).toEqual(200)
 
-    // create suite
+    // create suite with house owner profile
     const createSuiteResp = await request(app)
       .post(`/api/suites`)
       .set('Authorization', `Bearer ${loginHouseOwnerResp.body.token}`)
@@ -125,16 +122,16 @@ describe('BOOKING -- POST: /api/bookings', () => {
       .attach('files', imagepath2)
       .attach('files', imagepath3)
 
-    // create user
+    // create end user
     await request(app).post('/api/users').send(userDatas)
 
-    // log user
+    // log end user
     const loginUserResp = await request(app).post('/api/login').send({
       username: userDatas.email,
       password: userDatas.password,
     })
 
-    // create booking
+    // create booking with end user profile
 
     const createBookingResp = await request(app)
       .post('/api/bookings')
@@ -147,10 +144,12 @@ describe('BOOKING -- POST: /api/bookings', () => {
     expect(createBookingResp.statusCode).toEqual(201)
     expect(createBookingResp.body).toHaveProperty('token')
     expect(createBookingResp.body).toHaveProperty('message')
+    expect(createBookingResp.body).toHaveProperty('datas')
     expect(createBookingResp.body).toHaveProperty('datas.uuid')
     expect(createBookingResp.body).toHaveProperty('datas.startdate')
     expect(createBookingResp.body).toHaveProperty('datas.enddate')
     expect(createBookingResp.body).toHaveProperty('datas.price')
+    expect(createBookingResp.body).not.toHaveProperty('datas.id')
   })
   it('should return error if dates are not available', async () => {
     // create admin user

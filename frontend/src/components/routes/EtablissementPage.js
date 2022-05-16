@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import CardSuit from '../customs/CardSuit'
@@ -24,6 +25,12 @@ function EtablissementPage({ house: managerHouse }) {
 
   return (
     <StyledPage>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="description" content={description} />
+        <meta name="keywords" content={name} />
+        <title>{name}</title>
+      </Helmet>
       <StyledSection background={palette.white.main}>
         <Grid item container></Grid>
         <Grid item container>

@@ -6,7 +6,7 @@
   "scripts": {
     "frontend": "npm start --prefix frontend",
     "backend": "npm start --prefix backend",
-    "dev":"concurrently \"npm run back-server\" \"npm run front-server\"",
+    "dev": "concurrently \"npm run back-server\" \"npm run front-server\"",
     "start": "cd backend && node ./bin/www",
     "back-server": "cross-env NODE_ENV=development  DEBUG=express nodemon ./backend/bin/www",
     "front-server": "cd ./frontend && NODE_ENV=development npm run start ",
@@ -35,6 +35,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
+    "helmet": "^5.0.2",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",

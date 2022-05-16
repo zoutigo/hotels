@@ -22,6 +22,8 @@ import PageTitle from '../customs/PageTitle'
 import useIslogged from '../hook/useIsLogged'
 import { emailPattern, passwordPattern } from '../constants/patterns'
 import setUserDatas from '../utils/setUserDatas'
+import { Helmet } from 'react-helmet'
+import { siteName } from '../constants/globals'
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -100,6 +102,15 @@ function RegisterPage() {
 
   return (
     <StyledPage>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="description" content="inscription" />
+        <meta
+          name="keywords"
+          content="hotels, suites de luxe, environnement , ecoresponsable, inscription"
+        />
+        <title>{siteName} - Inscription</title>
+      </Helmet>
       <StyledSection background={palette.white.main}>
         <Bread>Inscription</Bread>
         <PageTitle>Inscription</PageTitle>

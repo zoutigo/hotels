@@ -21,6 +21,8 @@ import pages from './constants/pages'
 
 import getRandomKey from './utils/getRandomkey'
 import useAppContext from './hook/useAppContext'
+import { siteName } from './constants/globals'
+import { Helmet } from 'react-helmet'
 
 const routesExclusions = ['/register', '/login', '/mon-compte/loggout']
 
@@ -103,6 +105,18 @@ function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta
+          name="description"
+          content="Suites luxieuses et ecoresponsables"
+        />
+        <meta
+          name="keywords"
+          content="hotels, suites de luxe, environnement , ecoresponsable, ecologie"
+        />
+        <title>{siteName}</title>
+      </Helmet>
       <AppBar position="fixed" sx={{ background: palette.tertiary.main }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
