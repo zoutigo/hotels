@@ -11,6 +11,8 @@ import EtablissementsListForm from '../elements/EtablissementsListForm'
 import useFetch from '../hook/useFetch'
 import { housesQueryKey } from '../constants/queryKeys'
 import { apiHousesList } from '../utils/api'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function EtablissementListPage() {
   const queryParams = ''
@@ -22,11 +24,24 @@ function EtablissementListPage() {
   )
 
   const { palette } = useTheme()
+  const pageName = `Liste des établissements`
+  const seoDescription = `Liste des établissements du groupe hotelier ${siteName}`
+  const seoKeywords = [
+    siteName,
+    'hotels',
+    'suites de luxe',
+    'environnement',
+    'ecoresponsable',
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords, nofollow: false }
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <PageTitle>Liste des établissements</PageTitle>
-        <Bread>Liste des établissements</Bread>
+        <PageTitle>{pageName}</PageTitle>
+        <Bread>{pageName}</Bread>
         <Grid item container>
           <EtablissementsListForm />
         </Grid>

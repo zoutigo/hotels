@@ -6,6 +6,8 @@ import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import { apiContact } from '../utils/api'
 import ContactForm from '../form/ContactForm'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function ContactPage() {
   const { palette } = useTheme()
@@ -17,11 +19,18 @@ function ContactPage() {
 
   const formOptions = { queryKey, querypParams, poster }
 
+  const pageName = `Contact`
+  const seoDescription = `Contacter le groupe hotelier ${siteName}`
+  const seoKeywords = ['contact', 'contacter', pageName, siteName]
+
+  const seodatas = { pageName, seoDescription, seoKeywords, nofollow: false }
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Contact</Bread>
-        <PageTitle>Contact</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
         <ContactForm {...formOptions} />
       </StyledSection>
     </StyledPage>

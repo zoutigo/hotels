@@ -9,6 +9,8 @@ import CardSmallHouse from '../customs/CardSmallHouse'
 import { apiHousesList } from '../utils/api'
 import { housesQueryKey } from '../constants/queryKeys'
 import useFetch from '../hook/useFetch'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function AccountAdminHouseList() {
   const { palette } = useTheme()
@@ -20,13 +22,26 @@ function AccountAdminHouseList() {
     apiHousesList
   )
 
+  const pageName = `Liste des établissements`
+  const seoDescription = `Liste des établissements du groupe hotelier ${siteName}`
+  const seoKeywords = [
+    'hotels',
+    'établissements',
+    'suites de luxe',
+    'environnement',
+    'ecoresponsable',
+    pageName,
+    siteName,
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
       <StyledSection background={palette.white.main}>
-
-        <Bread>List des établissements</Bread>
-        <PageTitle>Liste des établissements</PageTitle>
-
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         {isLoading && (
           <Box sx={{ width: '100%' }}>

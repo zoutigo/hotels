@@ -6,6 +6,8 @@ import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import HouseCreateForm from '../form/HouseCreateForm'
 import { apiHouseCreate } from '../utils/api'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function AccountAdminHouseCreate() {
   const { palette } = useTheme()
@@ -17,12 +19,28 @@ function AccountAdminHouseCreate() {
 
   const formOptions = { queryKey, querypParams, action, poster }
 
+  const pageName = `Créer un établissement`
+  const seoDescription = `Créer un établissement du groupe hotelier ${siteName}`
+  const seoKeywords = [
+    'créer',
+    'creation',
+    'hotels',
+    'établissements',
+    'suites de luxe',
+    'environnement',
+    'ecoresponsable',
+    pageName,
+    siteName,
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
       <StyledSection background={palette.white.main}>
-
-        <Bread>Créer un établissement</Bread>
-        <PageTitle>Créer un établissement</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         <HouseCreateForm {...formOptions} />
       </StyledSection>

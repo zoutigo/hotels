@@ -22,8 +22,8 @@ import PageTitle from '../customs/PageTitle'
 import useIslogged from '../hook/useIsLogged'
 import { emailPattern, passwordPattern } from '../constants/patterns'
 import setUserDatas from '../utils/setUserDatas'
-import { Helmet } from 'react-helmet'
 import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -99,21 +99,19 @@ function RegisterPage() {
   }, [history, isLogged])
 
   const buttonText = `S'inscrire`
+  const pageName = `Inscription`
+  const seoDescription = `Inscription au site ${pageName}`
+  const seoKeywords = [pageName, siteName]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
 
   return (
     <StyledPage>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content="inscription" />
-        <meta
-          name="keywords"
-          content="hotels, suites de luxe, environnement , ecoresponsable, inscription"
-        />
-        <title>{siteName} - Inscription</title>
-      </Helmet>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Inscription</Bread>
-        <PageTitle>Inscription</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>

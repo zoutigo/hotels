@@ -30,6 +30,9 @@ import getResponse from '../utils/getResponse'
 
 import SelectInput from '../form/SelectInput'
 
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
+
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
   margin: '0  auto',
@@ -154,11 +157,26 @@ function BookingPage() {
     }
   }, [willBookDatas])
 
+  const pageName = `Réservation`
+  const seoDescription = `Réserver une suite dans les établissements du groupe hotelier ${siteName}`
+  const seoKeywords = [
+    'reservation',
+    'reserver une suite',
+    'hotels',
+    siteName,
+    pageName,
+    'ecoresponsable',
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords, nofollow: false }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Réservation</Bread>
-        <PageTitle>Réservation</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>

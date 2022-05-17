@@ -11,6 +11,8 @@ import { apiUserBookings } from '../utils/api'
 import StyledSection from '../customs/StyledSection'
 import { Alert, Box, Container, Grid, LinearProgress } from '@mui/material'
 import CardBooking from '../customs/CardBooking'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function BookingListPage() {
   const { palette } = useTheme()
@@ -49,11 +51,19 @@ function BookingListPage() {
     apiUserBookings
   )
 
+  const pageName = `Mes réservations`
+  const seoDescription = `Ma liste de reservations`
+  const seoKeywords = [pageName, siteName]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Mes réservations</Bread>
-        <PageTitle>Mes réservations</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         {isLoading && (
           <Box sx={{ width: '100%' }}>
