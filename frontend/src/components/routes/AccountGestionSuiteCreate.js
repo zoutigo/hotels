@@ -6,6 +6,8 @@ import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import SuiteCreateForm from '../form/SuiteCreateForm'
 import { apiSuitCreate } from '../utils/api'
+import CustomHelmet from '../elements/CustomHelmet'
+import { siteName } from '../constants/globals'
 
 function AccountGestionSuiteCreate() {
   const { palette } = useTheme()
@@ -15,12 +17,26 @@ function AccountGestionSuiteCreate() {
   const action = 'create'
   const poster = apiSuitCreate
 
+  const pageName = `Création d'une suite`
+  const seoDescription = `Créer une suite`
+  const seoKeywords = [
+    'créer',
+    'creation',
+    'suite',
+    'hotels',
+    siteName,
+    pageName,
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   const formOptions = { queryKey, querypParams, action, poster }
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
       <StyledSection background={palette.white.main}>
-        <Bread>Gestion des suites</Bread>
-        <PageTitle>Gestion des suites</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
         <SuiteCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

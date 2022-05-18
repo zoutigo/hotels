@@ -14,6 +14,8 @@ import StyledPage from '../customs/StyledPage'
 import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import useAppContext from '../hook/useAppContext'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   width: '50%',
@@ -33,12 +35,19 @@ function AccountUserinfosList() {
     state: { userInfo },
   } = useAppContext()
 
+  const pageName = `Mes informations`
+  const seoDescription = `Ma liste d'informations`
+  const seoKeywords = [pageName, siteName]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
-      <StyledSection background={palette.white.main}>
-        <Bread>Mes informations</Bread>
+      <CustomHelmet {...seodatas} />
 
-        <PageTitle>Mes informations</PageTitle>
+      <StyledSection background={palette.white.main}>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         <StyledTableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">

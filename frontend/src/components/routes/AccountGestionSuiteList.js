@@ -12,6 +12,8 @@ import { apiHouseGet } from '../utils/api'
 import { housesQueryKey } from '../constants/queryKeys'
 
 import { useHistory } from 'react-router-dom'
+import CustomHelmet from '../elements/CustomHelmet'
+import { siteName } from '../constants/globals'
 
 function AccountGestionSuiteList() {
   const history = useHistory()
@@ -33,11 +35,25 @@ function AccountGestionSuiteList() {
     apiHouseGet
   )
 
+  const pageName = `Les suites du ${house?.name}`
+  const seoDescription = `La liste des suites du  ${house?.name}`
+  const seoKeywords = [
+    `${house?.name}`,
+    siteName,
+    'hotels',
+    'environnement',
+    'ecoresponsable',
+    pageName,
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
       <StyledSection background={palette.white.main}>
-        <Bread>Les suites</Bread>
-        <PageTitle>Les suites</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         {isLoading && (
           <Box sx={{ width: '100%' }}>

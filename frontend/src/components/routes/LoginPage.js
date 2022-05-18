@@ -19,8 +19,8 @@ import PageTitle from '../customs/PageTitle'
 import StyledNavLink from '../customs/StyledNavLink'
 import setUserDatas from '../utils/setUserDatas'
 import useIslogged from '../hook/useIsLogged'
-import { Helmet } from 'react-helmet'
 import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 const ResponsiveForm = styled(StyledForm)(({ theme }) => ({
   width: '50%',
@@ -69,20 +69,26 @@ function LoginPage() {
     }
   }, [history, isLogged])
 
+  const pageName = `Login`
+  const seoDescription = `Se connecter au site ${siteName}`
+  const seoKeywords = [
+    'hotels',
+    'suites de luxe',
+    'environnement',
+    'ecoresponsable',
+    pageName,
+    siteName,
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content="login" />
-        <meta
-          name="keywords"
-          content="hotels, suites de luxe, environnement , ecoresponsable, login"
-        />
-        <title>{siteName} - Inscription</title>
-      </Helmet>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Login</Bread>
-        <PageTitle>Liogin</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
 
         <ResponsiveForm onSubmit={handleSubmit(onSubmit)}>
           <List>

@@ -1,13 +1,14 @@
 import { Grid, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
-import { Helmet } from 'react-helmet'
 import { useHistory, useLocation } from 'react-router-dom'
+import { siteName } from '../constants/globals'
 
 import CardSuit from '../customs/CardSuit'
 
 import StyledPage from '../customs/StyledPage'
 import StyledSection from '../customs/StyledSection'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function EtablissementPage({ house: managerHouse }) {
   const { palette } = useTheme()
@@ -23,14 +24,22 @@ function EtablissementPage({ house: managerHouse }) {
       : commonHouse
   const { suites, name, description, uuid } = house
 
+  const pageName = house.name
+  const seoDescription = description
+  const seoKeywords = [
+    house.name,
+    'hotels',
+    siteName,
+    'suites luxieuses',
+    'ecologie',
+  ]
+
+  const seodatas = { pageName, seoDescription, seoKeywords, nofollow: false }
+
   return (
     <StyledPage>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content={description} />
-        <meta name="keywords" content={name} />
-        <title>{name}</title>
-      </Helmet>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
         <Grid item container></Grid>
         <Grid item container>

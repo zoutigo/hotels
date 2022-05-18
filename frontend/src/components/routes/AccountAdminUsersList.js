@@ -11,6 +11,8 @@ import { apiUsersList } from '../utils/api'
 
 import UserDetais from '../customs/UserDetais'
 import { usersAdminQueryKey } from '../constants/queryKeys'
+import CustomHelmet from '../elements/CustomHelmet'
+import { siteName } from '../constants/globals'
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   width: '100%',
@@ -35,11 +37,18 @@ function AccountAdminUsersList() {
     apiUsersList
   )
 
+  const pageName = `Liste des utilisateurs`
+  const seoDescription = `Créer une suite`
+  const seoKeywords = ['liste', 'suite', 'hotels', siteName, pageName]
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
+
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
       <StyledSection background={palette.white.main}>
-        <Bread>Liste des utilisateurs</Bread>
-        <PageTitle>Liste des utilisateurs</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
         {isLoading && (
           <Box sx={{ width: '100%' }}>
             <LinearProgress color="primary" />

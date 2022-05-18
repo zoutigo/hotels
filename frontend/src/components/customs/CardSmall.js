@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import { Box, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-import useImage from '../hook/useImage'
-
 const StyledNameTypo = styled(Typography)(({ theme }) => ({
   color: theme.palette.primarytext.main,
 }))
@@ -47,11 +45,14 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function SmallCard({ feature }) {
   const { image, name, description } = feature
-  const { image: pic } = useImage(image)
+
   return (
     <StyledGrid item container xs={12} md={3}>
       <Box className="media">
-        <img src={pic} alt={name} />
+        <img
+          src={process.env.PUBLIC_URL + `/assets/images/` + image}
+          alt={name}
+        />
       </Box>
       <Box className="title">
         <StyledNameTypo

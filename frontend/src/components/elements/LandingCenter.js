@@ -4,7 +4,7 @@ import React from 'react'
 import ButtonPrimary from '../customs/ButtonPrimary'
 import getRandomKey from '../utils/getRandomkey'
 import LandingCenterCard from './LandingCenterCard'
-import image from '../../assets/images/donalg.jpg'
+// import image from '../../assets/images/donalg.jpg'
 import StyledNavLink from '../customs/StyledNavLink'
 import StyledSection from '../customs/StyledSection'
 
@@ -49,6 +49,7 @@ const statistics = [
 
 function LandingCenter() {
   const { palette } = useTheme()
+  const image = require('../../assets/images/donalg.jpg')
   return (
     <StyledSection background={palette.tertiary.main}>
       <Grid container>

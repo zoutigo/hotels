@@ -6,6 +6,8 @@ import Bread from '../customs/Bread'
 import PageTitle from '../customs/PageTitle'
 import { apiSuitUpdate } from '../utils/api'
 import SuiteCreateForm from '../form/SuiteCreateForm'
+import { siteName } from '../constants/globals'
+import CustomHelmet from '../elements/CustomHelmet'
 
 function AccountGestionSuiteUpdate() {
   const { palette } = useTheme()
@@ -16,11 +18,19 @@ function AccountGestionSuiteUpdate() {
   const poster = apiSuitUpdate
 
   const formOptions = { queryKey, querypParams, action, poster }
+
+  const pageName = `Mise à jour des suites`
+  const seoDescription = `Modifier les caractéristiques de la suite`
+  const seoKeywords = [pageName, siteName, 'modifier']
+
+  const seodatas = { pageName, seoDescription, seoKeywords }
   return (
     <StyledPage>
+      <CustomHelmet {...seodatas} />
+
       <StyledSection background={palette.white.main}>
-        <Bread>Mise à jour des suites</Bread>
-        <PageTitle>LMise à jour des suites</PageTitle>
+        <Bread>{pageName}</Bread>
+        <PageTitle>{pageName}</PageTitle>
         <SuiteCreateForm {...formOptions} />
       </StyledSection>
     </StyledPage>

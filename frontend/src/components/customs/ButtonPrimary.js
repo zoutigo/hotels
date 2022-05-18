@@ -18,7 +18,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-function ButtonPrimary({ children, ...rest }) {
+function ButtonPrimary(props) {
+  const { children, ...rest } = props
   return (
     <ColorButton {...rest} variant="contained">
       {children}
