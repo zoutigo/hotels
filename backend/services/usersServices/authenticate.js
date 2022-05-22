@@ -1,20 +1,29 @@
 const bcrypt = require('bcrypt')
+const { QueryTypes, Sequelize } = require('sequelize')
 const { BadRequest } = require('../../utils/errors')
-const { user, house, suite } = require('../../database/models')
+const { user, house, suite, sequelize } = require('../../database/models')
 const generateToken = require('../../utils/generateToken')
 const { userTokenInclude } = require('../../constants/includes')
+const db = require('../../database/models')
 
 const authenticate = async (req, res, next) => {
   const { username: email, password } = req.body
-  if (!email || !password) {
-    return next(new BadRequest('password or email missing'))
-  }
 
   try {
     const userVerified = await user.findOne({
       where: { email },
       include: userTokenInclude,
     })
+
+    // const userVerified = await sequelize.query(
+    //   'SELECT * FROM users WHERE email = ?',
+    //   {
+    //     type: QueryTypes.SELECT,
+    //     model: user,
+    //     replacements: [email],
+    //     include: userTokenInclude,
+    //   }
+    // )
 
     if (!userVerified) {
       return next(new BadRequest('utilisateur inconnu'))

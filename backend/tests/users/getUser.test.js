@@ -15,15 +15,15 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba4567',
+  passwordConfirm: 'Karamba4567',
 }
 const userDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba4567',
+  passwordConfirm: 'Karamba4567',
 }
 
 describe('USER GET', () => {
@@ -34,8 +34,8 @@ describe('USER GET', () => {
   it('should return 401 code if user does not have role manager or admin', async () => {
     const res = await request(app).post('/api/users').send({
       email: fakeEmail,
-      password: 'valery54',
-      passwordConfirm: 'valery54',
+      password: 'Valery54',
+      passwordConfirm: 'Valery54',
       lastname: 'robert',
       firstname: 'emilio',
     })

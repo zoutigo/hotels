@@ -13,15 +13,15 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email().toLocaleLowerCase(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'EbilN986',
+  passwordConfirm: 'EbilN986',
 }
 const userDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: 'user1@test.com',
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'EbilN986',
+  passwordConfirm: 'EbilN986',
 }
 
 describe('USER PUT', () => {

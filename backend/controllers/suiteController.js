@@ -22,9 +22,6 @@ module.exports.getSuiteList = async (req, res, next) => {
   })
 }
 module.exports.postSuite = async (req, res, next) => {
-  if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
-
   const {
     dataValues: { uuid: userUuid, roles },
   } = req.user
@@ -45,9 +42,6 @@ module.exports.postSuite = async (req, res, next) => {
   if (!isAllowed) return next(new Forbidden('vous ne pouvez créer une suite'))
 
   // traiter les images
-
-  if (!req.files || req.files.length < 1)
-    return next(new BadRequest('les images ne sont pas telechargées'))
 
   const filesErrors = []
 
@@ -88,9 +82,6 @@ module.exports.postSuite = async (req, res, next) => {
 
 /// details opérations
 module.exports.getSuite = async (req, res, next) => {
-  if (!req.params || !req.params.suiteUuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
   const { suiteUuid } = req.params
   const isAllowed = true
 
@@ -108,15 +99,13 @@ module.exports.getSuite = async (req, res, next) => {
 
 module.exports.putSuite = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
+    return next(new BadRequest('veillez renseigner un champ au moins'))
 
   const {
     dataValues: { uuid: userUuid, roles },
   } = req.user
 
   const { suiteUuid } = req.params
-  if (!suiteUuid)
-    return next(new BadRequest("il manque l'établissement à votre requette"))
 
   const { isHouseManager, error } = await isSuiteManagerService(
     suiteUuid,
@@ -171,9 +160,6 @@ module.exports.putSuite = async (req, res, next) => {
 }
 
 module.exports.deleteSuite = async (req, res, next) => {
-  if (!req.params || !req.params.suiteUuid)
-    return next(new BadRequest("veillez indiquer l'image à supprimer'"))
-
   const { suiteUuid } = req.params
 
   const {
@@ -201,9 +187,6 @@ module.exports.deleteSuite = async (req, res, next) => {
   })
 }
 module.exports.deleteImage = async (req, res, next) => {
-  if (!req.params || !req.params.suiteUuid || !req.params.imageUuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
   const { imageUuid, suiteUuid } = req.params
 
   const {

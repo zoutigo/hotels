@@ -38,26 +38,7 @@ module.exports.getUsers = async (req, res, next) => {
   return res.status(200).send(users)
 }
 module.exports.postUsers = async (req, res, next) => {
-  if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
-
-  const mandatorydFields = [
-    'email',
-    'password',
-    'passwordConfirm',
-    'lastname',
-    'firstname',
-  ]
-
-  const submittedFields = mandatorydFields.filter(
-    (field) => Object.keys(req.body).includes(field) === true
-  )
-  if (!(submittedFields.length === mandatorydFields.length))
-    return next(new BadRequest('Une ou plusieurs données manquent'))
-
-  const { password, passwordConfirm, email, lastname, firstname } = req.body
-  if (!(password === passwordConfirm))
-    return next(new BadRequest('Les mots de pass saisis sont différents'))
+  const { password, email, lastname, firstname } = req.body
 
   // password hash
   const salt = await bcrypt.genSalt(10)
@@ -89,12 +70,6 @@ module.exports.postUsers = async (req, res, next) => {
 }
 
 module.exports.getUser = async (req, res, next) => {
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
-  if (!uuidRegexExp.test(req.params.uuid))
-    return next(new BadRequest("ceci n'est pas l'identifiant d'un utilisateur"))
-
   const { roles, uuid: userUuid } = req.user
 
   const isAllowedRole = roles.includes('manager') || roles.includes('admin')
@@ -139,13 +114,9 @@ module.exports.getUserBookings = async (req, res, next) => {
 
 module.exports.putUsers = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
-
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
-  // if (!uuidRegexExp.test(req.params.uuid))
-  //   return next(new BadRequest("ceci n'est pas l'identifiant d'un utilisateur"))
+    return next(
+      new BadRequest('veillez renseigner au moins un champ à mettre à jour')
+    )
 
   const {
     dataValues: { uuid: userUuid, roles },

@@ -1,4 +1,5 @@
 const { Model, Sequelize } = require('sequelize')
+const { urlPattern } = require('../../constants/regex')
 
 module.exports = (sequelize, DataTypes) => {
   class Suite extends Model {
@@ -95,8 +96,11 @@ module.exports = (sequelize, DataTypes) => {
           notNull: {
             msg: 'le lien booking est obligatoire',
           },
-          isUrl: {
-            msg: 'le lien booking.com doit etre de format url',
+          isURL: {
+            msg: 'Le lien booking doit etre au bon format',
+            protocols: ['http', 'https', 'ftp'],
+            require_tld: true,
+            require_protocol: true,
           },
         },
       },

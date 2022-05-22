@@ -9,15 +9,15 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 const ownerDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 
 const newHouse = {
@@ -83,7 +83,7 @@ describe('SUITE -- GET: /api/suites', () => {
       .send(ownerDatas)
 
     // assign house to owner
-    const assignHouseOwner = await request(app)
+    await request(app)
       .put(`/api/houses/${createHouseResp.body.datas.uuid}`)
       .set('Authorization', `Bearer ${loginAdminResp.body.token}`)
       .send({ managerUuid: createOwnerResp.body.datas.uuid })

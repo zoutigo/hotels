@@ -14,15 +14,15 @@ describe('USER LOGIN', () => {
   it('should log in a new user', async () => {
     const res = await request(app).post('/api/users').send({
       email: fakeEmail,
-      password: 'valery54',
-      passwordConfirm: 'valery54',
+      password: 'Karamba789',
+      passwordConfirm: 'Karamba789',
       lastname: 'robert',
       firstname: 'emilio',
     })
 
     const res1 = await request(app).post('/api/login').send({
       username: fakeEmail,
-      password: 'valery54',
+      password: 'Karamba789',
     })
 
     const sampeResponse = {

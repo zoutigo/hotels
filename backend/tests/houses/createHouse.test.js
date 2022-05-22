@@ -9,8 +9,8 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'JoaoPinto67',
+  passwordConfirm: 'JoaoPinto67',
 }
 
 const newHouse = {
@@ -22,6 +22,8 @@ const newHouse = {
 
 const image = path.resolve(__dirname, `../test_images/test_img1.jpg`)
 
+const imagepath = path.resolve(__dirname, `../test_images/test_img1.jpg`)
+
 describe('HOUSE -- POST: /api/houses', () => {
   beforeEach(async () => {
     await truncate()
@@ -29,8 +31,6 @@ describe('HOUSE -- POST: /api/houses', () => {
 
   it('should return created house with admin profile', async () => {
     // create images
-
-    const imagepath = path.resolve(__dirname, `../test_images/test_img1.jpg`)
 
     // create admin user
     const createAdminResp = await request(app)
@@ -76,14 +76,23 @@ describe('HOUSE -- POST: /api/houses', () => {
     const tokenHeader = { Authorization: 'Bearer ' + loginResp.body.token }
     const houseResp = await request(app)
       .post(`/api/houses`)
-      .send(newHouse)
-      .set(tokenHeader)
+      .set('Authorization', `Bearer ${loginResp.body.token}`)
+      .field('name', newHouse.name)
+      .field('description', newHouse.description)
+      .field('city', newHouse.city)
+      .field('address', newHouse.address)
+      .attach('file', imagepath)
 
     expect(houseResp.statusCode).toEqual(403)
   })
   it('should return error with no logged user', async () => {
-    const houseResp = await request(app).post(`/api/houses`).send(newHouse)
-
+    const houseResp = await request(app)
+      .post(`/api/houses`)
+      .field('name', newHouse.name)
+      .field('description', newHouse.description)
+      .field('city', newHouse.city)
+      .field('address', newHouse.address)
+      .attach('file', imagepath)
     expect(houseResp.statusCode).toEqual(401)
   })
 })

@@ -19,9 +19,6 @@ module.exports.getHouseList = async (req, res, next) => {
   })
 }
 module.exports.postHouse = async (req, res, next) => {
-  if (Object.keys(req.body).length < 1)
-    return next(new BadRequest('veillez renseigner les champs de données'))
-
   const {
     dataValues: { uuid: userUuid, roles },
   } = req.user
@@ -34,8 +31,6 @@ module.exports.postHouse = async (req, res, next) => {
     return next(new Forbidden('vous ne pouvez créer un etablissement'))
 
   // traiter l'image et recupérer l'url
-
-  if (!req.file) return next(new BadRequest('Veillez ajouter la bannière'))
 
   const { filepath, errors: imgErrors } = await storeImageService(req.file)
 
@@ -56,9 +51,6 @@ module.exports.postHouse = async (req, res, next) => {
 
 /// details opérations
 module.exports.getHouse = async (req, res, next) => {
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
   const { uuid } = req.params
   const isAllowed = true
 
@@ -97,9 +89,6 @@ module.exports.putHouse = async (req, res, next) => {
   if (Object.keys(req.body).length < 1)
     return next(new BadRequest('veillez renseigner les champs de données'))
 
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'utilisateur recherché"))
-
   const { uuid: houseUuid } = req.params
 
   const {
@@ -132,9 +121,6 @@ module.exports.putHouse = async (req, res, next) => {
   })
 }
 module.exports.deleteHouse = async (req, res, next) => {
-  if (!req.params || !req.params.uuid)
-    return next(new BadRequest("veillez indiquer l'établissement à supprimer"))
-
   const { uuid: houseUuid } = req.params
 
   const {

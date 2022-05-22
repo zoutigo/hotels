@@ -1,5 +1,6 @@
 const request = require('supertest')
 const { faker } = require('@faker-js/faker')
+const moment = require('moment')
 const path = require('path')
 const app = require('../../app')
 const { user } = require('../../database/models')
@@ -9,22 +10,22 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba3455',
+  passwordConfirm: 'Karamba3455',
 }
 const ownerDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba3455',
+  passwordConfirm: 'Karamba3455',
 }
 const userDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba3455',
+  passwordConfirm: 'Karamba3455',
 }
 
 const newHouse = {
@@ -41,16 +42,8 @@ const newSuite = {
 }
 
 const bookingDatas = {
-  startdate: faker.date.between('now', '+ 1 month'),
-  enddate: faker.date.between('+2 month', '+3 month'),
-}
-const bookingDatas1 = {
-  startdate: faker.date.between('now', '+ 1 day'),
-  enddate: faker.date.between('+2 day', '+10 day'),
-}
-const bookingDatas2 = {
-  startdate: faker.date.between('now', '+ 1 day'),
-  enddate: faker.date.between('+2 day', '+20 day'),
+  startdate: moment().add(1, 'days').valueOf(),
+  enddate: moment().add(3, 'days').valueOf(),
 }
 
 const imagepath = path.resolve(__dirname, `../test_images/test_img1.jpg`)
