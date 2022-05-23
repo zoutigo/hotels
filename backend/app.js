@@ -16,6 +16,7 @@ const bookingsRouter = require('./routes/bookings')
 const mailsRouter = require('./routes/mails')
 const loginRouter = require('./routes/login')
 const handleErrors = require('./middlewares/handleErrors')
+const helmetOptions = require('./constants/helmetOptions')
 
 dotenv.config()
 moment.locale('fr')
@@ -23,6 +24,7 @@ moment.suppressDeprecationWarnings = true
 const app = express()
 
 const allowedOrigins = [
+  'http://localhost:3500',
   'http://localhost:3000',
   'http://localhost:3001',
   'hotels.artsi.fr',
@@ -58,7 +60,7 @@ app.all('', (req, res, next) => {
   next()
 })
 app.disable('x-powered-by')
-// app.use(helmet())
+app.use(helmet(helmetOptions))
 
 app.use(logger('dev'))
 app.use(express.json({ limit: '10mb', extended: true, inflate: true }))

@@ -15,20 +15,20 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      const password = await hashPassword('password')
+      const adminPassword = await hashPassword(devAdmin.password)
+      const admin = { ...devAdmin, password: adminPassword }
 
-      devAdmin.password = password
       const clients = devClients.map((client) => ({
         ...client,
-        password: password,
+        password: adminPassword,
       }))
 
       const managers = devManagers.map((manager) => ({
         ...manager,
-        password: password,
+        password: adminPassword,
       }))
 
-      await queryInterface.bulkInsert('users', [devAdmin, ...managers], {
+      await queryInterface.bulkInsert('users', [admin, ...managers], {
         transaction,
       })
       await queryInterface.bulkInsert('users', clients, {
