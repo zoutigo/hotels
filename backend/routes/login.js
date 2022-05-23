@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { body, check, oneOf, validationResult } = require('express-validator')
 const { passwordPattern } = require('../constants/regex')
+const loginlimiter = require('../middlewares/loginLimiter')
 const validate = require('../middlewares/validate')
 
 const authenticate = require('../services/usersServices/authenticate')
@@ -9,6 +10,7 @@ const authenticate = require('../services/usersServices/authenticate')
 // router.post('/', authenticate)
 router.post(
   '/',
+  loginlimiter,
   validate([
     body('username')
       .not()

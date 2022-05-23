@@ -20,6 +20,7 @@ const validate = require('../middlewares/validate')
 const verifyTokenService = require('../services/usersServices/verifyTokenService')
 const { passwordPattern } = require('../constants/regex')
 const { QueryTypes } = require('sequelize')
+const registerLimiter = require('../middlewares/registerLimiter')
 
 /* GET users listing. */
 router.get(
@@ -31,6 +32,7 @@ router.get(
 /* POST users creating. */
 router.post(
   '/',
+  registerLimiter,
   validate([
     body('lastname')
       .not()
