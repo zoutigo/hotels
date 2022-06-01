@@ -7,6 +7,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const moment = require('moment')
 const helmet = require('helmet')
+const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
@@ -17,10 +18,12 @@ const mailsRouter = require('./routes/mails')
 const loginRouter = require('./routes/login')
 const handleErrors = require('./middlewares/handleErrors')
 const helmetOptions = require('./constants/helmetOptions')
+const csrfProtection = require('./middlewares/csrfProtection')
 
 dotenv.config()
 moment.locale('fr')
 moment.suppressDeprecationWarnings = true
+
 const app = express()
 
 const allowedOrigins = [
@@ -46,7 +49,7 @@ app.use(
       return callback(null, true)
     },
     credentials: true,
-    exposedHeaders: ['authorization'],
+    exposedHeaders: ['authorization', 'X-CSRF-Token'],
   })
 )
 
@@ -69,6 +72,10 @@ app.use(
 )
 app.use(cookieParser())
 
+if (process.NODE_ENV === 'production') {
+  app.use(csrfProtection)
+}
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, '..', 'public/images')))
 
@@ -81,6 +88,8 @@ app.use('/api/bookings', bookingsRouter)
 app.use('/api/mails', mailsRouter)
 
 app.use(handleErrors)
+
+// render react index html
 
 const root = require('path').join(__dirname, '..', 'frontend', 'build')
 app.use(express.static(root))

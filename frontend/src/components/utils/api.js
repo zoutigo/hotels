@@ -1,9 +1,13 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const LOCALHOST = 'http://localhost:3500'
 
 const PREFIX = process.env.NODE_ENV === 'production' ? '' : LOCALHOST
 
+axios.defaults.headers.post['X-CSRF-Token'] = Cookies.get('_csrf')
+axios.defaults.headers.put['X-CSRF-Token'] = Cookies.get('_csrf')
+axios.defaults.headers.delete['X-CSRF-Token'] = Cookies.get('_csrf')
 const commonHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json',

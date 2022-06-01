@@ -9,16 +9,15 @@ const helmetOptions = {
       scriptSrc: ["'self'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
-      //   imgSrc: ["'http'"],
-      //   styleSrc: ["'unsafe-inline'"],
+      imgSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
     },
   },
+
   crossOriginResourcePolicy: {
-    useDefaults: false,
-    directives: {
-      policy: 'cross-origin',
-    },
+    policy: 'cross-origin',
   },
+
   xssFilter: true,
 }
 
