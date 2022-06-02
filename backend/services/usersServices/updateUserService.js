@@ -12,7 +12,11 @@ const updateUserService = async (uuid, datas) => {
         serverError: 'un problème est survenu lors de la création utilisateur',
       }
 
-    return { newUser }
+    const {
+      dataValues: { password, id, ...rest },
+    } = newUser
+
+    return { newUser: { ...rest } }
   } catch (error) {
     return { errors: getValidationErrorsArray(error) }
   }

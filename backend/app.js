@@ -1,4 +1,5 @@
 const express = require('express')
+
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
@@ -6,6 +7,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const moment = require('moment')
 const helmet = require('helmet')
+const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
@@ -15,13 +17,17 @@ const bookingsRouter = require('./routes/bookings')
 const mailsRouter = require('./routes/mails')
 const loginRouter = require('./routes/login')
 const handleErrors = require('./middlewares/handleErrors')
+const helmetOptions = require('./constants/helmetOptions')
+const csrfProtection = require('./middlewares/csrfProtection')
 
 dotenv.config()
 moment.locale('fr')
 moment.suppressDeprecationWarnings = true
+
 const app = express()
 
 const allowedOrigins = [
+  'http://localhost:3500',
   'http://localhost:3000',
   'http://localhost:3001',
   'hotels.artsi.fr',
@@ -43,7 +49,7 @@ app.use(
       return callback(null, true)
     },
     credentials: true,
-    exposedHeaders: ['authorization'],
+    exposedHeaders: ['authorization', 'X-CSRF-Token'],
   })
 )
 
@@ -57,7 +63,7 @@ app.all('', (req, res, next) => {
   next()
 })
 app.disable('x-powered-by')
-// app.use(helmet())
+app.use(helmet(helmetOptions))
 
 app.use(logger('dev'))
 app.use(express.json({ limit: '10mb', extended: true, inflate: true }))
@@ -65,6 +71,10 @@ app.use(
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 })
 )
 app.use(cookieParser())
+
+if (process.NODE_ENV === 'production') {
+  app.use(csrfProtection)
+}
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, '..', 'public/images')))
@@ -78,6 +88,8 @@ app.use('/api/bookings', bookingsRouter)
 app.use('/api/mails', mailsRouter)
 
 app.use(handleErrors)
+
+// render react index html
 
 const root = require('path').join(__dirname, '..', 'frontend', 'build')
 app.use(express.static(root))

@@ -23,8 +23,8 @@ describe('USER REGISTER', () => {
   it('should create a new user', async () => {
     const res = await request(app).post('/api/users').send({
       email: faker.internet.email(),
-      password: 'valery54',
-      passwordConfirm: 'valery54',
+      password: 'Roberta678',
+      passwordConfirm: 'Roberta678',
       lastname: 'robert',
       firstname: 'emilio',
     })

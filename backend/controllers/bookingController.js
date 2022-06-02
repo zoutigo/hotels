@@ -38,8 +38,6 @@ module.exports.postBooking = async (req, res, next) => {
 
   const { suiteUuid } = req.body
 
-  if (!suiteUuid) return next(new BadRequest('veillez indiquer la suite'))
-
   // On peut vérifier si la suite exite encore
 
   req.body.userUuid = userUuid

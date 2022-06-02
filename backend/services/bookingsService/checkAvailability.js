@@ -5,8 +5,6 @@ const getDatesInRange = require('../../utils/getDatesInRange')
 const isSuiteAvailable = async (datas) => {
   const { suiteUuid, startdate, enddate } = datas
 
-  // const startRange = Number(startdate)
-  // const endRange = Number(enddate)
   const range = getDatesInRange(startdate, enddate)
 
   try {

@@ -9,8 +9,8 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Emiliano678',
+  passwordConfirm: 'Emiliano678',
 }
 
 const newHouse = {

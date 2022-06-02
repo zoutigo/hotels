@@ -9,22 +9,22 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 const ownerDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 const userDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba18',
+  passwordConfirm: 'Karamba18',
 }
 
 const newHouse = {
@@ -36,7 +36,7 @@ const newHouse = {
 const newSuite = {
   title: faker.commerce.productName(),
   description: faker.lorem.paragraphs(2, '<br/>\n'),
-  bookinglink: 'https://www.booking.com/1',
+  bookinglink: faker.internet.url(),
   price: 500,
 }
 
@@ -116,6 +116,7 @@ describe('SUITE -- POST: /api/suites', () => {
     expect(createSuiteResp.body).not.toHaveProperty('datas.id')
     expect(createSuiteResp.body).toHaveProperty('token')
   })
+
   it('should return created suite with admin profile', async () => {
     // create admin user
     const createAdminResp = await request(app)

@@ -9,15 +9,15 @@ const adminDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba19',
+  passwordConfirm: 'Karamba19',
 }
 const ownerDatas = {
   lastname: faker.name.lastName(),
   firstname: faker.name.firstName(),
   email: faker.internet.email(),
-  password: 'karamba18',
-  passwordConfirm: 'karamba18',
+  password: 'Karamba19',
+  passwordConfirm: 'Karamba19',
 }
 
 const newHouse = {

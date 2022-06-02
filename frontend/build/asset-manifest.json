@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.eb9a2844.css",
-    "main.js": "/static/js/main.badb9a1d.js",
+    "main.js": "/static/js/main.97fd398a.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/donalg.jpg": "/static/media/donalg.89c025da76447784367a.jpg",
     "index.html": "/index.html",
     "main.eb9a2844.css.map": "/static/css/main.eb9a2844.css.map",
-    "main.badb9a1d.js.map": "/static/js/main.badb9a1d.js.map",
+    "main.97fd398a.js.map": "/static/js/main.97fd398a.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eb9a2844.css",
-    "static/js/main.badb9a1d.js"
+    "static/js/main.97fd398a.js"
   ]
 }
