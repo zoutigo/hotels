@@ -37,7 +37,6 @@ router.post(
             replacements: [value],
           })
           .then((suit) => {
-            // console.log('suit', suit)
             if (!suit.length > 0) {
               return Promise.reject(`la suite n'existe plus`)
             }
